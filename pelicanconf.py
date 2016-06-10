@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 
-AUTHOR = u'Greg Reda'
-SITENAME = u'Greg Reda'
-SITEURL = 'http://www.gregreda.com'
+AUTHOR = u'Alex Fitts'
+SITENAME = u'Alex Fitts'
+SITEURL = 'http://localhost:8000'#'http://www.gregreda.com'
 TIMEZONE = 'America/Chicago'
 THEME = 'void/'
 AVATAR = '/theme/images/avatar.jpg'
-TITLE = "Greg Reda: independent data science and strategy consulting."
-DESCRIPTION = "Greg Reda is an independent data science and strategy \
-consultant, helping clients effectively utilize data to gain insight, \
-inform decisions, and grow their business."
+TITLE = "Alex Fitts: independent data science and strategy consulting."
+DESCRIPTION = "Alex Fitts is a curious astronomy who has wandered into \
+the world of data science. What started out as a way to better understand\
+astronomy has taken a life of its own."
 
 # TODO: switch to /blog/slug/index.html -- need to setup redirects first
 ARTICLE_URL = '{date:%Y}/{date:%m}/{date:%d}/{slug}/'
@@ -20,7 +20,7 @@ ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
 PAGE_PATHS = ['pages']
 PAGE_URL = '{slug}/'
 PAGE_SAVE_AS = '{slug}/index.html'
-ABOUT_PAGE_HEADER = 'Nice to meet you.'
+ABOUT_PAGE_HEADER = 'Per aspera ad astra.'
 
 # DEFAULTS
 DEFAULT_LANG = 'en'
@@ -51,11 +51,11 @@ NAVIGATION = [
 
 # TODO: SOCIAL - make it dynamic
 TWITTER_CARDS = True
-TWITTER_NAME = "gjreda"
+TWITTER_NAME = "Alex_Fitts"
 FACEBOOK_SHARE = True
-GITHUB_NAME = 'gjreda'
-LINKEDIN_URL = 'http://linkedin.com/in/gjreda'
-GOOGLE_PLUS_URL = 'https://plus.google.com/111658599948853828157?rel=author'
+GITHUB_NAME = 'lcdmsoundsystem'
+LINKEDIN_URL = 'http://linkedin.com/in/afitts'
+GOOGLE_PLUS_URL = 'https://plus.google.com/u/0/117088506946894057793/about/p/pub'
 LASTFM_NAME = 'gjreda'
 
 #### Analytics

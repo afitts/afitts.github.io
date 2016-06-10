@@ -5,34 +5,21 @@ url: index.html
 save_as: index.html
 
 
-I’m a Chicago-based data scientist and developer at [Sprout Social](http://www.sproutsocial.com).
+I’m an Austin-based graduate student working on my PhD in astrophysics at [The University of Texas at Austin](http://www.as.utexas.edu/astronomy/). I simulate dwarf galaxies in the field to gain a better understanding of galaxy formation at the low mass end. My research aims to address the inconsistencies that arise between dark matter only simulations and observations of dwarf galaxies. These isolated, small galaxies also provide the perfect laboratory to study the early universe and my hope is to utilize my simulations to gain insight into the specifics of reionization.     
 
-Previously, I was the first data science hire at [GrubHub](http://www.grubhub.com/), where I led the team focused on data research, A/B testing, and product analytics.
+Previously, I received my Master's degree in astronomy from [The University of Maryland, College Park](http://www.astro.umd.edu), where I worked on time-varying signals in accretion disk simulations. I was awarded my bachelor's in Physics from [The University of Connecticut](http://physics.uconn.edu) where I completed an undergraduate thesis by creating a spatial distribution computer model of a cometary atmosphere to study photo-desorption. 
 
-I've also spent time at [Datascope](http://datascopeanalytics.com/), where I helped an NBA team with draft preparation and scouting, and [PwC](http://www.pwc.com/us/en/index.jhtml), where I focused on analytics related to fraud, investigations, and litigation.
-
+Given that my simulations have gone from lowly cometary atmospheres to simulating the majority of the universe, I've become more and more interested in ways to tease out meaningful information from large amounts of data. This website serves as a foundation for all my thoughts and progress related to this pursuit. Sometimes I'll post about astornomy, sometimes I'll post about data science. We'll see how it goes!
 <center>
 <hr class="small">
-## Press
-[Interview: Boost Data Literacy to Advance In Business](http://news.investors.com/management-leaders-in-success/020615-738296-data-literate-executives-understand-big-data-analytics.htm)
+## Publications
+[The no-spin zone: rotation vs dispersion support in observed and simulated dwarf galaxies](http://arxiv.org/abs/1511.01095)
 
-- Investor's Business Daily, February 2015
+- Coral Wheeler, Andrew B. Pace, James S. Bullock, Michael Boylan-Kolchin, Jose Onorbe, Alex Fitts, Philip F. Hopkins, Dusan Keres
 
-[Which Fantasy Football Sites Have The Best Projections?](http://regressing.deadspin.com/which-fantasy-football-sites-have-the-best-projections-1672790103)
+[The Local Group as a time machine: studying the high-redshift Universe with nearby galaxies](http://adsabs.harvard.edu/abs/2015MNRAS.453.1503B)
 
-- Deadspin, December 2014
-
-[Interview: Are ESPN's Fantasy Football Projections Worthless?](http://chicagoinno.streetwise.co/2014/12/16/are-espn-fantasy-football-projections-legit-datascope-investigates/)
-
-- ChicagoInno, December 2014
-
-[How Accurate are ESPN's Fantasy Football Projections?](http://regressing.deadspin.com/how-accurate-are-espns-fantasy-football-projections-1669439884)
-
-- Deadspin, December 2014
-
-[The week in big data on Twitter, visualized](https://gigaom.com/2013/07/19/the-week-in-big-data-on-twitter-visualized/)
-
-- Gigaom, July 2013
+- Michael Boylan-Kolchin, Daniel R. Weisz, Benjamin D. Johnson, James S. Bullock, Charlie Conroy, Alex Fitts
 
 <hr class="small">
 ## Talks
