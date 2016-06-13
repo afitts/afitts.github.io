@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alex Fitts</title><link href="http://localhost:8000/" rel="alternate"></link><link href="http://localhost:8000/feeds/tag/unix.atom.xml" rel="self"></link><id>http://localhost:8000/</id><updated>2013-07-15T00:00:00-05:00</updated><entry><title>Useful Unix commands for data science</title><link href="http://localhost:8000/2013/07/15/unix-commands-for-data-science/" rel="alternate"></link><published>2013-07-15T00:00:00-05:00</published><author><name>Alex Fitts</name></author><id>tag:localhost:8000,2013-07-15:2013/07/15/unix-commands-for-data-science/</id><summary type="html">&lt;p&gt;Imagine you have a 4.2GB CSV file.  It has over 12 million records and 50 columns.  All you need from this file is the sum of all values in one particular column.&lt;/p&gt;
+&lt;p&gt;How would you do it?&lt;/p&gt;
+&lt;p&gt;Writing a script in &lt;a href="http://www.python.org/"&gt;python&lt;/a&gt;/&lt;a href="http://www.ruby-lang.org/"&gt;ruby&lt;/a&gt;/&lt;a href="http://www.perl.org/"&gt;perl&lt;/a&gt;/whatever would probably take a few minutes and then even more time for the script to actually complete.  A &lt;a href="http://en.wikipedia.org/wiki/Database"&gt;database&lt;/a&gt; and &lt;a href="http://en.wikipedia.org/wiki/SQL"&gt;SQL&lt;/a&gt; would be fairly quick, but then you'd have load the data, which is kind of a pain.&lt;/p&gt;
+&lt;p&gt;Thankfully, the &lt;a href="http://en.wikipedia.org/wiki/List_of_Unix_utilities"&gt;Unix utilities&lt;/a&gt; exist and they're awesome.&lt;/p&gt;
+&lt;p&gt;To get the sum of a column in a huge text file, we can easily use &lt;a href="http://en.wikipedia.org/wiki/AWK_(programming_language)"&gt;awk&lt;/a&gt;.  And we won't even need to read the entire file into memory.&lt;/p&gt;
+&lt;p&gt;Let's assume our data, which we'll call &lt;em&gt;data.csv&lt;/em&gt;, is pipe-delimited ( | ), and we want to sum the fourth column of the file.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;awk&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;F&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;|&amp;quot;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;{ sum += $4 } END { printf &amp;quot;&lt;/span&gt;&lt;span class="si"&gt;%.2f&lt;/span&gt;&lt;span class="se"&gt;\n&lt;/span&gt;&lt;span class="s1"&gt;&amp;quot;, sum }&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The above line says:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Use the &lt;a href="http://en.wikipedia.org/wiki/Cat_(Unix)"&gt;cat&lt;/a&gt; command to stream (print) the contents of the file to &lt;a href="http://en.wikipedia.org/wiki/Standard_streams"&gt;stdout&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://en.wikipedia.org/wiki/Pipeline_(Unix)"&gt;Pipe&lt;/a&gt; the streaming contents from our cat command to the next one - awk. &lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;With &lt;a href="http://en.wikipedia.org/wiki/AWK_(programming_language)"&gt;awk&lt;/a&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Set the field separator to the pipe character (-F "|"). Note that this has nothing to do with our pipeline in point #2.&lt;/li&gt;
+&lt;li&gt;Increment the variable &lt;em&gt;sum&lt;/em&gt; with the value in the fourth column ($4). Since we used a pipeline in point #2, the contents of each line are being streamed to this statement.&lt;/li&gt;
+&lt;li&gt;Once the stream is done, print out the value of &lt;em&gt;sum&lt;/em&gt;, using &lt;a href="http://www.gnu.org/software/gawk/manual/html_node/Printf-Examples.html"&gt;printf&lt;/a&gt; to format the value with two decimal places.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;It took less than two minutes to run on the entire file - much faster than other options and written in a lot fewer characters.&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://www.hilarymason.com"&gt;Hilary Mason&lt;/a&gt; and &lt;a href="http://www.columbia.edu/~chw2/"&gt;Chris Wiggins&lt;/a&gt; wrote over at the &lt;a href="http://www.dataists.com/"&gt;dataists blog&lt;/a&gt; about the importance of any &lt;a href="http://www.dataists.com/2010/09/a-taxonomy-of-data-science/"&gt;data scientist being familiar with the command line&lt;/a&gt;, and I couldn't agree with them more.  The command line is essential to my daily work, so I wanted to share some of the commands I've found most useful.&lt;/p&gt;
+&lt;p&gt;For those who are a bit newer to the command line than the rest of this post assumes, Hilary previously wrote a &lt;a href="http://www.hilarymason.com/articles/intro-to-the-linux-command-line/"&gt;nice introduction to it&lt;/a&gt;.&lt;/p&gt;
+&lt;h3&gt;Other commands&lt;/h3&gt;
+&lt;h4&gt;&lt;a href="http://en.wikipedia.org/wiki/Head_(Unix)"&gt;head&lt;/a&gt; &amp;amp; &lt;a href="http://en.wikipedia.org/wiki/Tail_(Unix)"&gt;tail&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;Sometimes you just need to inspect the structure of a huge file.  That's where &lt;a href="http://en.wikipedia.org/wiki/Head_(Unix)"&gt;head&lt;/a&gt; and &lt;a href="http://en.wikipedia.org/wiki/Tail_(Unix)"&gt;tail&lt;/a&gt; come in.  Head prints the first ten lines of a file, while tail prints the last ten lines.  Optionally, you can include the &lt;em&gt;-N&lt;/em&gt; parameter to change the number of lines displayed.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt;
+&lt;span class="c1"&gt;# time|away|score|home&lt;/span&gt;
+&lt;span class="c1"&gt;# 20:00||0-0|Jump Ball won by Virginia Commonwealt.&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:45||0-0|Juvonte Reddic Turnover.&lt;/span&gt;
+
+&lt;span class="n"&gt;tail&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt;
+&lt;span class="c1"&gt;# 0:14|Trey Davis Turnover.|62-71|&lt;/span&gt;
+&lt;span class="c1"&gt;# 0:14||62-71|Briante Weber Steal.&lt;/span&gt;
+&lt;span class="c1"&gt;# 0:00|End Game|End Game|End Game&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;&lt;a href="http://en.wikipedia.org/wiki/Wc_(Unix)"&gt;wc&lt;/a&gt; (word count)&lt;/h4&gt;
+&lt;p&gt;By default, &lt;a href="http://en.wikipedia.org/wiki/Wc_(Unix)"&gt;wc&lt;/a&gt; will quickly tell you how many lines, words, and bytes are in a file.  If you're looking for just the line count, you can pass the &lt;em&gt;-l&lt;/em&gt; parameter in.&lt;/p&gt;
+&lt;p&gt;I use it most often to verify record counts between files or database tables throughout an analysis.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;wc&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt;
+&lt;span class="c1"&gt;#     377    1697   17129 data.csv&lt;/span&gt;
+&lt;span class="n"&gt;wc&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt;
+&lt;span class="c1"&gt;#     377 data.csv&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;&lt;a href="http://en.wikipedia.org/wiki/Grep"&gt;grep&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://en.wikipedia.org/wiki/Grep"&gt;Grep&lt;/a&gt; allows you to search through plain text files using &lt;a href="http://en.wikipedia.org/wiki/Regular_expression"&gt;regular expressions&lt;/a&gt;.  I tend &lt;a href="http://regex.info/blog/2006-09-15/247"&gt;avoid regular expressions&lt;/a&gt; when possible, but still find grep to be invaluable when searching through log files for a particular event.&lt;/p&gt;
+&lt;p&gt;There's an assortment of extra parameters you can use with grep, but the ones I tend to use the most are &lt;em&gt;-i&lt;/em&gt; (ignore case), &lt;em&gt;-r&lt;/em&gt; (recursively search directories), &lt;em&gt;-B N&lt;/em&gt; (N lines before), &lt;em&gt;-A N&lt;/em&gt; (N lines after).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;B&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;A&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;steal&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt;
+&lt;span class="c1"&gt;# 17:25||2-4|Darius Theus Turnover.&lt;/span&gt;
+&lt;span class="c1"&gt;# 17:25|Terrell Vinson Steal.|2-4|&lt;/span&gt;
+&lt;span class="c1"&gt;# 17:18|Chaz Williams made Layup.  Assisted by Terrell Vinson.|4-4|&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;&lt;a href="http://en.wikipedia.org/wiki/Sed"&gt;sed&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://en.wikipedia.org/wiki/Sed"&gt;Sed&lt;/a&gt; is similar to &lt;a href="http://en.wikipedia.org/wiki/Grep"&gt;grep&lt;/a&gt; and &lt;a href="http://en.wikipedia.org/wiki/AWK_(programming_language)"&gt;awk&lt;/a&gt; in many ways, however I find that I most often use it when needing to do some find and replace magic on a very large file.  The usual occurrence is when I've received a CSV file that was generated on Windows and my &lt;a href="http://stackoverflow.com/questions/6373888/converting-newline-formatting-from-mac-to-windows"&gt;Mac isn't able to handle the carriage return&lt;/a&gt; properly.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="n"&gt;Block&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;head&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;span class="c1"&gt;# 16:43||5-4|Juvonte Reddic Block.&lt;/span&gt;
+&lt;span class="c1"&gt;# 15:37||7-6|Troy Daniels Block.&lt;/span&gt;
+&lt;span class="c1"&gt;# 14:05|Raphiael Putney Block.|11-8|&lt;/span&gt;
+
+&lt;span class="n"&gt;sed&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;s/Block/Rejection/g&amp;#39;&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;rejection&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt;
+&lt;span class="c1"&gt;# replace all instances of the word &amp;#39;Block&amp;#39; in data.csv with &amp;#39;Rejection&amp;#39;&lt;/span&gt;
+&lt;span class="c1"&gt;# stream the results to a new file called rejection.csv&lt;/span&gt;
+
+&lt;span class="n"&gt;grep&lt;/span&gt; &lt;span class="n"&gt;Rejection&lt;/span&gt; &lt;span class="n"&gt;rejection&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;head&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;span class="c1"&gt;# 16:43||5-4|Juvonte Reddic Rejection.&lt;/span&gt;
+&lt;span class="c1"&gt;# 15:37||7-6|Troy Daniels Rejection.&lt;/span&gt;
+&lt;span class="c1"&gt;# 14:05|Raphiael Putney Rejection.|11-8|&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h4&gt;&lt;a href="http://en.wikipedia.org/wiki/Sort_(Unix)"&gt;sort&lt;/a&gt; &amp;amp; &lt;a href="http://en.wikipedia.org/wiki/Uniq"&gt;uniq&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://en.wikipedia.org/wiki/Sort_(Unix)"&gt;Sort&lt;/a&gt; outputs the lines of a file in order based on a column key using the &lt;em&gt;-k&lt;/em&gt; parameter.  If a key isn't specified, sort will treat each line as a concatenated string and sort based on the values of the first column.  The &lt;em&gt;-n&lt;/em&gt; and &lt;em&gt;-r&lt;/em&gt; parameters allow you to sort numerically and in reverse order, respectively.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt;
+&lt;span class="c1"&gt;# time|away|score|home&lt;/span&gt;
+&lt;span class="c1"&gt;# 20:00||0-0|Jump Ball won by Virginia Commonwealt.&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:45||0-0|Juvonte Reddic Turnover.&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:45|Chaz Williams Steal.|0-0|&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:39|Sampson Carter missed Layup.|0-0|&lt;/span&gt;
+
+&lt;span class="n"&gt;head&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;sort&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:39|Sampson Carter missed Layup.|0-0|&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:45|Chaz Williams Steal.|0-0|&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:45||0-0|Juvonte Reddic Turnover.&lt;/span&gt;
+&lt;span class="c1"&gt;# 20:00||0-0|Jump Ball won by Virginia Commonwealt.&lt;/span&gt;
+&lt;span class="c1"&gt;# time|away|score|home&lt;/span&gt;
+
+&lt;span class="c1"&gt;# columns separated by &amp;#39;|&amp;#39;, sort on column 2 (-k2), case insensitive (-f)&lt;/span&gt;
+&lt;span class="n"&gt;head&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;sort&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;|&amp;#39;&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;k2&lt;/span&gt;
+&lt;span class="c1"&gt;# time|away|score|home&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:45|Chaz Williams Steal.|0-0|&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:39|Sampson Carter missed Layup.|0-0|&lt;/span&gt;
+&lt;span class="c1"&gt;# 20:00||0-0|Jump Ball won by Virginia Commonwealt.&lt;/span&gt;
+&lt;span class="c1"&gt;# 19:45||0-0|Juvonte Reddic Turnover.&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Sometimes you want to check for duplicate records in a large text file - that's when &lt;a href="http://en.wikipedia.org/wiki/Uniq"&gt;uniq&lt;/a&gt; comes in handy.  By using the &lt;em&gt;-c&lt;/em&gt; parameter, uniq will output the count of occurrences along with the line.  You can also use the &lt;em&gt;-d&lt;/em&gt; and &lt;em&gt;-u&lt;/em&gt; parameters to output only duplicated or unique records.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;sort&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;uniq&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;sort&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;nr&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;head&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;
+&lt;span class="c1"&gt;#   2 8:47|Maxie Esho missed Layup.|46-54|&lt;/span&gt;
+&lt;span class="c1"&gt;#   2 8:47|Maxie Esho Offensive Rebound.|46-54|&lt;/span&gt;
+&lt;span class="c1"&gt;#   2 7:38|Trey Davis missed Free Throw.|51-56|&lt;/span&gt;
+&lt;span class="c1"&gt;#   2 12:12||16-11|Rob Brandenberg missed Free Throw.&lt;/span&gt;
+&lt;span class="c1"&gt;#   1 time|away|score|home&lt;/span&gt;
+&lt;span class="c1"&gt;#   1 9:51||20-11|Juvonte Reddic Steal.&lt;/span&gt;
+
+&lt;span class="n"&gt;sort&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;uniq&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;
+&lt;span class="c1"&gt;# 12:12||16-11|Rob Brandenberg missed Free Throw.&lt;/span&gt;
+&lt;span class="c1"&gt;# 7:38|Trey Davis missed Free Throw.|51-56|&lt;/span&gt;
+&lt;span class="c1"&gt;# 8:47|Maxie Esho Offensive Rebound.|46-54|&lt;/span&gt;
+&lt;span class="c1"&gt;# 8:47|Maxie Esho missed Layup.|46-54|&lt;/span&gt;
+
+&lt;span class="n"&gt;sort&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;csv&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;uniq&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;u&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;wc&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;
+&lt;span class="c1"&gt;#     369 (unique lines)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;While it's sometimes difficult to remember all of the parameters for the Unix commands, getting familiar with them has been beneficial to my productivity and allowed me to avoid many headaches when working with large text files.&lt;/p&gt;
+&lt;p&gt;Hopefully you'll find them as useful as I have.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Additional Resources:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="http://www.drbunsen.org/explorations-in-unix/"&gt;Explorations in Unix&lt;/a&gt; by &lt;a href="http://www.drbunsen.org/"&gt;Seth Brown&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://www.ceri.memphis.edu/computer/docs/unix/bshell.htm"&gt;An Introduction to the Unix Shell&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://blog.comsysto.com/2013/04/25/data-analysis-with-the-unix-shell/"&gt;Data Analysis with the Unix Shell&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://jeroenjanssens.com/2013/09/19/seven-command-line-tools-for-data-science.html"&gt;7 Command Line Tools for Data Science&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</summary><category term="unix"></category><category term="terminal"></category><category term="data"></category><category term="data science"></category></entry></feed>

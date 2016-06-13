@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alex Fitts</title><link href="http://localhost:8000/" rel="alternate"></link><link href="http://localhost:8000/feeds/tag/pelican.atom.xml" rel="self"></link><id>http://localhost:8000/</id><updated>2013-10-24T00:00:00-05:00</updated><entry><title>New theme for Pelican</title><link href="http://localhost:8000/2013/10/24/new-theme-for-pelican/" rel="alternate"></link><published>2013-10-24T00:00:00-05:00</published><author><name>Alex Fitts</name></author><id>tag:localhost:8000,2013-10-24:2013/10/24/new-theme-for-pelican/</id><summary type="html">&lt;p&gt;I spent some time last weekend making minor changes to this site. Specifically:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;New typography - headers are &lt;a href="http://www.google.com/fonts/specimen/Droid+Serif"&gt;Droid Serif&lt;/a&gt;, while everything else is &lt;a href="http://www.google.com/fonts/specimen/Droid+Sans"&gt;Droid Sans&lt;/a&gt;. Fonts are also a bit bigger (I think it's easier to read).&lt;/li&gt;
+&lt;li&gt;Added &lt;a href="http://jakevdp.github.io/"&gt;Jake Vanderplas'&lt;/a&gt; &lt;a href="https://github.com/getpelican/pelican-plugins/tree/master/liquid_tags"&gt;liquid tags plugin&lt;/a&gt; for Pelican, which allows for easy embedding of &lt;a href="http://ipython.org/notebook.html"&gt;IPython Notebooks&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I plan on continuing to tweak things over time, but I'm pretty happy with the way it looks right now.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://github.com/gjreda/notebook-simpler"&gt;Check it out on GitHub&lt;/a&gt; and feel free to use it. It's mobile-friendly, too.&lt;/p&gt;</summary><category term="pelican"></category></entry></feed>
