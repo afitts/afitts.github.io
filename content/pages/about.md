@@ -13,6 +13,10 @@ Given that my simulations have gone from lowly cometary atmospheres to simulatin
 <center>
 <hr class="small">
 ## Publications
+[FIRE in the Field: Simulating the Threshold of Galaxy Formation](https://arxiv.org/abs/1611.02281)
+
+-Alex Fitts, Michael Boylan-Kolchin, Oliver D. Elbert, James S. Bullock, Philip F. Hopkins, Jose Onorbe, Andrew R. Wetzel, Coral Wheeler, Claude-Andre Faucher-Giguere, Dusan Keres, Evan D. Skillman, Daniel R. Weisz
+
 [The no-spin zone: rotation vs dispersion support in observed and simulated dwarf galaxies](http://arxiv.org/abs/1511.01095)
 
 - Coral Wheeler, Andrew B. Pace, James S. Bullock, Michael Boylan-Kolchin, Jose Onorbe, Alex Fitts, Philip F. Hopkins, Dusan Keres
@@ -23,7 +27,9 @@ Given that my simulations have gone from lowly cometary atmospheres to simulatin
 
 <hr class="small">
 ## Talks
-
+FIRE in the Field: Simulating the Threshold of Galalxy Formation(http://hipacc.ucsc.edu/PDF/2016SCGW/160808_8_Fitts.pdf)
+- 2016 Santa Cruz Galaxy Workshop, August 8th, 2016
+<!---
 **Why data-informed beats data-driven**
 
 - PyData, Seattle, 2015 [[Video](https://youtu.be/yHo3B3BbppM)] [[Slides](https://github.com/gjreda/pydata2015sea)]
@@ -39,4 +45,5 @@ Given that my simulations have gone from lowly cometary atmospheres to simulatin
 [Translating SQL to pandas. And back.](http://reda.io/pydata2014nyc)
 
 - PyData, New York, 2014 [[Video](http://reda.io/pydata2014nyc)] [[Slides](http://reda.io/sql2pandas)]
+-->
 </center>
