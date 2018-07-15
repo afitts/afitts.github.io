@@ -53,8 +53,8 @@ NAVIGATION = [
 TWITTER_CARDS = True
 TWITTER_NAME = "Alex_Fitts"
 FACEBOOK_SHARE = True
-GITHUB_NAME = 'lcdmsoundsystem'
-LINKEDIN_URL = 'http://linkedin.com/in/afitts'
+GITHUB_NAME = 'afitts'
+LINKEDIN_URL = 'https://www.linkedin.com/in/alex-fitts-64163b128/'
 GOOGLE_PLUS_URL = 'https://plus.google.com/u/0/117088506946894057793/about/p/pub'
 LASTFM_NAME = 'gjreda'
 
