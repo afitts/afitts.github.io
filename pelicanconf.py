@@ -3,7 +3,7 @@
 
 AUTHOR = u'Alex Fitts'
 SITENAME = u'Alex Fitts'
-SITEURL = 'http://localhost:8000'#'http://www.gregreda.com'
+SITEURL = 'http://afitts.github.io'#'http://www.gregreda.com'
 TIMEZONE = 'America/Chicago'
 THEME = 'void/'
 AVATAR = '/theme/images/avatar.jpg'
