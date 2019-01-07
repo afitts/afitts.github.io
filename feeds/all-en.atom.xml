@@ -1,4 +1,1185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Alex Fitts</title><link href="http://afitts.github.io/" rel="alternate"></link><link href="http://afitts.github.io/feeds/all-en.atom.xml" rel="self"></link><id>http://afitts.github.io/</id><updated>2016-06-10T00:00:00-05:00</updated><entry><title>Hello Universe</title><link href="http://afitts.github.io/2016/06/10/hello-world/" rel="alternate"></link><published>2016-06-10T00:00:00-05:00</published><updated>2016-06-10T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2016-06-10:/2016/06/10/hello-world/</id><summary type="html">&lt;p&gt;Hello UNIVERSE. This is Alex Fitts reporting in. &lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alex Fitts</title><link href="http://afitts.github.io/" rel="alternate"></link><link href="http://afitts.github.io/feeds/all-en.atom.xml" rel="self"></link><id>http://afitts.github.io/</id><updated>2016-10-01T00:00:00-05:00</updated><entry><title>ISLR Chapter 5 Exercises</title><link href="http://afitts.github.io/2016/10/01/islr-chap5/" rel="alternate"></link><published>2016-10-01T00:00:00-05:00</published><updated>2016-10-01T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2016-10-01:/2016/10/01/islr-chap5/</id><summary type="html">&lt;h1&gt;Chapter 5 Exercises&lt;/h1&gt;
+&lt;h1&gt;5.&lt;/h1&gt;
+&lt;p&gt;In Chapter 4, we used logistic regression to predict the probability of default using income and balance on the Default data set. We will now estimate the test error of this logistic regression model using the validation set approach. Do not forget to set a random …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Chapter 5 Exercises&lt;/h1&gt;
+&lt;h1&gt;5.&lt;/h1&gt;
+&lt;p&gt;In Chapter 4, we used logistic regression to predict the probability of default using income and balance on the Default data set. We will now estimate the test error of this logistic regression model using the validation set approach. Do not forget to set a random seed before beginning your analysis.&lt;/p&gt;
+&lt;h3&gt;a .&lt;/h3&gt;
+&lt;p&gt;Fit a logistic regression model that uses income and balance to predict default.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ISLR&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;attach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Default&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+glm.fit &lt;span class="o"&gt;=&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;default&lt;span class="o"&gt;~&lt;/span&gt;income&lt;span class="o"&gt;+&lt;/span&gt;balance&lt;span class="p"&gt;,&lt;/span&gt;family&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;binomial&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.fit&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;The following objects are masked from Default (pos = 3):
+
+    balance, default, income, student
+
+
+
+
+
+Call:
+glm(formula = default ~ income + balance, family = &amp;quot;binomial&amp;quot;)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.4725  -0.1444  -0.0574  -0.0211   3.7245
+
+Coefficients:
+              Estimate Std. Error z value Pr(&amp;gt;|z|)    
+(Intercept) -1.154e+01  4.348e-01 -26.545  &amp;lt; 2e-16 ***
+income       2.081e-05  4.985e-06   4.174 2.99e-05 ***
+balance      5.647e-03  2.274e-04  24.836  &amp;lt; 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2920.6  on 9999  degrees of freedom
+Residual deviance: 1579.0  on 9997  degrees of freedom
+AIC: 1585
+
+Number of Fisher Scoring iterations: 8
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Using the validation set approach, estimate the test error of this model. In order to do this, you must perform the following steps:
+* Split the sample set into a training set and a validation set.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;train &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Default&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="kp"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Default&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Fit a multiple logistic regression model using only the training observations.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;glm.fit2 &lt;span class="o"&gt;=&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;default&lt;span class="o"&gt;~&lt;/span&gt;income&lt;span class="o"&gt;+&lt;/span&gt;balance&lt;span class="p"&gt;,&lt;/span&gt;data &lt;span class="o"&gt;=&lt;/span&gt; Default&lt;span class="p"&gt;,&lt;/span&gt;family&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;binomial&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;subset&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.fit2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;glm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;income&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;balance&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;binomial&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; 
+    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Default&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;subset&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Deviance&lt;/span&gt; &lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; 
+    &lt;span class="n"&gt;Min&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;   &lt;span class="n"&gt;Median&lt;/span&gt;       &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;      &lt;span class="n"&gt;Max&lt;/span&gt;  
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.3583&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.1268&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.0475&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.0165&lt;/span&gt;   &lt;span class="mf"&gt;3.8116&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+              &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;    
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.208&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;  &lt;span class="mf"&gt;6.658&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;18.148&lt;/span&gt;   &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;income&lt;/span&gt;       &lt;span class="mf"&gt;1.858&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt;  &lt;span class="mf"&gt;7.573&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;06&lt;/span&gt;   &lt;span class="mf"&gt;2.454&lt;/span&gt;   &lt;span class="mf"&gt;0.0141&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;  
+&lt;span class="n"&gt;balance&lt;/span&gt;      &lt;span class="mf"&gt;6.053&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt;  &lt;span class="mf"&gt;3.467&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;04&lt;/span&gt;  &lt;span class="mf"&gt;17.457&lt;/span&gt;   &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dispersion&lt;/span&gt; &lt;span class="n"&gt;parameter&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;binomial&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="n"&gt;taken&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;Null&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1457.0&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;4999&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;734.4&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;4997&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;AIC&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;740.4&lt;/span&gt;
+
+&lt;span class="n"&gt;Number&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;Fisher&lt;/span&gt; &lt;span class="n"&gt;Scoring&lt;/span&gt; &lt;span class="n"&gt;iterations&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Obtain a prediction of default status for each individual in the validation set by computing the posterior probability of default for that individual, and classifying the individual to the default category if the posterior probability is greater than 0.5.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;probs &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;glm.fit2&lt;span class="p"&gt;,&lt;/span&gt; newdata &lt;span class="o"&gt;=&lt;/span&gt; Default&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;train&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;],&lt;/span&gt; type &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;response&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+glm.pred &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;No&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;probs&lt;span class="p"&gt;))&lt;/span&gt;
+glm.pred&lt;span class="p"&gt;[&lt;/span&gt;probs &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Yes&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Compute the validation set error, which is the fraction of the observations in the validation set that are misclassified.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.pred &lt;span class="o"&gt;!=&lt;/span&gt; Default&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;train&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;default&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.0286&lt;/p&gt;
+&lt;p&gt;We obtain a test error of &lt;span class="math"&gt;\(2.86\%\)&lt;/span&gt; using the validation set approach.&lt;/p&gt;
+&lt;h1&gt;6.&lt;/h1&gt;
+&lt;p&gt;We continue to consider the use of a logistic regression model to predict the probability of “default” using “income” and “balance” on the “Default” data set. In particular, we will now computes estimates for the standard errors of the “income” and “balance” logistic regression coefficients in two different ways : (1) using the bootstrap, and (2) using the standard formula for computing the standard errors in the glm() function. Do not forget to set a random seed before beginning your analysis.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Using the summary() and glm() functions, determine the estimated standard errors for the coefficients associated with income and balance in a multiple logistic regression model that uses both predictors.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;fit.glm &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;default &lt;span class="o"&gt;~&lt;/span&gt; income &lt;span class="o"&gt;+&lt;/span&gt; balance&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; Default&lt;span class="p"&gt;,&lt;/span&gt; family &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;binomial&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;fit.glm&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;glm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;income&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;balance&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;binomial&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; 
+    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Default&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Deviance&lt;/span&gt; &lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; 
+    &lt;span class="n"&gt;Min&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;   &lt;span class="n"&gt;Median&lt;/span&gt;       &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;      &lt;span class="n"&gt;Max&lt;/span&gt;  
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.4725&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.1444&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.0574&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.0211&lt;/span&gt;   &lt;span class="mf"&gt;3.7245&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+              &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;    
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.154&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;  &lt;span class="mf"&gt;4.348&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;26.545&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;income&lt;/span&gt;       &lt;span class="mf"&gt;2.081&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt;  &lt;span class="mf"&gt;4.985&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;06&lt;/span&gt;   &lt;span class="mf"&gt;4.174&lt;/span&gt; &lt;span class="mf"&gt;2.99&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;balance&lt;/span&gt;      &lt;span class="mf"&gt;5.647&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt;  &lt;span class="mf"&gt;2.274&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;04&lt;/span&gt;  &lt;span class="mf"&gt;24.836&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dispersion&lt;/span&gt; &lt;span class="n"&gt;parameter&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;binomial&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="n"&gt;taken&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;Null&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;2920.6&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;9999&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1579.0&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;9997&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;AIC&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1585&lt;/span&gt;
+
+&lt;span class="n"&gt;Number&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;Fisher&lt;/span&gt; &lt;span class="n"&gt;Scoring&lt;/span&gt; &lt;span class="n"&gt;iterations&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Write a function, boot.fn(), that takes as input the “Default” data set as well as an index of the observations, and that outputs the coefficient estimates for “income” and “balance” in the multiple logistic regression model.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;boot.fn &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="p"&gt;,&lt;/span&gt; index&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    fit &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;default &lt;span class="o"&gt;~&lt;/span&gt; income &lt;span class="o"&gt;+&lt;/span&gt; balance&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; data&lt;span class="p"&gt;,&lt;/span&gt; family &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;binomial&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; subset &lt;span class="o"&gt;=&lt;/span&gt; index&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kr"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;coef&lt;span class="p"&gt;(&lt;/span&gt;fit&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;Use the boot() function together with your boot.fn() function to estimate the standard errors of the logistic regression coefficients for “income” and “balance”.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;boot&lt;span class="p"&gt;)&lt;/span&gt;
+boot&lt;span class="p"&gt;(&lt;/span&gt;Default&lt;span class="p"&gt;,&lt;/span&gt; boot.fn&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;ORDINARY NONPARAMETRIC BOOTSTRAP
+
+
+Call:
+boot(data = Default, statistic = boot.fn, R = 1000)
+
+
+Bootstrap Statistics :
+         original        bias     std. error
+t1* -1.154047e+01 -8.331926e-03 4.240329e-01
+t2*  2.080898e-05  5.792741e-08 4.590086e-06
+t3*  5.647103e-03  2.526993e-06 2.268457e-04
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content></entry><entry><title>ISLR Chapter 4 Exercises</title><link href="http://afitts.github.io/2016/09/25/islr-chap4/" rel="alternate"></link><published>2016-09-25T00:00:00-05:00</published><updated>2016-09-25T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2016-09-25:/2016/09/25/islr-chap4/</id><summary type="html">&lt;h1&gt;Chapter 3 Exercises&lt;/h1&gt;
+&lt;h1&gt;4. The curse of dimensionality&lt;/h1&gt;
+&lt;p&gt;When the number of features p is large, there tends to be a deterioration in the performance of KNN and other local approaches that perform prediction using only observations that are near the test observation for which a prediction must be made …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Chapter 3 Exercises&lt;/h1&gt;
+&lt;h1&gt;4. The curse of dimensionality&lt;/h1&gt;
+&lt;p&gt;When the number of features p is large, there tends to be a deterioration in the performance of KNN and other local approaches that perform prediction using only observations that are near the test observation for which a prediction must be made. This phenomenon is known as the curse of dimensionality, and it ties into the fact that non-parametric approaches often perform poorly when p is large. We will now investigate this curse.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Suppose that we have a set of observations, each with measurements on &lt;span class="math"&gt;\(p = 1\)&lt;/span&gt; feature, &lt;span class="math"&gt;\(X\)&lt;/span&gt;. We assume that &lt;span class="math"&gt;\(X\)&lt;/span&gt; is uniformly (evenly) distributed on &lt;span class="math"&gt;\([0,1]\)&lt;/span&gt;. Associated with each observation is a response value. Suppose that we wish to predict a test observation’s response using only observations that are within &lt;span class="math"&gt;\(10\%\)&lt;/span&gt; of the range of &lt;span class="math"&gt;\(X\)&lt;/span&gt; closest to that test observation. For instance, in order to predict the response for a test observation with &lt;span class="math"&gt;\(X = 0.6\)&lt;/span&gt;,we will use observations in the range &lt;span class="math"&gt;\([0.55,0.65]\)&lt;/span&gt;. On average, what fraction of the available observations will we use to make the prediction?&lt;/p&gt;
+&lt;p&gt;Naively, on average we would expect &lt;span class="math"&gt;\(10\%\)&lt;/span&gt; of observations to be available but we must be careful at the boundaries of the feature. By intergrating two linear functions to describe each boundary we actually get that on average we have &lt;span class="math"&gt;\(9.75\%\)&lt;/span&gt; of obervations available.&lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(\int_{0.05}^{0.95}10dx+\int_{0}^{0.05}100x+5dx+\int_{0.95}^{1}105-100x-dx = 9+0.375+0.375=9.75\%\)&lt;/span&gt;&lt;/p&gt;
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Now suppose that we have a set of observations, each with measurements on &lt;span class="math"&gt;\(p = 2\)&lt;/span&gt; features, &lt;span class="math"&gt;\(X_1\)&lt;/span&gt; and &lt;span class="math"&gt;\(X_2\)&lt;/span&gt;. We assume that &lt;span class="math"&gt;\((X_1,X_2)\)&lt;/span&gt; are uniformly distributed on &lt;span class="math"&gt;\([0,1]\times[0,1]\)&lt;/span&gt;. We wish to predict a test observation’s response using only observations that are within &lt;span class="math"&gt;\(10\%\)&lt;/span&gt; of the range of &lt;span class="math"&gt;\(X_1\)&lt;/span&gt; and within &lt;span class="math"&gt;\(10\%\)&lt;/span&gt; of the range of &lt;span class="math"&gt;\(X_2\)&lt;/span&gt; closest to that test observation. For instance, in order to predict the response for a test observation with &lt;span class="math"&gt;\(X_1 = 0.6\)&lt;/span&gt; and &lt;span class="math"&gt;\(X_2 = 0.35\)&lt;/span&gt;, we will use observations in the range &lt;span class="math"&gt;\([0.55, 0.65]\)&lt;/span&gt; for X1 and in the range &lt;span class="math"&gt;\([0.3, 0.4]\)&lt;/span&gt; for X2. On average, what fraction of the available observations will we use to make the prediction?&lt;/p&gt;
+&lt;p&gt;Since &lt;span class="math"&gt;\(X_1\)&lt;/span&gt; and &lt;span class="math"&gt;\(X_2\)&lt;/span&gt; are uniformly and independently distributed we can assume that the fraction of available observations will just be the product of two equations identical to the one used in part a. Given this we can expect that &lt;span class="math"&gt;\((9.75\times9.75)=0.950625\)&lt;/span&gt; or about &lt;span class="math"&gt;\(1\%\)&lt;/span&gt; of observations will be available to make the prediction.&lt;/p&gt;
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;Now suppose that we have a set of observations on &lt;span class="math"&gt;\(p = 100\)&lt;/span&gt; features. Again the observations are uniformly distributed on each feature, and again each feature ranges in value from 0 to 1. We wish to predict a test observation’s response using observations within the &lt;span class="math"&gt;\(10\%\)&lt;/span&gt; of each feature’s range that is closest to that test observation. What fraction of the available observations will we use to make the prediction?&lt;/p&gt;
+&lt;p&gt;Roughly &lt;span class="math"&gt;\((9.75)^p=(9.75)^{100}\simeq0\%\)&lt;/span&gt; of the observations will be available to make the prediction!&lt;/p&gt;
+&lt;h1&gt;5.&lt;/h1&gt;
+&lt;p&gt;We now examine the differences between LDA and QDA.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;If the Bayes decision boundary is linear, do we expect LDA or QDA to perform better on the training set? On the test set?&lt;/p&gt;
+&lt;p&gt;One the training set we except the QDA to perform better as it is a more flexible form of fitting but is likely to overfit the training set data in this regard. On the test set we expect the LDA to perform better as it accurately parameterizes the form of the underlying decision boundary.&lt;/p&gt;
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;If the Bayes decision boundary is non-linear, do we expect LDA or QDA to perform better on the training set? On the test set?&lt;/p&gt;
+&lt;p&gt;QDA for both.&lt;/p&gt;
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;In general, as the sample size n increases, do we expect the test prediction accuracy of QDA relative to LDA to improve, decline, or be unchanged? Why?&lt;/p&gt;
+&lt;p&gt;As n increases we expect the test prediction accuracy of QDA to improve compared to LDA. Since QDA is more flexible, it can, in general, arrive at a better fit but if there is not a large enough sample size we will end up overfitting to the noise in the data. (A large n will help offset any variance in the data.&lt;/p&gt;
+&lt;h3&gt;d.&lt;/h3&gt;
+&lt;p&gt;True or False: Even if the Bayes decision boundary for a given problem is linear, we will probably achieve a superior test error rate using QDA rather than LDA because QDA is flexible enough to model a linear decision boundary. Justify your answer.&lt;/p&gt;
+&lt;p&gt;False. Depends on the sample size.&lt;/p&gt;
+&lt;h1&gt;6.&lt;/h1&gt;
+&lt;p&gt;Suppose we collect data for a group of students in a statistics class with variables &lt;span class="math"&gt;\(X_1 =\)&lt;/span&gt; hours studied, &lt;span class="math"&gt;\(X_2 =\)&lt;/span&gt; undergrad GPA, and &lt;span class="math"&gt;\(Y =\)&lt;/span&gt; receive an A. We fit a logistic regression and produce estimated coefficient, &lt;span class="math"&gt;\(\hat\beta_0 = −6, \hat\beta_1 = 0.05, \hat\beta_2 = 1\)&lt;/span&gt;.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Estimate the probability that a student who studies for 40 h and has an undergrad GPA of 3.5 gets an A in the class.
+&lt;/p&gt;
+&lt;div class="math"&gt;$$ p(X)=\frac{e^{\hat\beta_0+\hat\beta_1\cdot\rm Hours+\hat\beta_2\cdot\rm GPA}}{1+e^{\hat\beta_0+\hat\beta_1\cdot \rm Hours+\hat\beta_2\cdot \rm GPA}}=0.3775$$&lt;/div&gt;
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;How many hours would the student in part (a) need to study to have a 50 % chance of getting an A in the class?
+&lt;/p&gt;
+&lt;div class="math"&gt;$$ 0.5=\frac{e^{-6+0.05*X_1+3.5}}{1+e^{-6+0.05*X_1+3.5}}\Rightarrow X_1=50\:\rm Hours$$&lt;/div&gt;
+&lt;p&gt;
+Rough stuff! Sounds like a terrible class.&lt;/p&gt;
+&lt;h1&gt;7.&lt;/h1&gt;
+&lt;p&gt;Suppose that we wish to predict whether a given stock will issue a dividend this year (“Yes” or “No”) based on &lt;span class="math"&gt;\(X\)&lt;/span&gt;, last year’s percent profit. We examine a large number of companies and discover that the mean value of &lt;span class="math"&gt;\(X\)&lt;/span&gt; for companies that issued a dividend was &lt;span class="math"&gt;\(\bar X = 10\)&lt;/span&gt;, while the mean for those that didn’t was &lt;span class="math"&gt;\(\bar X = 0\)&lt;/span&gt;. In addition, the variance of &lt;span class="math"&gt;\(X\)&lt;/span&gt; for these two sets of companies was &lt;span class="math"&gt;\(\hat\sigma^2 = 36\)&lt;/span&gt;. Finally, &lt;span class="math"&gt;\(80\%\)&lt;/span&gt; of companies issued dividends. Assuming that &lt;span class="math"&gt;\(X\)&lt;/span&gt; follows a normal distribution, predict the probability that a company will issue a dividend this year given that its percentage profit was &lt;span class="math"&gt;\(X = 4\)&lt;/span&gt; last year. &lt;/p&gt;
+&lt;div class="math"&gt;$$p(Y\vert X) =\frac{\pi_kf_k(x)}{\sum_{l=1}^K\pi_lf_l(x)}=\frac{\pi_\mathrm{yes}exp(\frac{1}{2\sigma^2}(x-\mu_\mathrm{yes}^2))}{\pi_\mathrm{yes}exp\left(\frac{1}{2\sigma^2}(x-\mu_\mathrm{yes}^2)\right)+\pi_\mathrm{no}exp\left(\frac{1}{2\sigma^2}(x-\mu_\mathrm{no}^2)\right)}=0.752$$&lt;/div&gt;
+&lt;h1&gt;8.&lt;/h1&gt;
+&lt;p&gt;Suppose that we take a data set, divide it into equally-sized training and test sets, and then try out two different classification procedures. First we use logistic regression and get an error rate of &lt;span class="math"&gt;\(20\%\)&lt;/span&gt; on the training data and &lt;span class="math"&gt;\(30\%\)&lt;/span&gt; on the test data. Next we use 1-nearest neighbors (i.e. &lt;span class="math"&gt;\(K = 1\)&lt;/span&gt;) and get an average error rate (averaged over both test and training data sets) of &lt;span class="math"&gt;\(18\%\)&lt;/span&gt;. Based on these results, which method should we prefer to use for classification of new observations? Why?&lt;/p&gt;
+&lt;p&gt;I would prefer to use logistic regression. 1-nearest neighbors will overfit the data and yield a training error rate of &lt;span class="math"&gt;\(0\%\)&lt;/span&gt;. Hence the test error rate is actually &lt;span class="math"&gt;\(36\%\)&lt;/span&gt; and worse than what is found with the logistic regression.&lt;/p&gt;
+&lt;h1&gt;9.&lt;/h1&gt;
+&lt;p&gt;This problem has to do with odds.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;On average, what fraction of people with an odds of &lt;span class="math"&gt;\(0.37\)&lt;/span&gt; of defaulting on their credit card payment will in fact default?
+&lt;/p&gt;
+&lt;div class="math"&gt;$$ \frac{p(X)}{1-p(x)} = 0.37\Rightarrow p(x)=0.27$$&lt;/div&gt;
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Suppose that an individual has a &lt;span class="math"&gt;\(16\%\)&lt;/span&gt; chance of defaulting on her credit card payment. What are the odds that she will default?
+&lt;/p&gt;
+&lt;div class="math"&gt;$$ \frac{0.16}{1-0.16} = 0.19$$&lt;/div&gt;
+&lt;h1&gt;10.&lt;/h1&gt;
+&lt;p&gt;This question should be answered using the Weekly data set, which is part of the ISLR package. This data is similar in nature to the Smarket data from this chapter’s lab, except that it contains 1,089 weekly returns for 21 years, from the beginning of 1990 to the end of 2010.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Produce some numerical and graphical summaries of the Weekly data. Do there appear to be any patterns?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ISLR&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;attach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Weekly&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Weekly&lt;span class="p"&gt;)&lt;/span&gt;
+Cor&lt;span class="o"&gt;=&lt;/span&gt;cor&lt;span class="p"&gt;(&lt;/span&gt;Weekly&lt;span class="p"&gt;[,&lt;/span&gt;&lt;span class="m"&gt;-9&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+Cor
+a &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Cor&lt;span class="p"&gt;))&lt;/span&gt;
+a &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;subset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;a&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Freq&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+a
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;      &lt;span class="nv"&gt;Year&lt;/span&gt;           &lt;span class="nv"&gt;Lag1&lt;/span&gt;               &lt;span class="nv"&gt;Lag2&lt;/span&gt;               &lt;span class="nv"&gt;Lag3&lt;/span&gt;         
+ &lt;span class="nv"&gt;Min&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;1990&lt;/span&gt;   &lt;span class="nv"&gt;Min&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="p"&gt;:-&lt;/span&gt;&lt;span class="mf"&gt;18.1950&lt;/span&gt;   &lt;span class="nv"&gt;Min&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="p"&gt;:-&lt;/span&gt;&lt;span class="mf"&gt;18.1950&lt;/span&gt;   &lt;span class="nv"&gt;Min&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="p"&gt;:-&lt;/span&gt;&lt;span class="mf"&gt;18.1950&lt;/span&gt;  
+ &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="s-Atom"&gt;st&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;1995&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="s-Atom"&gt;st&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.1540&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="s-Atom"&gt;st&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.1540&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="s-Atom"&gt;st&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.1580&lt;/span&gt;  
+ &lt;span class="nv"&gt;Median&lt;/span&gt; &lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2000&lt;/span&gt;   &lt;span class="nv"&gt;Median&lt;/span&gt; &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.2410&lt;/span&gt;   &lt;span class="nv"&gt;Median&lt;/span&gt; &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.2410&lt;/span&gt;   &lt;span class="nv"&gt;Median&lt;/span&gt; &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.2410&lt;/span&gt;  
+ &lt;span class="nv"&gt;Mean&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2000&lt;/span&gt;   &lt;span class="nv"&gt;Mean&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.1506&lt;/span&gt;   &lt;span class="nv"&gt;Mean&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.1511&lt;/span&gt;   &lt;span class="nv"&gt;Mean&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.1472&lt;/span&gt;  
+ &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="s-Atom"&gt;rd&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2005&lt;/span&gt;   &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="s-Atom"&gt;rd&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;1.4050&lt;/span&gt;   &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="s-Atom"&gt;rd&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;1.4090&lt;/span&gt;   &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="s-Atom"&gt;rd&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;1.4090&lt;/span&gt;  
+ &lt;span class="nv"&gt;Max&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2010&lt;/span&gt;   &lt;span class="nv"&gt;Max&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;12.0260&lt;/span&gt;   &lt;span class="nv"&gt;Max&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;12.0260&lt;/span&gt;   &lt;span class="nv"&gt;Max&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;12.0260&lt;/span&gt;  
+      &lt;span class="nv"&gt;Lag4&lt;/span&gt;               &lt;span class="nv"&gt;Lag5&lt;/span&gt;              &lt;span class="nv"&gt;Volume&lt;/span&gt;            &lt;span class="nv"&gt;Today&lt;/span&gt;         
+ &lt;span class="nv"&gt;Min&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="p"&gt;:-&lt;/span&gt;&lt;span class="mf"&gt;18.1950&lt;/span&gt;   &lt;span class="nv"&gt;Min&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="p"&gt;:-&lt;/span&gt;&lt;span class="mf"&gt;18.1950&lt;/span&gt;   &lt;span class="nv"&gt;Min&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;0.08747&lt;/span&gt;   &lt;span class="nv"&gt;Min&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="p"&gt;:-&lt;/span&gt;&lt;span class="mf"&gt;18.1950&lt;/span&gt;  
+ &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="s-Atom"&gt;st&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.1580&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="s-Atom"&gt;st&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.1660&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="s-Atom"&gt;st&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;0.33202&lt;/span&gt;   &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="s-Atom"&gt;st&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.1540&lt;/span&gt;  
+ &lt;span class="nv"&gt;Median&lt;/span&gt; &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.2380&lt;/span&gt;   &lt;span class="nv"&gt;Median&lt;/span&gt; &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.2340&lt;/span&gt;   &lt;span class="nv"&gt;Median&lt;/span&gt; &lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;1.00268&lt;/span&gt;   &lt;span class="nv"&gt;Median&lt;/span&gt; &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.2410&lt;/span&gt;  
+ &lt;span class="nv"&gt;Mean&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.1458&lt;/span&gt;   &lt;span class="nv"&gt;Mean&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.1399&lt;/span&gt;   &lt;span class="nv"&gt;Mean&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;1.57462&lt;/span&gt;   &lt;span class="nv"&gt;Mean&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.1499&lt;/span&gt;  
+ &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="s-Atom"&gt;rd&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;1.4090&lt;/span&gt;   &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="s-Atom"&gt;rd&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;1.4050&lt;/span&gt;   &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="s-Atom"&gt;rd&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;2.05373&lt;/span&gt;   &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="s-Atom"&gt;rd&lt;/span&gt; &lt;span class="nv"&gt;Qu&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;1.4050&lt;/span&gt;  
+ &lt;span class="nv"&gt;Max&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;12.0260&lt;/span&gt;   &lt;span class="nv"&gt;Max&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;12.0260&lt;/span&gt;   &lt;span class="nv"&gt;Max&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mf"&gt;9.32821&lt;/span&gt;   &lt;span class="nv"&gt;Max&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;   &lt;span class="s-Atom"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;12.0260&lt;/span&gt;  
+ &lt;span class="nv"&gt;Direction&lt;/span&gt; 
+ &lt;span class="nv"&gt;Down&lt;/span&gt;&lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;484&lt;/span&gt;  
+ &lt;span class="nv"&gt;Up&lt;/span&gt;  &lt;span class="s-Atom"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;605&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;table&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th scope=col&gt;Year&lt;/th&gt;&lt;th scope=col&gt;Lag1&lt;/th&gt;&lt;th scope=col&gt;Lag2&lt;/th&gt;&lt;th scope=col&gt;Lag3&lt;/th&gt;&lt;th scope=col&gt;Lag4&lt;/th&gt;&lt;th scope=col&gt;Lag5&lt;/th&gt;&lt;th scope=col&gt;Volume&lt;/th&gt;&lt;th scope=col&gt;Today&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;Year&lt;/th&gt;&lt;td&gt; 1.00000000&lt;/td&gt;&lt;td&gt;-0.03228927&lt;/td&gt;&lt;td&gt;-0.03339001&lt;/td&gt;&lt;td&gt;-0.03000649&lt;/td&gt;&lt;td&gt;-0.03112792&lt;/td&gt;&lt;td&gt;-0.03051910&lt;/td&gt;&lt;td&gt; 0.84194162&lt;/td&gt;&lt;td&gt;-0.03245989&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;Lag1&lt;/th&gt;&lt;td&gt;-0.032289274&lt;/td&gt;&lt;td&gt; 1.000000000&lt;/td&gt;&lt;td&gt;-0.074853051&lt;/td&gt;&lt;td&gt; 0.058635682&lt;/td&gt;&lt;td&gt;-0.071273876&lt;/td&gt;&lt;td&gt;-0.008183096&lt;/td&gt;&lt;td&gt;-0.064951313&lt;/td&gt;&lt;td&gt;-0.075031842&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;Lag2&lt;/th&gt;&lt;td&gt;-0.03339001&lt;/td&gt;&lt;td&gt;-0.07485305&lt;/td&gt;&lt;td&gt; 1.00000000&lt;/td&gt;&lt;td&gt;-0.07572091&lt;/td&gt;&lt;td&gt; 0.05838153&lt;/td&gt;&lt;td&gt;-0.07249948&lt;/td&gt;&lt;td&gt;-0.08551314&lt;/td&gt;&lt;td&gt; 0.05916672&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;Lag3&lt;/th&gt;&lt;td&gt;-0.03000649&lt;/td&gt;&lt;td&gt; 0.05863568&lt;/td&gt;&lt;td&gt;-0.07572091&lt;/td&gt;&lt;td&gt; 1.00000000&lt;/td&gt;&lt;td&gt;-0.07539587&lt;/td&gt;&lt;td&gt; 0.06065717&lt;/td&gt;&lt;td&gt;-0.06928771&lt;/td&gt;&lt;td&gt;-0.07124364&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;Lag4&lt;/th&gt;&lt;td&gt;-0.031127923&lt;/td&gt;&lt;td&gt;-0.071273876&lt;/td&gt;&lt;td&gt; 0.058381535&lt;/td&gt;&lt;td&gt;-0.075395865&lt;/td&gt;&lt;td&gt; 1.000000000&lt;/td&gt;&lt;td&gt;-0.075675027&lt;/td&gt;&lt;td&gt;-0.061074617&lt;/td&gt;&lt;td&gt;-0.007825873&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;Lag5&lt;/th&gt;&lt;td&gt;-0.030519101&lt;/td&gt;&lt;td&gt;-0.008183096&lt;/td&gt;&lt;td&gt;-0.072499482&lt;/td&gt;&lt;td&gt; 0.060657175&lt;/td&gt;&lt;td&gt;-0.075675027&lt;/td&gt;&lt;td&gt; 1.000000000&lt;/td&gt;&lt;td&gt;-0.058517414&lt;/td&gt;&lt;td&gt; 0.011012698&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;Volume&lt;/th&gt;&lt;td&gt; 0.84194162&lt;/td&gt;&lt;td&gt;-0.06495131&lt;/td&gt;&lt;td&gt;-0.08551314&lt;/td&gt;&lt;td&gt;-0.06928771&lt;/td&gt;&lt;td&gt;-0.06107462&lt;/td&gt;&lt;td&gt;-0.05851741&lt;/td&gt;&lt;td&gt; 1.00000000&lt;/td&gt;&lt;td&gt;-0.03307778&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;Today&lt;/th&gt;&lt;td&gt;-0.032459894&lt;/td&gt;&lt;td&gt;-0.075031842&lt;/td&gt;&lt;td&gt; 0.059166717&lt;/td&gt;&lt;td&gt;-0.071243639&lt;/td&gt;&lt;td&gt;-0.007825873&lt;/td&gt;&lt;td&gt; 0.011012698&lt;/td&gt;&lt;td&gt;-0.033077783&lt;/td&gt;&lt;td&gt; 1.000000000&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th scope=col&gt;Var1&lt;/th&gt;&lt;th scope=col&gt;Var2&lt;/th&gt;&lt;th scope=col&gt;Freq&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;1&lt;/th&gt;&lt;td&gt;Year&lt;/td&gt;&lt;td&gt;Year&lt;/td&gt;&lt;td&gt;1   &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;7&lt;/th&gt;&lt;td&gt;Volume           &lt;/td&gt;&lt;td&gt;Year             &lt;/td&gt;&lt;td&gt;0.841941618703162&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;10&lt;/th&gt;&lt;td&gt;Lag1&lt;/td&gt;&lt;td&gt;Lag1&lt;/td&gt;&lt;td&gt;1   &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;19&lt;/th&gt;&lt;td&gt;Lag2&lt;/td&gt;&lt;td&gt;Lag2&lt;/td&gt;&lt;td&gt;1   &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;28&lt;/th&gt;&lt;td&gt;Lag3&lt;/td&gt;&lt;td&gt;Lag3&lt;/td&gt;&lt;td&gt;1   &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;37&lt;/th&gt;&lt;td&gt;Lag4&lt;/td&gt;&lt;td&gt;Lag4&lt;/td&gt;&lt;td&gt;1   &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;46&lt;/th&gt;&lt;td&gt;Lag5&lt;/td&gt;&lt;td&gt;Lag5&lt;/td&gt;&lt;td&gt;1   &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;49&lt;/th&gt;&lt;td&gt;Year             &lt;/td&gt;&lt;td&gt;Volume           &lt;/td&gt;&lt;td&gt;0.841941618703162&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;55&lt;/th&gt;&lt;td&gt;Volume&lt;/td&gt;&lt;td&gt;Volume&lt;/td&gt;&lt;td&gt;1     &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;64&lt;/th&gt;&lt;td&gt;Today&lt;/td&gt;&lt;td&gt;Today&lt;/td&gt;&lt;td&gt;1    &lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;It appears that the only stong correlation present in the data is between Volume and time. Plotting the Volume confirms this.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;plot&lt;span class="p"&gt;(&lt;/span&gt;Volume&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_14_0.png"&gt;&lt;/p&gt;
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Use the full data set to perform a logistic regression with Direction as the response and the five lag variables plus Volume as predictors. Use the summary function to print the results. Do any of the predictors appear to be statistically significant? If so, which ones?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;glm.fit &lt;span class="o"&gt;=&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;Direction&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;Direction&lt;span class="o"&gt;-&lt;/span&gt;Today&lt;span class="o"&gt;-&lt;/span&gt;Year&lt;span class="p"&gt;,&lt;/span&gt;data &lt;span class="o"&gt;=&lt;/span&gt; Weekly&lt;span class="p"&gt;,&lt;/span&gt;family&lt;span class="o"&gt;=&lt;/span&gt;binomial&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.fit&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;glm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Direction&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Direction&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Today&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Year&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;binomial&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; 
+    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Weekly&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Deviance&lt;/span&gt; &lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; 
+    &lt;span class="n"&gt;Min&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;   &lt;span class="n"&gt;Median&lt;/span&gt;       &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;      &lt;span class="n"&gt;Max&lt;/span&gt;  
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.6949&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.2565&lt;/span&gt;   &lt;span class="mf"&gt;0.9913&lt;/span&gt;   &lt;span class="mf"&gt;1.0849&lt;/span&gt;   &lt;span class="mf"&gt;1.4579&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;   
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;  &lt;span class="mf"&gt;0.26686&lt;/span&gt;    &lt;span class="mf"&gt;0.08593&lt;/span&gt;   &lt;span class="mf"&gt;3.106&lt;/span&gt;   &lt;span class="mf"&gt;0.0019&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;
+&lt;span class="n"&gt;Lag1&lt;/span&gt;        &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.04127&lt;/span&gt;    &lt;span class="mf"&gt;0.02641&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.563&lt;/span&gt;   &lt;span class="mf"&gt;0.1181&lt;/span&gt;   
+&lt;span class="n"&gt;Lag2&lt;/span&gt;         &lt;span class="mf"&gt;0.05844&lt;/span&gt;    &lt;span class="mf"&gt;0.02686&lt;/span&gt;   &lt;span class="mf"&gt;2.175&lt;/span&gt;   &lt;span class="mf"&gt;0.0296&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; 
+&lt;span class="n"&gt;Lag3&lt;/span&gt;        &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.01606&lt;/span&gt;    &lt;span class="mf"&gt;0.02666&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.602&lt;/span&gt;   &lt;span class="mf"&gt;0.5469&lt;/span&gt;   
+&lt;span class="n"&gt;Lag4&lt;/span&gt;        &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.02779&lt;/span&gt;    &lt;span class="mf"&gt;0.02646&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.050&lt;/span&gt;   &lt;span class="mf"&gt;0.2937&lt;/span&gt;   
+&lt;span class="n"&gt;Lag5&lt;/span&gt;        &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.01447&lt;/span&gt;    &lt;span class="mf"&gt;0.02638&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.549&lt;/span&gt;   &lt;span class="mf"&gt;0.5833&lt;/span&gt;   
+&lt;span class="n"&gt;Volume&lt;/span&gt;      &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.02274&lt;/span&gt;    &lt;span class="mf"&gt;0.03690&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.616&lt;/span&gt;   &lt;span class="mf"&gt;0.5377&lt;/span&gt;   
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dispersion&lt;/span&gt; &lt;span class="n"&gt;parameter&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;binomial&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="n"&gt;taken&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;Null&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1496.2&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;1088&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1486.4&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;1082&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;AIC&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1500.4&lt;/span&gt;
+
+&lt;span class="n"&gt;Number&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;Fisher&lt;/span&gt; &lt;span class="n"&gt;Scoring&lt;/span&gt; &lt;span class="n"&gt;iterations&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Lag2 has a p value of 0.03 which is slightly significant if we accept 0.05 as our significance threshold.&lt;/p&gt;
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;Compute the confusion matrix and overall fraction of correct predictions. Explain what the confusion matrix is telling you about the types of mistakes made by logistic regression.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;glm.probs &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;glm.fit&lt;span class="p"&gt;,&lt;/span&gt; type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;response&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+glm.pred &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Down&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.probs&lt;span class="p"&gt;))&lt;/span&gt;
+glm.pred&lt;span class="p"&gt;[&lt;/span&gt;glm.probs &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Up&amp;quot;&lt;/span&gt;
+&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.pred&lt;span class="p"&gt;,&lt;/span&gt;Direction&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.pred &lt;span class="o"&gt;==&lt;/span&gt; Direction&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;        Direction
+glm.pred Down  Up
+    Down   54  48
+    Up    430 557
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.561065197428834&lt;/p&gt;
+&lt;p&gt;The diagonal elements of the confusion matrix provide the correct predictions. By taking the mean of the prediction we get the fraction of days that the fit was correct. Here it was correct on &lt;span class="math"&gt;\(56\%\)&lt;/span&gt; of the days.&lt;/p&gt;
+&lt;h3&gt;d.&lt;/h3&gt;
+&lt;p&gt;Now fit the logistic regression model using a training data period from 1990 to 2008, with Lag2 as the only predictor. Compute the confusion matrix and the overall fraction of correct predictions for the held out data (that is, the data from 2009 and 2010).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;train&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Year&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="m"&gt;2009&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+glm.fit2 &lt;span class="o"&gt;=&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;Direction&lt;span class="o"&gt;~&lt;/span&gt;Lag2&lt;span class="p"&gt;,&lt;/span&gt;family&lt;span class="o"&gt;=&lt;/span&gt;binomial&lt;span class="p"&gt;,&lt;/span&gt;subset&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+glm.probs2 &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;glm.fit2&lt;span class="p"&gt;,&lt;/span&gt;Weekly&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;,],&lt;/span&gt;type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;response&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+glm.pred2 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Down&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.probs2&lt;span class="p"&gt;))&lt;/span&gt;
+glm.pred2&lt;span class="p"&gt;[&lt;/span&gt;glm.probs2 &lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Up&amp;quot;&lt;/span&gt;
+&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.pred2&lt;span class="p"&gt;,&lt;/span&gt;Direction&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.pred2 &lt;span class="o"&gt;==&lt;/span&gt; Direction&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;glm.pred2 Down Up
+     Down    9  5
+     Up     34 56
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.625&lt;/p&gt;
+&lt;p&gt;The correct percentage of predicitons is &lt;span class="math"&gt;\(62.5\%\)&lt;/span&gt;.&lt;/p&gt;
+&lt;h3&gt;e.&lt;/h3&gt;
+&lt;p&gt;Repeat (d) using LDA.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;MASS&lt;span class="p"&gt;)&lt;/span&gt;
+lda.fit &lt;span class="o"&gt;=&lt;/span&gt; lda&lt;span class="p"&gt;(&lt;/span&gt;Direction&lt;span class="o"&gt;~&lt;/span&gt;Lag2&lt;span class="p"&gt;,&lt;/span&gt;subset&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+lda.pred &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;lda.fit&lt;span class="p"&gt;,&lt;/span&gt;Weekly&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;,])&lt;/span&gt;
+&lt;span class="c1"&gt;#The predict of the LDA function spits own class (similar to what it spits out for glm), posterior and the LDs (x).&lt;/span&gt;
+lda.class &lt;span class="o"&gt;=&lt;/span&gt; lda.pred&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="kp"&gt;class&lt;/span&gt;
+&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lda.class&lt;span class="p"&gt;,&lt;/span&gt;Direction&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lda.class &lt;span class="o"&gt;==&lt;/span&gt; Direction&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;lda.class Down Up
+     Down    9  5
+     Up     34 56
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.625&lt;/p&gt;
+&lt;h3&gt;f.&lt;/h3&gt;
+&lt;p&gt;Repeat (d) using QDA.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;qda.fit &lt;span class="o"&gt;=&lt;/span&gt; qda&lt;span class="p"&gt;(&lt;/span&gt;Direction&lt;span class="o"&gt;~&lt;/span&gt;Lag2&lt;span class="p"&gt;,&lt;/span&gt;subset&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+qda.pred &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;qda.fit&lt;span class="p"&gt;,&lt;/span&gt;Weekly&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;,])&lt;/span&gt;
+qda.class &lt;span class="o"&gt;=&lt;/span&gt; qda.pred&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="kp"&gt;class&lt;/span&gt;
+&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;qda.class&lt;span class="p"&gt;,&lt;/span&gt;Direction&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;qda.class&lt;span class="o"&gt;==&lt;/span&gt;Direction&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;qda.class Down Up
+     Down    0  0
+     Up     43 61
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.586538461538462&lt;/p&gt;
+&lt;h3&gt;g.&lt;/h3&gt;
+&lt;p&gt;Repeat (d) using KNN with &lt;span class="math"&gt;\(K=1\)&lt;/span&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;class&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+train.X &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;matrix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Lag2&lt;span class="p"&gt;[&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="c1"&gt;#Make sure these&lt;/span&gt;
+test.X &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;matrix&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Lag2&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="c1"&gt;#are matrices.&lt;/span&gt;
+train.Direction &lt;span class="o"&gt;=&lt;/span&gt; Direction&lt;span class="p"&gt;[&lt;/span&gt;train&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+knn.pred &lt;span class="o"&gt;=&lt;/span&gt; knn&lt;span class="p"&gt;(&lt;/span&gt;train.X&lt;span class="p"&gt;,&lt;/span&gt;test.X&lt;span class="p"&gt;,&lt;/span&gt;train.Direction&lt;span class="p"&gt;,&lt;/span&gt;k&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;knn.pred&lt;span class="p"&gt;,&lt;/span&gt;Direction&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;knn.pred&lt;span class="o"&gt;==&lt;/span&gt;Direction&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;knn.pred Down Up
+    Down   21 30
+    Up     22 31
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.5&lt;/p&gt;
+&lt;h3&gt;h.&lt;/h3&gt;
+&lt;p&gt;Which of these methods appears to provide the best results on this data?
+LDA and logistic regression have the best results&lt;/p&gt;
+&lt;h3&gt;i.&lt;/h3&gt;
+&lt;p&gt;Experiment with different combinations of predictors, including possible transformations and interactions, for each of 
+the methods. Report the variables, method, and associated confusion matrix that appears to provide the best results on the held out data. Note that you should also experiment with values for K in the KNN classifier.&lt;/p&gt;
+&lt;h1&gt;11.&lt;/h1&gt;
+&lt;p&gt;In this problem, you will develop a model to predict whether a given car gets high or low gas mileage based on the Auto data set.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Create a binary variable, mpg01, that contains a 1 if mpg contains a value above its median, and a 0 if mpg contains a value below its median. You can compute the median using the median() function. Note you may find it helpful to use the data.frame() function to create a single data set containing both mpg01 and the other Auto variables.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;attach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Auto&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Auto&lt;span class="p"&gt;)&lt;/span&gt;
+mpg01 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;))&lt;/span&gt;
+mpg01&lt;span class="p"&gt;[&lt;/span&gt;mpg&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;median&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="p"&gt;)]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+Auto01 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Auto&lt;span class="p"&gt;,&lt;/span&gt;mpg01&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;      mpg          cylinders      displacement     horsepower        weight    
+ Min.   : 9.00   Min.   :3.000   Min.   : 68.0   Min.   : 46.0   Min.   :1613  
+ 1st Qu.:17.00   1st Qu.:4.000   1st Qu.:105.0   1st Qu.: 75.0   1st Qu.:2225  
+ Median :22.75   Median :4.000   Median :151.0   Median : 93.5   Median :2804  
+ Mean   :23.45   Mean   :5.472   Mean   :194.4   Mean   :104.5   Mean   :2978  
+ 3rd Qu.:29.00   3rd Qu.:8.000   3rd Qu.:275.8   3rd Qu.:126.0   3rd Qu.:3615  
+ Max.   :46.60   Max.   :8.000   Max.   :455.0   Max.   :230.0   Max.   :5140
+
+  acceleration        year           origin                      name    
+ Min.   : 8.00   Min.   :70.00   Min.   :1.000   amc matador       :  5  
+ 1st Qu.:13.78   1st Qu.:73.00   1st Qu.:1.000   ford pinto        :  5  
+ Median :15.50   Median :76.00   Median :1.000   toyota corolla    :  5  
+ Mean   :15.54   Mean   :75.98   Mean   :1.577   amc gremlin       :  4  
+ 3rd Qu.:17.02   3rd Qu.:79.00   3rd Qu.:2.000   amc hornet        :  4  
+ Max.   :24.80   Max.   :82.00   Max.   :3.000   chevrolet chevette:  4  
+                                                 (Other)           :365
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Explore the data graphically in order to investigate the association between mpg01 and the other features. Which of the other features seem most likely to be useful in predicting mpg01? Scatterplots and boxplots may be useful tools to answer this question. Describe your findings.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;cor&lt;span class="p"&gt;(&lt;/span&gt;Auto01&lt;span class="p"&gt;[,&lt;/span&gt;&lt;span class="m"&gt;-9&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+pairs&lt;span class="p"&gt;(&lt;/span&gt;Auto01&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;table&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th scope=col&gt;mpg&lt;/th&gt;&lt;th scope=col&gt;cylinders&lt;/th&gt;&lt;th scope=col&gt;displacement&lt;/th&gt;&lt;th scope=col&gt;horsepower&lt;/th&gt;&lt;th scope=col&gt;weight&lt;/th&gt;&lt;th scope=col&gt;acceleration&lt;/th&gt;&lt;th scope=col&gt;year&lt;/th&gt;&lt;th scope=col&gt;origin&lt;/th&gt;&lt;th scope=col&gt;mpg01&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;mpg&lt;/th&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt;-0.7776175&lt;/td&gt;&lt;td&gt;-0.8051269&lt;/td&gt;&lt;td&gt;-0.7784268&lt;/td&gt;&lt;td&gt;-0.8322442&lt;/td&gt;&lt;td&gt; 0.4233285&lt;/td&gt;&lt;td&gt; 0.5805410&lt;/td&gt;&lt;td&gt; 0.5652088&lt;/td&gt;&lt;td&gt; 0.8369392&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;cylinders&lt;/th&gt;&lt;td&gt;-0.7776175&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.9508233&lt;/td&gt;&lt;td&gt; 0.8429834&lt;/td&gt;&lt;td&gt; 0.8975273&lt;/td&gt;&lt;td&gt;-0.5046834&lt;/td&gt;&lt;td&gt;-0.3456474&lt;/td&gt;&lt;td&gt;-0.5689316&lt;/td&gt;&lt;td&gt;-0.7591939&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;displacement&lt;/th&gt;&lt;td&gt;-0.8051269&lt;/td&gt;&lt;td&gt; 0.9508233&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.8972570&lt;/td&gt;&lt;td&gt; 0.9329944&lt;/td&gt;&lt;td&gt;-0.5438005&lt;/td&gt;&lt;td&gt;-0.3698552&lt;/td&gt;&lt;td&gt;-0.6145351&lt;/td&gt;&lt;td&gt;-0.7534766&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;horsepower&lt;/th&gt;&lt;td&gt;-0.7784268&lt;/td&gt;&lt;td&gt; 0.8429834&lt;/td&gt;&lt;td&gt; 0.8972570&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.8645377&lt;/td&gt;&lt;td&gt;-0.6891955&lt;/td&gt;&lt;td&gt;-0.4163615&lt;/td&gt;&lt;td&gt;-0.4551715&lt;/td&gt;&lt;td&gt;-0.6670526&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;weight&lt;/th&gt;&lt;td&gt;-0.8322442&lt;/td&gt;&lt;td&gt; 0.8975273&lt;/td&gt;&lt;td&gt; 0.9329944&lt;/td&gt;&lt;td&gt; 0.8645377&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt;-0.4168392&lt;/td&gt;&lt;td&gt;-0.3091199&lt;/td&gt;&lt;td&gt;-0.5850054&lt;/td&gt;&lt;td&gt;-0.7577566&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;acceleration&lt;/th&gt;&lt;td&gt; 0.4233285&lt;/td&gt;&lt;td&gt;-0.5046834&lt;/td&gt;&lt;td&gt;-0.5438005&lt;/td&gt;&lt;td&gt;-0.6891955&lt;/td&gt;&lt;td&gt;-0.4168392&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.2903161&lt;/td&gt;&lt;td&gt; 0.2127458&lt;/td&gt;&lt;td&gt; 0.3468215&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;year&lt;/th&gt;&lt;td&gt; 0.5805410&lt;/td&gt;&lt;td&gt;-0.3456474&lt;/td&gt;&lt;td&gt;-0.3698552&lt;/td&gt;&lt;td&gt;-0.4163615&lt;/td&gt;&lt;td&gt;-0.3091199&lt;/td&gt;&lt;td&gt; 0.2903161&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.1815277&lt;/td&gt;&lt;td&gt; 0.4299042&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;origin&lt;/th&gt;&lt;td&gt; 0.5652088&lt;/td&gt;&lt;td&gt;-0.5689316&lt;/td&gt;&lt;td&gt;-0.6145351&lt;/td&gt;&lt;td&gt;-0.4551715&lt;/td&gt;&lt;td&gt;-0.5850054&lt;/td&gt;&lt;td&gt; 0.2127458&lt;/td&gt;&lt;td&gt; 0.1815277&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.5136984&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;mpg01&lt;/th&gt;&lt;td&gt; 0.8369392&lt;/td&gt;&lt;td&gt;-0.7591939&lt;/td&gt;&lt;td&gt;-0.7534766&lt;/td&gt;&lt;td&gt;-0.6670526&lt;/td&gt;&lt;td&gt;-0.7577566&lt;/td&gt;&lt;td&gt; 0.3468215&lt;/td&gt;&lt;td&gt; 0.4299042&lt;/td&gt;&lt;td&gt; 0.5136984&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_32_1.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;par&lt;span class="p"&gt;(&lt;/span&gt;mfrow&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+boxplot&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="o"&gt;~&lt;/span&gt;mpg01&lt;span class="p"&gt;,&lt;/span&gt;main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;mpg vs. mpg01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+boxplot&lt;span class="p"&gt;(&lt;/span&gt;cylinders&lt;span class="o"&gt;~&lt;/span&gt;mpg01&lt;span class="p"&gt;,&lt;/span&gt;main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;cylinders vs. mpg01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+boxplot&lt;span class="p"&gt;(&lt;/span&gt;displacement&lt;span class="o"&gt;~&lt;/span&gt;mpg01&lt;span class="p"&gt;,&lt;/span&gt;main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;displacement vs. mpg01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+boxplot&lt;span class="p"&gt;(&lt;/span&gt;weight&lt;span class="o"&gt;~&lt;/span&gt;mpg01&lt;span class="p"&gt;,&lt;/span&gt;main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;weight vs. mpg01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+boxplot&lt;span class="p"&gt;(&lt;/span&gt;horsepower&lt;span class="o"&gt;~&lt;/span&gt;mpg01&lt;span class="p"&gt;,&lt;/span&gt;main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;horsepower vs. mpg01&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_33_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;mpg, cylinders, displacement, weight and horsepower all appear to have some relation to mpg01.&lt;/p&gt;
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;Split the data into a test set and training set.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;train &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;year &lt;span class="o"&gt;%%&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+Auto.train &lt;span class="o"&gt;=&lt;/span&gt; Auto&lt;span class="p"&gt;[&lt;/span&gt;train&lt;span class="p"&gt;,]&lt;/span&gt;
+Auto.test &lt;span class="o"&gt;=&lt;/span&gt; Auto&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;,]&lt;/span&gt;
+mpg01.test &lt;span class="o"&gt;=&lt;/span&gt; mpg01&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;train&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;d.&lt;/h3&gt;
+&lt;p&gt;Perform LDA on the training data in order to predict mpg01 using the variables that seemed most associated with mpg01 in (b). What is the test error of the model obtained?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;lda.fit2 &lt;span class="o"&gt;=&lt;/span&gt; lda&lt;span class="p"&gt;(&lt;/span&gt;mpg01&lt;span class="o"&gt;~&lt;/span&gt;mpg&lt;span class="o"&gt;+&lt;/span&gt;cylinders&lt;span class="o"&gt;+&lt;/span&gt;weight&lt;span class="o"&gt;+&lt;/span&gt;displacement&lt;span class="o"&gt;+&lt;/span&gt;horsepower&lt;span class="p"&gt;,&lt;/span&gt;data &lt;span class="o"&gt;=&lt;/span&gt; Auto&lt;span class="p"&gt;,&lt;/span&gt;subset&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+lda.pred2 &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;lda.fit2&lt;span class="p"&gt;,&lt;/span&gt;Auto.test&lt;span class="p"&gt;)&lt;/span&gt;
+lda.class2 &lt;span class="o"&gt;=&lt;/span&gt; lda.pred2&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="kp"&gt;class&lt;/span&gt;
+&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lda.class2&lt;span class="p"&gt;,&lt;/span&gt; mpg01.test&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lda.class2 &lt;span class="o"&gt;!=&lt;/span&gt; mpg01.test&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;          mpg01.test
+lda.class2  0  1
+         0 88  6
+         1 12 76
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.0989010989010989&lt;/p&gt;
+&lt;p&gt;The test error rate is &lt;span class="math"&gt;\(\sim10\%\)&lt;/span&gt;.&lt;/p&gt;
+&lt;h3&gt;e.&lt;/h3&gt;
+&lt;p&gt;Now for QDA.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;qda.fit2 &lt;span class="o"&gt;=&lt;/span&gt; qda&lt;span class="p"&gt;(&lt;/span&gt;mpg01&lt;span class="o"&gt;~&lt;/span&gt;mpg&lt;span class="o"&gt;+&lt;/span&gt;cylinders&lt;span class="o"&gt;+&lt;/span&gt;weight&lt;span class="o"&gt;+&lt;/span&gt;displacement&lt;span class="o"&gt;+&lt;/span&gt;horsepower&lt;span class="p"&gt;,&lt;/span&gt;data &lt;span class="o"&gt;=&lt;/span&gt; Auto&lt;span class="p"&gt;,&lt;/span&gt;subset&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+qda.pred2 &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;qda.fit2&lt;span class="p"&gt;,&lt;/span&gt;Auto.test&lt;span class="p"&gt;)&lt;/span&gt;
+qda.class2 &lt;span class="o"&gt;=&lt;/span&gt; qda.pred2&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="kp"&gt;class&lt;/span&gt;
+&lt;span class="kp"&gt;table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;qda.class2&lt;span class="p"&gt;,&lt;/span&gt;mpg01.test&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;qda.class2 &lt;span class="o"&gt;!=&lt;/span&gt; mpg01.test&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;          mpg01.test
+qda.class2  0  1
+         0 89  9
+         1 11 73
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.10989010989011&lt;/p&gt;
+&lt;h3&gt;f.&lt;/h3&gt;
+&lt;p&gt;And for Logistic Regression.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;glm.fit3 &lt;span class="o"&gt;=&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;mpg01&lt;span class="o"&gt;~&lt;/span&gt;cylinders &lt;span class="o"&gt;+&lt;/span&gt; weight &lt;span class="o"&gt;+&lt;/span&gt; displacement &lt;span class="o"&gt;+&lt;/span&gt; horsepower&lt;span class="p"&gt;,&lt;/span&gt; family &lt;span class="o"&gt;=&lt;/span&gt; binomial&lt;span class="p"&gt;,&lt;/span&gt;subset&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+glm.probs3 &lt;span class="o"&gt;=&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;glm.fit3&lt;span class="p"&gt;,&lt;/span&gt;Auto.test&lt;span class="p"&gt;,&lt;/span&gt;type&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;response&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+glm.pred3 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.probs3&lt;span class="p"&gt;))&lt;/span&gt;
+glm.pred3&lt;span class="p"&gt;[&lt;/span&gt;glm.probs3 &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.pred3 &lt;span class="o"&gt;!=&lt;/span&gt; mpg01.test&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.120879120879121&lt;/p&gt;
+&lt;h3&gt;g.&lt;/h3&gt;
+&lt;p&gt;And finally KNN with several values of K. What is the best value for K?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;12.&lt;/h1&gt;
+&lt;p&gt;This problem involves writing functions.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Write a function, Power(), that prints out the result of raising 2 to the 3rd power. In other words, your function should compute &lt;span class="math"&gt;\(2^3\)&lt;/span&gt; and print out the results.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Power &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="kp"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Power&lt;span class="p"&gt;())&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;[1] 8
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Create a new function, Power2(), that allows you to pass any two numbers, x and a, and prints out the value of x^a.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Power2 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt;a&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kp"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;^&lt;/span&gt;a&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+Power2&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;[1] 6561
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;d.&lt;/h3&gt;
+&lt;p&gt;Now create a new function, Power3(), that actually returns the result x^a as an R object, rather than simply printing it to the screen.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Power3 &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt;a&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kr"&gt;return&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="o"&gt;^&lt;/span&gt;a&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+Power3&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;8&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;6561&lt;/p&gt;
+&lt;h3&gt;e.&lt;/h3&gt;
+&lt;p&gt;Now using the Power3() function, create a plot of f(x) = x2. The x-axis should display a range of integers from 1 to 10, and the y-axis should display x2. Label the axes appropriately, and use an appropriate title for the figure.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;x &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; Power3&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; log &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;xy&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; ylab &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Log of y = x^2&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; xlab &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Log of x&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; 
+    main &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Log of x^2 versus Log of x&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_52_0.png"&gt;&lt;/p&gt;
+&lt;h3&gt;f.&lt;/h3&gt;
+&lt;p&gt;Create a function, PlotPower(), that allows you to create a plot of x against x^a for a fixed a and for a range of values of x. For instance, if you call&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;PlotPower &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt;a&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    plot&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; Power3&lt;span class="p"&gt;(&lt;/span&gt;x&lt;span class="p"&gt;,&lt;/span&gt; a&lt;span class="p"&gt;),&lt;/span&gt; log &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;xy&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; ylab &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;sprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Log of y = x^%d&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;a&lt;span class="p"&gt;),&lt;/span&gt;
+         xlab &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Log of x&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; main &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;sprintf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Log of x^%d versus Log of x&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;a&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+PlotPower&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="m"&gt;10&lt;/span&gt; &lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_54_0.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content></entry><entry><title>ISLR Chapter 3 Exercises</title><link href="http://afitts.github.io/2016/09/18/islr-chap3/" rel="alternate"></link><published>2016-09-18T00:00:00-05:00</published><updated>2016-09-18T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2016-09-18:/2016/09/18/islr-chap3/</id><summary type="html">&lt;h1&gt;Chapter 3 Exercises&lt;/h1&gt;
+&lt;h1&gt;1.&lt;/h1&gt;
+&lt;p&gt;The small p values for TV and radio correspond to the low probability of observing the t statistics we see by chance. Hence TV and radio &lt;em&gt;do&lt;/em&gt; have a relationship with the response, sales. However, newspaper’s large p-value corresponds to an unlikely relationship with sales …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Chapter 3 Exercises&lt;/h1&gt;
+&lt;h1&gt;1.&lt;/h1&gt;
+&lt;p&gt;The small p values for TV and radio correspond to the low probability of observing the t statistics we see by chance. Hence TV and radio &lt;em&gt;do&lt;/em&gt; have a relationship with the response, sales. However, newspaper’s large p-value corresponds to an unlikely relationship with sales or a very weak one.&lt;/p&gt;
+&lt;h1&gt;2.&lt;/h1&gt;
+&lt;p&gt;The difference between the KNN classifier and KNN regression methods is KNN classifiers results in a qualitative classification of &lt;span class="math"&gt;\(X\)&lt;/span&gt; into a specific group while KNN regression methods are used to non parametrically fit many valued observations (&lt;span class="math"&gt;\(f(x)\)&lt;/span&gt;).&lt;/p&gt;
+&lt;h1&gt;3.&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;a. i. False. ii. False. iii. False. iv. iv.True. &lt;span class="math"&gt;\(X_5\)&lt;/span&gt; dominates for high enough GPA, thus meaning on average males make more for high enough GPA.&lt;/li&gt;
+&lt;li&gt;b. &lt;span class="math"&gt;\(Y=50+20\cdot(4.0)+0.07\cdot(110)+35+0.01(4.0\cdot110)-10(4.0) = 137.1\)&lt;/span&gt; thousand $$&lt;/li&gt;
+&lt;li&gt;c. False. There can be an interaction effect; it’s just not a strong effect. Need to look at the associated p-value to determine whether the GPA*IQ interaction term is significant or not.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;4.&lt;/h1&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;The cubic regression may give the tighter fit on the training data (i.e. lower RSS) but there’s no telling whether this is over fitting to the data or not. This scenario is more likely with a larger epsilon. &lt;/p&gt;
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;The linear regression will certainly give a better fit to test data than the cubic regression as it expects data pulled from a linear relation while the cubic regression will not only expect a different relation but will also have the possibility of being incorrectly fit to the noise in the training set.&lt;/p&gt;
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;In most cases one would expect the cubic regression to fare better as it has a more flexible fit; however, if the actual relation is linear than one might expect a better fit from the linear.&lt;/p&gt;
+&lt;h3&gt;d.&lt;/h3&gt;
+&lt;p&gt;Not clear.&lt;/p&gt;
+&lt;h1&gt;5.&lt;/h1&gt;
+&lt;h1&gt;6.&lt;/h1&gt;
+&lt;h1&gt;7.&lt;/h1&gt;
+&lt;h1&gt;8.&lt;/h1&gt;
+&lt;p&gt;This question involves the use of simple linear regression on the Auto data set.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Use the lm() function to perform a simple linear regression with mpg as the response and horsepower as the predictor. Use the summary() function to print the results. Comment on the output.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;MASS&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ISLR&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;attach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Auto&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;lm.fit&lt;span class="o"&gt;=&lt;/span&gt;lm&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="o"&gt;~&lt;/span&gt;horsepower&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lm.fit&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;lm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mpg&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;horsepower&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+     &lt;span class="n"&gt;Min&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;   &lt;span class="n"&gt;Median&lt;/span&gt;       &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;      &lt;span class="n"&gt;Max&lt;/span&gt; 
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;13.5710&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;3.2592&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.3435&lt;/span&gt;   &lt;span class="mf"&gt;2.7630&lt;/span&gt;  &lt;span class="mf"&gt;16.9240&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+             &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;    
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="mf"&gt;39.935861&lt;/span&gt;   &lt;span class="mf"&gt;0.717499&lt;/span&gt;   &lt;span class="mf"&gt;55.66&lt;/span&gt;   &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;horsepower&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.157845&lt;/span&gt;   &lt;span class="mf"&gt;0.006446&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;24.49&lt;/span&gt;   &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;standard&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;4.906&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;390&lt;/span&gt; &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Multiple&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.6059&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;    &lt;span class="n"&gt;Adjusted&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.6049&lt;/span&gt; 
+&lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;statistic&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;599.7&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="mi"&gt;390&lt;/span&gt; &lt;span class="n"&gt;DF&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;  &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;2.2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;i. Is there a relationship between the predictor and the response?&lt;/p&gt;
+&lt;p&gt;Yes, there is a relationship between the predictor and the response as determined by testing the null hypothesis of all regression coefficients to zero. Since the F-statistic is much larger than 1 and has a correspondingly small p-value we can confirm the likelihood that the null hypothesis is false and that there is a statistically significant relationship between mpg and horsepower.&lt;/p&gt;
+&lt;p&gt;ii. How strong is the relationship between the predictor and the response?&lt;/p&gt;
+&lt;p&gt;To calculate the residual error with respect to the response we take the mean of mpg, 23.446, and the RSE of the fit, 4.906 which indicates a &lt;span class="math"&gt;\(4.906/23.446 *100 = 20.92\%\)&lt;/span&gt; percentage error. The &lt;span class="math"&gt;\(R^2=0.6059\)&lt;/span&gt; indicates that &lt;span class="math"&gt;\(60.59\%\)&lt;/span&gt; of the variance of mpg is explained by horsepower.&lt;/p&gt;
+&lt;p&gt;iii. Is the relationship between the predictor and the response positive or negative?&lt;/p&gt;
+&lt;p&gt;Looking at the sign of the regression coefficient of horsepower,we see that the relationship between mpg and horsepower is negative.&lt;/p&gt;
+&lt;p&gt;iv. What is the predicted mpg associated with a horsepower of 98? What are the associated 95 % confidence and prediction intervals?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;mean_mpg &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;39.935861&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="m"&gt;0.157845&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="m"&gt;98&lt;/span&gt;
+mean_mpg
+predict&lt;span class="p"&gt;(&lt;/span&gt;lm.fit&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;horsepower&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;98&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; interval&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;confidence&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+predict&lt;span class="p"&gt;(&lt;/span&gt;lm.fit&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kt"&gt;data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;horsepower&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;98&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; interval&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;prediction&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;24.467051&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th scope=col&gt;fit&lt;/th&gt;&lt;th scope=col&gt;lwr&lt;/th&gt;&lt;th scope=col&gt;upr&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;1&lt;/th&gt;&lt;td&gt;24.46708&lt;/td&gt;&lt;td&gt;23.97308&lt;/td&gt;&lt;td&gt;24.96108&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th scope=col&gt;fit&lt;/th&gt;&lt;th scope=col&gt;lwr&lt;/th&gt;&lt;th scope=col&gt;upr&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;1&lt;/th&gt;&lt;td&gt;24.46708&lt;/td&gt;&lt;td&gt;14.80940&lt;/td&gt;&lt;td&gt;34.12476&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;Reminder: What are confidence and prediction intervals?&lt;/p&gt;
+&lt;p&gt;We use a confidence interval to quantify the uncertainty surrounding the average sales over a large number of cities. For example, given that &lt;span class="math"&gt;\(\text{\)&lt;/span&gt;}100,000&lt;span class="math"&gt;\( is spent on TV advertising and $20,000\)&lt;/span&gt; is spent on radio advertising in each city, the &lt;span class="math"&gt;\(95\%\)&lt;/span&gt; confidence interval is &lt;span class="math"&gt;\([10,985, 11,528]\)&lt;/span&gt;. We interpret this to mean that &lt;span class="math"&gt;\(95\%\)&lt;/span&gt; of intervals of this form will contain the true value of &lt;span class="math"&gt;\(f(X)\)&lt;/span&gt; On the other hand, a prediction interval can be used to quantify the uncertainty surrounding sales for a particular city. Given that &lt;span class="math"&gt;\(100,000\)&lt;/span&gt; is spent on TV advertising and &lt;span class="math"&gt;\(20,000\)&lt;/span&gt; is spent on radio advertising in that city the &lt;span class="math"&gt;\(95\%\)&lt;/span&gt; prediction interval is &lt;span class="math"&gt;\([7,930, 14,580]\)&lt;/span&gt;. We interpret this to mean that &lt;span class="math"&gt;\(95\%\)&lt;/span&gt; of intervals of this form will contain the true value of Y for this city. &lt;/p&gt;
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Plot the response and the predictor. Use the abline() function to display the least squares regression line.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;plot&lt;span class="p"&gt;(&lt;/span&gt;horsepower&lt;span class="p"&gt;,&lt;/span&gt;mpg&lt;span class="p"&gt;)&lt;/span&gt;
+abline&lt;span class="p"&gt;(&lt;/span&gt;lm.fit&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_7_0.png"&gt;&lt;/p&gt;
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;Use the plot() function to produce diagnostic plots of the least squares regression fit. Comment on any problems you see with the fit.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;par&lt;span class="p"&gt;(&lt;/span&gt;mfrow&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;lm.fit&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_9_0.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;plot&lt;span class="p"&gt;(&lt;/span&gt;hatvalues &lt;span class="p"&gt;(&lt;/span&gt;lm.fit&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_10_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;Plotting the residuals indicates that mpg most likely has a non-linear relationship with horsepower. It does not appear that there are any high-leverage (unusual value of x) points. &lt;/p&gt;
+&lt;h1&gt;9.&lt;/h1&gt;
+&lt;p&gt;This question involves the use of multiple linear regression on the Auto data set.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Produce a scatterplot matrix which includes all of the variables in the data set.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;pairs&lt;span class="p"&gt;(&lt;/span&gt;Auto&lt;span class="p"&gt;,&lt;/span&gt; main&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Simple Scatterplot Matrix of Auto variables&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_13_0.png"&gt;&lt;/p&gt;
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Compute the matrix of correlations between the variables using the function cor(). You will need to exclude the name variable, which is qualitative.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;Autocor &lt;span class="o"&gt;=&lt;/span&gt; cor&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;subset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Auto&lt;span class="p"&gt;,&lt;/span&gt;select&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;name&lt;span class="p"&gt;)))&lt;/span&gt;
+Autocor
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;table&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th scope=col&gt;mpg&lt;/th&gt;&lt;th scope=col&gt;cylinders&lt;/th&gt;&lt;th scope=col&gt;displacement&lt;/th&gt;&lt;th scope=col&gt;horsepower&lt;/th&gt;&lt;th scope=col&gt;weight&lt;/th&gt;&lt;th scope=col&gt;acceleration&lt;/th&gt;&lt;th scope=col&gt;year&lt;/th&gt;&lt;th scope=col&gt;origin&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;mpg&lt;/th&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt;-0.7776175&lt;/td&gt;&lt;td&gt;-0.8051269&lt;/td&gt;&lt;td&gt;-0.7784268&lt;/td&gt;&lt;td&gt;-0.8322442&lt;/td&gt;&lt;td&gt; 0.4233285&lt;/td&gt;&lt;td&gt; 0.5805410&lt;/td&gt;&lt;td&gt; 0.5652088&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;cylinders&lt;/th&gt;&lt;td&gt;-0.7776175&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.9508233&lt;/td&gt;&lt;td&gt; 0.8429834&lt;/td&gt;&lt;td&gt; 0.8975273&lt;/td&gt;&lt;td&gt;-0.5046834&lt;/td&gt;&lt;td&gt;-0.3456474&lt;/td&gt;&lt;td&gt;-0.5689316&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;displacement&lt;/th&gt;&lt;td&gt;-0.8051269&lt;/td&gt;&lt;td&gt; 0.9508233&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.8972570&lt;/td&gt;&lt;td&gt; 0.9329944&lt;/td&gt;&lt;td&gt;-0.5438005&lt;/td&gt;&lt;td&gt;-0.3698552&lt;/td&gt;&lt;td&gt;-0.6145351&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;horsepower&lt;/th&gt;&lt;td&gt;-0.7784268&lt;/td&gt;&lt;td&gt; 0.8429834&lt;/td&gt;&lt;td&gt; 0.8972570&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.8645377&lt;/td&gt;&lt;td&gt;-0.6891955&lt;/td&gt;&lt;td&gt;-0.4163615&lt;/td&gt;&lt;td&gt;-0.4551715&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;weight&lt;/th&gt;&lt;td&gt;-0.8322442&lt;/td&gt;&lt;td&gt; 0.8975273&lt;/td&gt;&lt;td&gt; 0.9329944&lt;/td&gt;&lt;td&gt; 0.8645377&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt;-0.4168392&lt;/td&gt;&lt;td&gt;-0.3091199&lt;/td&gt;&lt;td&gt;-0.5850054&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;acceleration&lt;/th&gt;&lt;td&gt; 0.4233285&lt;/td&gt;&lt;td&gt;-0.5046834&lt;/td&gt;&lt;td&gt;-0.5438005&lt;/td&gt;&lt;td&gt;-0.6891955&lt;/td&gt;&lt;td&gt;-0.4168392&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.2903161&lt;/td&gt;&lt;td&gt; 0.2127458&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;year&lt;/th&gt;&lt;td&gt; 0.5805410&lt;/td&gt;&lt;td&gt;-0.3456474&lt;/td&gt;&lt;td&gt;-0.3698552&lt;/td&gt;&lt;td&gt;-0.4163615&lt;/td&gt;&lt;td&gt;-0.3091199&lt;/td&gt;&lt;td&gt; 0.2903161&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;td&gt; 0.1815277&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;origin&lt;/th&gt;&lt;td&gt; 0.5652088&lt;/td&gt;&lt;td&gt;-0.5689316&lt;/td&gt;&lt;td&gt;-0.6145351&lt;/td&gt;&lt;td&gt;-0.4551715&lt;/td&gt;&lt;td&gt;-0.5850054&lt;/td&gt;&lt;td&gt; 0.2127458&lt;/td&gt;&lt;td&gt; 0.1815277&lt;/td&gt;&lt;td&gt; 1.0000000&lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;Use the lm() function to perform a multiple linear regression with mpg as the response and all other variables except name as the predictors. Use the summary() function to print the results. Comment on the output.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;lm.fit2&lt;span class="o"&gt;=&lt;/span&gt;lm&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="m"&gt;.&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;name&lt;span class="p"&gt;,&lt;/span&gt;data &lt;span class="o"&gt;=&lt;/span&gt; Auto&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lm.fit2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;lm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mpg&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Auto&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;Min&lt;/span&gt;      &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;  &lt;span class="n"&gt;Median&lt;/span&gt;      &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;     &lt;span class="n"&gt;Max&lt;/span&gt; 
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;9.5903&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.1565&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.1169&lt;/span&gt;  &lt;span class="mf"&gt;1.8690&lt;/span&gt; &lt;span class="mf"&gt;13.0604&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+               &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;    
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;17.218435&lt;/span&gt;   &lt;span class="mf"&gt;4.644294&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;3.707&lt;/span&gt;  &lt;span class="mf"&gt;0.00024&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;cylinders&lt;/span&gt;     &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.493376&lt;/span&gt;   &lt;span class="mf"&gt;0.323282&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.526&lt;/span&gt;  &lt;span class="mf"&gt;0.12780&lt;/span&gt;    
+&lt;span class="n"&gt;displacement&lt;/span&gt;   &lt;span class="mf"&gt;0.019896&lt;/span&gt;   &lt;span class="mf"&gt;0.007515&lt;/span&gt;   &lt;span class="mf"&gt;2.647&lt;/span&gt;  &lt;span class="mf"&gt;0.00844&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; 
+&lt;span class="n"&gt;horsepower&lt;/span&gt;    &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.016951&lt;/span&gt;   &lt;span class="mf"&gt;0.013787&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.230&lt;/span&gt;  &lt;span class="mf"&gt;0.21963&lt;/span&gt;    
+&lt;span class="n"&gt;weight&lt;/span&gt;        &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.006474&lt;/span&gt;   &lt;span class="mf"&gt;0.000652&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;9.929&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;acceleration&lt;/span&gt;   &lt;span class="mf"&gt;0.080576&lt;/span&gt;   &lt;span class="mf"&gt;0.098845&lt;/span&gt;   &lt;span class="mf"&gt;0.815&lt;/span&gt;  &lt;span class="mf"&gt;0.41548&lt;/span&gt;    
+&lt;span class="n"&gt;year&lt;/span&gt;           &lt;span class="mf"&gt;0.750773&lt;/span&gt;   &lt;span class="mf"&gt;0.050973&lt;/span&gt;  &lt;span class="mf"&gt;14.729&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;origin&lt;/span&gt;         &lt;span class="mf"&gt;1.426141&lt;/span&gt;   &lt;span class="mf"&gt;0.278136&lt;/span&gt;   &lt;span class="mf"&gt;5.127&lt;/span&gt; &lt;span class="mf"&gt;4.67&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;07&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;standard&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;3.328&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;384&lt;/span&gt; &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Multiple&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.8215&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;    &lt;span class="n"&gt;Adjusted&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.8182&lt;/span&gt; 
+&lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;statistic&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;252.4&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="mi"&gt;384&lt;/span&gt; &lt;span class="n"&gt;DF&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;  &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;2.2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;i. Is there a relationship between the predictors and the response?&lt;/p&gt;
+&lt;p&gt;Yes, there is a relationship between the predictor and the response as determined by testing the null hypothesis of all regression coefficients to zero. Since the F-statistic is much larger than 1 and has a correspondingly small p-value we can confirm the likelihood that the null hypothesis is false and that there is a statistically significant relationship between the variables and mpg.&lt;/p&gt;
+&lt;p&gt;ii. Which predictors appear to have a statistically significant relationship to the response?&lt;/p&gt;
+&lt;p&gt;Weight, year, origin and possibly displacement.&lt;/p&gt;
+&lt;p&gt;iii. What does the coefficient for the year variable suggest?&lt;/p&gt;
+&lt;p&gt;The regression coefficient for year, &lt;span class="math"&gt;\(0.7508\)&lt;/span&gt;, suggests that for every one year, mpg increases by the coefficient. In other words, cars become more fuel efficient every year by almost 1 mpg / year.&lt;/p&gt;
+&lt;h3&gt;d.&lt;/h3&gt;
+&lt;p&gt;Use the plot() function to produce diagnostic plots of the linear regression fit. Comment on any problems you see with the fit. Do the residual plots suggest any unusually large outliers? Does the leverage plot identify any observations with unusually high leverage?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;par&lt;span class="p"&gt;(&lt;/span&gt;mfrow&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;lm.fit2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_20_0.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;plot&lt;span class="p"&gt;(&lt;/span&gt;predict&lt;span class="p"&gt;(&lt;/span&gt;lm.fit2&lt;span class="p"&gt;),&lt;/span&gt; rstudent&lt;span class="p"&gt;(&lt;/span&gt;lm.fit2&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_21_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;The residuals plot suggests that there could be a non-linearity to the data and that there could be interaction terms. There are a handful of points with slightly large (&lt;span class="math"&gt;\(&amp;gt;10\)&lt;/span&gt;) residuals. Though it is difficult to identify whether this is a 'large' residual. To discern this we can plot the studentized residuals, computed by dividing each residual &lt;span class="math"&gt;\(e_i\)&lt;/span&gt; by its estimated standard error. Typical values are between -3 and 3. Since we have a couple points above the 3 threshold we can say that they are indeed outliers.  Point 14 has a high leverage but a low residual.&lt;/p&gt;
+&lt;h3&gt;e.&lt;/h3&gt;
+&lt;p&gt;Use the * and : symbols to fit linear regression models with interaction effects. Do any interactions appear to be statistically significant?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;a &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;as.data.frame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;as.table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Autocor&lt;span class="p"&gt;))&lt;/span&gt;
+a &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;subset&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;a&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Freq&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;0.9&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+a
+lm.fit3&lt;span class="o"&gt;=&lt;/span&gt;lm&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="o"&gt;~&lt;/span&gt;displacement&lt;span class="o"&gt;*&lt;/span&gt;cylinders&lt;span class="o"&gt;+&lt;/span&gt;weight&lt;span class="o"&gt;*&lt;/span&gt;displacement&lt;span class="p"&gt;,&lt;/span&gt;data &lt;span class="o"&gt;=&lt;/span&gt; Auto&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lm.fit3&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;table&gt;
+&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;th scope=col&gt;Var1&lt;/th&gt;&lt;th scope=col&gt;Var2&lt;/th&gt;&lt;th scope=col&gt;Freq&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+&lt;tbody&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;1&lt;/th&gt;&lt;td&gt;mpg&lt;/td&gt;&lt;td&gt;mpg&lt;/td&gt;&lt;td&gt;1  &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;10&lt;/th&gt;&lt;td&gt;cylinders&lt;/td&gt;&lt;td&gt;cylinders&lt;/td&gt;&lt;td&gt;1        &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;11&lt;/th&gt;&lt;td&gt;displacement     &lt;/td&gt;&lt;td&gt;cylinders        &lt;/td&gt;&lt;td&gt;0.950823300827783&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;18&lt;/th&gt;&lt;td&gt;cylinders        &lt;/td&gt;&lt;td&gt;displacement     &lt;/td&gt;&lt;td&gt;0.950823300827783&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;19&lt;/th&gt;&lt;td&gt;displacement&lt;/td&gt;&lt;td&gt;displacement&lt;/td&gt;&lt;td&gt;1           &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;21&lt;/th&gt;&lt;td&gt;weight           &lt;/td&gt;&lt;td&gt;displacement     &lt;/td&gt;&lt;td&gt;0.932994404089011&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;28&lt;/th&gt;&lt;td&gt;horsepower&lt;/td&gt;&lt;td&gt;horsepower&lt;/td&gt;&lt;td&gt;1         &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;35&lt;/th&gt;&lt;td&gt;displacement     &lt;/td&gt;&lt;td&gt;weight           &lt;/td&gt;&lt;td&gt;0.932994404089011&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;37&lt;/th&gt;&lt;td&gt;weight&lt;/td&gt;&lt;td&gt;weight&lt;/td&gt;&lt;td&gt;1     &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;46&lt;/th&gt;&lt;td&gt;acceleration&lt;/td&gt;&lt;td&gt;acceleration&lt;/td&gt;&lt;td&gt;1           &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;55&lt;/th&gt;&lt;td&gt;year&lt;/td&gt;&lt;td&gt;year&lt;/td&gt;&lt;td&gt;1   &lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;th scope=row&gt;64&lt;/th&gt;&lt;td&gt;origin&lt;/td&gt;&lt;td&gt;origin&lt;/td&gt;&lt;td&gt;1     &lt;/td&gt;&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;lm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mpg&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;displacement&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;cylinders&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;weight&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;displacement&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; 
+    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Auto&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+     &lt;span class="n"&gt;Min&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;   &lt;span class="n"&gt;Median&lt;/span&gt;       &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;      &lt;span class="n"&gt;Max&lt;/span&gt; 
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;13.2934&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.5184&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.3476&lt;/span&gt;   &lt;span class="mf"&gt;1.8399&lt;/span&gt;  &lt;span class="mf"&gt;17.7723&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                         &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;    
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;             &lt;span class="mf"&gt;5.262&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;  &lt;span class="mf"&gt;2.237&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;00&lt;/span&gt;  &lt;span class="mf"&gt;23.519&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;displacement&lt;/span&gt;           &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;7.351&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;02&lt;/span&gt;  &lt;span class="mf"&gt;1.669&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;02&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;4.403&lt;/span&gt; &lt;span class="mf"&gt;1.38&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;cylinders&lt;/span&gt;               &lt;span class="mf"&gt;7.606&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;  &lt;span class="mf"&gt;7.669&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;   &lt;span class="mf"&gt;0.992&lt;/span&gt;    &lt;span class="mf"&gt;0.322&lt;/span&gt;    
+&lt;span class="n"&gt;weight&lt;/span&gt;                 &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;9.888&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt;  &lt;span class="mf"&gt;1.329&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;7.438&lt;/span&gt; &lt;span class="mf"&gt;6.69&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;13&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;displacement&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;cylinders&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.986&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt;  &lt;span class="mf"&gt;3.426&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.872&lt;/span&gt;    &lt;span class="mf"&gt;0.384&lt;/span&gt;    
+&lt;span class="n"&gt;displacement&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;weight&lt;/span&gt;     &lt;span class="mf"&gt;2.128&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt;  &lt;span class="mf"&gt;5.002&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;06&lt;/span&gt;   &lt;span class="mf"&gt;4.254&lt;/span&gt; &lt;span class="mf"&gt;2.64&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;standard&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;4.103&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;386&lt;/span&gt; &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Multiple&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.7272&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;    &lt;span class="n"&gt;Adjusted&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.7237&lt;/span&gt; 
+&lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;statistic&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;205.8&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="mi"&gt;386&lt;/span&gt; &lt;span class="n"&gt;DF&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;  &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;2.2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Using the correlation matrix, I was able to find the pairs of variables that were correlated the most strongly. Having done this, I found that the displacement and weight appear to have a statistically significant interaction affect.&lt;/p&gt;
+&lt;h3&gt;f.&lt;/h3&gt;
+&lt;p&gt;Try a few different transformations of the variables, such as &lt;span class="math"&gt;\(log(X)\)&lt;/span&gt;, &lt;span class="math"&gt;\(\sqrt{X}\)&lt;/span&gt;, &lt;span class="math"&gt;\(X^2\)&lt;/span&gt;. Comment on your findings.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;lm.fit4&lt;span class="o"&gt;=&lt;/span&gt;lm&lt;span class="p"&gt;(&lt;/span&gt;mpg&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="kp"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;horsepower&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="kp"&gt;I&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;displacement&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="m"&gt;.5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="kp"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;weight&lt;span class="p"&gt;),&lt;/span&gt;data &lt;span class="o"&gt;=&lt;/span&gt; Auto&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lm.fit4&lt;span class="p"&gt;)&lt;/span&gt;
+par&lt;span class="p"&gt;(&lt;/span&gt;mfrow &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kt"&gt;c&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+plot&lt;span class="p"&gt;(&lt;/span&gt;lm.fit4&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;lm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mpg&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;horsepower&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;I&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;displacement&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="o"&gt;),&lt;/span&gt; 
+    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Auto&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+     &lt;span class="n"&gt;Min&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;   &lt;span class="n"&gt;Median&lt;/span&gt;       &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;      &lt;span class="n"&gt;Max&lt;/span&gt; 
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;11.0750&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.4785&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.3462&lt;/span&gt;   &lt;span class="mf"&gt;2.0992&lt;/span&gt;  &lt;span class="mf"&gt;15.2919&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+                    &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;    
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;         &lt;span class="mf"&gt;166.3627&lt;/span&gt;    &lt;span class="mf"&gt;14.2417&lt;/span&gt;  &lt;span class="mf"&gt;11.681&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;horsepower&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;      &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;7.1167&lt;/span&gt;     &lt;span class="mf"&gt;1.3076&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;5.442&lt;/span&gt; &lt;span class="mf"&gt;9.33&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;08&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;I&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;displacement&lt;/span&gt;&lt;span class="o"&gt;^&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.1900&lt;/span&gt;     &lt;span class="mf"&gt;0.1697&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.119&lt;/span&gt;    &lt;span class="mf"&gt;0.264&lt;/span&gt;    
+&lt;span class="n"&gt;log&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weight&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;         &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;13.5327&lt;/span&gt;     &lt;span class="mf"&gt;2.1255&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;6.367&lt;/span&gt; &lt;span class="mf"&gt;5.46&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;standard&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;3.992&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;388&lt;/span&gt; &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Multiple&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.7404&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;    &lt;span class="n"&gt;Adjusted&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.7384&lt;/span&gt; 
+&lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;statistic&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;368.9&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="mi"&gt;388&lt;/span&gt; &lt;span class="n"&gt;DF&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;  &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;2.2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_27_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;Looking at the residuals vs fitted there seems to be a strong heteroscedasticity in the data. To alleviate this we can try transforming the response using a concave function!&lt;/p&gt;
+&lt;h1&gt;10&lt;/h1&gt;
+&lt;p&gt;This question should be answered using the Carseats data&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Fit a multiple regression model to predict Sales using Price,Urban, and US.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;attach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Carseats&lt;span class="p"&gt;)&lt;/span&gt;
+lm.fit5 &lt;span class="o"&gt;=&lt;/span&gt; lm&lt;span class="p"&gt;(&lt;/span&gt;Sales&lt;span class="o"&gt;~&lt;/span&gt;Price&lt;span class="o"&gt;+&lt;/span&gt;Urban&lt;span class="o"&gt;+&lt;/span&gt;US&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lm.fit5&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;The following objects are masked from Carseats (pos = 3):
+
+    Advertising, Age, CompPrice, Education, Income, Population, Price,
+    Sales, ShelveLoc, Urban, US
+
+
+
+
+
+Call:
+lm(formula = Sales ~ Price + Urban + US)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.9206 -1.6220 -0.0564  1.5786  7.0581
+
+Coefficients:
+             Estimate Std. Error t value Pr(&amp;gt;|t|)    
+(Intercept) 13.043469   0.651012  20.036  &amp;lt; 2e-16 ***
+Price       -0.054459   0.005242 -10.389  &amp;lt; 2e-16 ***
+UrbanYes    -0.021916   0.271650  -0.081    0.936    
+USYes        1.200573   0.259042   4.635 4.86e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.472 on 396 degrees of freedom
+Multiple R-squared:  0.2393,    Adjusted R-squared:  0.2335 
+F-statistic: 41.52 on 3 and 396 DF,  p-value: &amp;lt; 2.2e-16
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Provide an interpretation of each coefficient in the model. Be careful—some of the variables in the model are qualitative!&lt;/p&gt;
+&lt;p&gt;Price has a negative correlation with Sales, higher price = less sales.
+UrbanYes the linear regressions does not suggest that selling the car specifically in an urban area affects sales.
+USYes If the store is in the US, it is associated with an increase in sales.&lt;/p&gt;
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;Write out the model in equation form, being careful to handle the qualitative variables properly.&lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(Sales = -0.054459*Price-0.021916*UrbanYes+1.200573*USYes\)&lt;/span&gt;&lt;/p&gt;
+&lt;h3&gt;d.&lt;/h3&gt;
+&lt;p&gt;For which of the predictors can you reject the null hypothesis &lt;span class="math"&gt;\(H_0:\beta_j=0\)&lt;/span&gt;?&lt;/p&gt;
+&lt;p&gt;UrbanYes&lt;/p&gt;
+&lt;h3&gt;e.&lt;/h3&gt;
+&lt;p&gt;On the basis of your response to the previous question, fit a smaller model that only uses the predictors for which there is evidence of association with the outcome.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;lm.fit6 &lt;span class="o"&gt;=&lt;/span&gt; lm&lt;span class="p"&gt;(&lt;/span&gt;Sales&lt;span class="o"&gt;~&lt;/span&gt;Price&lt;span class="o"&gt;+&lt;/span&gt;US&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;lm.fit6&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;lm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Sales&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;Price&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;US&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;Min&lt;/span&gt;      &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;  &lt;span class="n"&gt;Median&lt;/span&gt;      &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;     &lt;span class="n"&gt;Max&lt;/span&gt; 
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;6.9269&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.6286&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.0574&lt;/span&gt;  &lt;span class="mf"&gt;1.5766&lt;/span&gt;  &lt;span class="mf"&gt;7.0515&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+            &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;    
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="mf"&gt;13.03079&lt;/span&gt;    &lt;span class="mf"&gt;0.63098&lt;/span&gt;  &lt;span class="mf"&gt;20.652&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;Price&lt;/span&gt;       &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.05448&lt;/span&gt;    &lt;span class="mf"&gt;0.00523&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;10.416&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;USYes&lt;/span&gt;        &lt;span class="mf"&gt;1.19964&lt;/span&gt;    &lt;span class="mf"&gt;0.25846&lt;/span&gt;   &lt;span class="mf"&gt;4.641&lt;/span&gt; &lt;span class="mf"&gt;4.71&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;06&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;standard&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;2.469&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;397&lt;/span&gt; &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Multiple&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.2393&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;    &lt;span class="n"&gt;Adjusted&lt;/span&gt; &lt;span class="n"&gt;R&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;squared&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;0.2354&lt;/span&gt; 
+&lt;span class="n"&gt;F&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;statistic&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;62.43&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="n"&gt;and&lt;/span&gt; &lt;span class="mi"&gt;397&lt;/span&gt; &lt;span class="n"&gt;DF&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt;  &lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;value&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mf"&gt;2.2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;f.&lt;/h3&gt;
+&lt;p&gt;How well do the models in (a) and (e) fit the data?&lt;/p&gt;
+&lt;p&gt;Not very well. They have low &lt;span class="math"&gt;\(R^2\)&lt;/span&gt; values. Adding UrbanYes does little to improve the fit of the model.&lt;/p&gt;
+&lt;h3&gt;g.&lt;/h3&gt;
+&lt;p&gt;Using the model from (e), obtain 95% confidence intervals for the coefficient(s).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;h.&lt;/h3&gt;
+&lt;p&gt;Is there evidence of outliers or high leverage observations in the model from (e)?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content></entry><entry><title>Hello Universe</title><link href="http://afitts.github.io/2016/06/10/hello-world/" rel="alternate"></link><published>2016-06-10T00:00:00-05:00</published><updated>2016-06-10T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2016-06-10:/2016/06/10/hello-world/</id><summary type="html">&lt;p&gt;Hello UNIVERSE. This is Alex Fitts reporting in. &lt;/p&gt;
 &lt;p&gt;This space will serve as a hub for all the data science and programming projects I plan to embark on. I may occaisionally dip into astronomy, as is my nature, but hopefully I can find a wonderful marriage between the two. But …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Hello UNIVERSE. This is Alex Fitts reporting in. &lt;/p&gt;
 &lt;p&gt;This space will serve as a hub for all the data science and programming projects I plan to embark on. I may occaisionally dip into astronomy, as is my nature, but hopefully I can find a wonderful marriage between the two. But who knows what we will find out there? Our only choice to venture forth and find out!  &lt;/p&gt;</content></entry></feed>

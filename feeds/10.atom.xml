@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alex Fitts - 10</title><link href="http://afitts.github.io/" rel="alternate"></link><link href="http://afitts.github.io/feeds/10.atom.xml" rel="self"></link><id>http://afitts.github.io/</id><updated>2016-10-01T00:00:00-05:00</updated><entry><title>ISLR Chapter 5 Exercises</title><link href="http://afitts.github.io/2016/10/01/islr-chap5/" rel="alternate"></link><published>2016-10-01T00:00:00-05:00</published><updated>2016-10-01T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2016-10-01:/2016/10/01/islr-chap5/</id><summary type="html">&lt;h1&gt;Chapter 5 Exercises&lt;/h1&gt;
+&lt;h1&gt;5.&lt;/h1&gt;
+&lt;p&gt;In Chapter 4, we used logistic regression to predict the probability of default using income and balance on the Default data set. We will now estimate the test error of this logistic regression model using the validation set approach. Do not forget to set a random …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;Chapter 5 Exercises&lt;/h1&gt;
+&lt;h1&gt;5.&lt;/h1&gt;
+&lt;p&gt;In Chapter 4, we used logistic regression to predict the probability of default using income and balance on the Default data set. We will now estimate the test error of this logistic regression model using the validation set approach. Do not forget to set a random seed before beginning your analysis.&lt;/p&gt;
+&lt;h3&gt;a .&lt;/h3&gt;
+&lt;p&gt;Fit a logistic regression model that uses income and balance to predict default.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;ISLR&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;attach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Default&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;set.seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+glm.fit &lt;span class="o"&gt;=&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;default&lt;span class="o"&gt;~&lt;/span&gt;income&lt;span class="o"&gt;+&lt;/span&gt;balance&lt;span class="p"&gt;,&lt;/span&gt;family&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;binomial&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.fit&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;The following objects are masked from Default (pos = 3):
+
+    balance, default, income, student
+
+
+
+
+
+Call:
+glm(formula = default ~ income + balance, family = &amp;quot;binomial&amp;quot;)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.4725  -0.1444  -0.0574  -0.0211   3.7245
+
+Coefficients:
+              Estimate Std. Error z value Pr(&amp;gt;|z|)    
+(Intercept) -1.154e+01  4.348e-01 -26.545  &amp;lt; 2e-16 ***
+income       2.081e-05  4.985e-06   4.174 2.99e-05 ***
+balance      5.647e-03  2.274e-04  24.836  &amp;lt; 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2920.6  on 9999  degrees of freedom
+Residual deviance: 1579.0  on 9997  degrees of freedom
+AIC: 1585
+
+Number of Fisher Scoring iterations: 8
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Using the validation set approach, estimate the test error of this model. In order to do this, you must perform the following steps:
+* Split the sample set into a training set and a validation set.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;train &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kp"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Default&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="kp"&gt;dim&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;Default&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="m"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Fit a multiple logistic regression model using only the training observations.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;glm.fit2 &lt;span class="o"&gt;=&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;default&lt;span class="o"&gt;~&lt;/span&gt;income&lt;span class="o"&gt;+&lt;/span&gt;balance&lt;span class="p"&gt;,&lt;/span&gt;data &lt;span class="o"&gt;=&lt;/span&gt; Default&lt;span class="p"&gt;,&lt;/span&gt;family&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;binomial&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;subset&lt;span class="o"&gt;=&lt;/span&gt;train&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.fit2&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;glm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;income&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;balance&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;binomial&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; 
+    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Default&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;subset&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Deviance&lt;/span&gt; &lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; 
+    &lt;span class="n"&gt;Min&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;   &lt;span class="n"&gt;Median&lt;/span&gt;       &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;      &lt;span class="n"&gt;Max&lt;/span&gt;  
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.3583&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.1268&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.0475&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.0165&lt;/span&gt;   &lt;span class="mf"&gt;3.8116&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+              &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;    
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.208&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;  &lt;span class="mf"&gt;6.658&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;18.148&lt;/span&gt;   &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;income&lt;/span&gt;       &lt;span class="mf"&gt;1.858&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt;  &lt;span class="mf"&gt;7.573&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;06&lt;/span&gt;   &lt;span class="mf"&gt;2.454&lt;/span&gt;   &lt;span class="mf"&gt;0.0141&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;  
+&lt;span class="n"&gt;balance&lt;/span&gt;      &lt;span class="mf"&gt;6.053&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt;  &lt;span class="mf"&gt;3.467&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;04&lt;/span&gt;  &lt;span class="mf"&gt;17.457&lt;/span&gt;   &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dispersion&lt;/span&gt; &lt;span class="n"&gt;parameter&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;binomial&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="n"&gt;taken&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;Null&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1457.0&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;4999&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mf"&gt;734.4&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;4997&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;AIC&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;740.4&lt;/span&gt;
+
+&lt;span class="n"&gt;Number&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;Fisher&lt;/span&gt; &lt;span class="n"&gt;Scoring&lt;/span&gt; &lt;span class="n"&gt;iterations&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Obtain a prediction of default status for each individual in the validation set by computing the posterior probability of default for that individual, and classifying the individual to the default category if the posterior probability is greater than 0.5.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;probs &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; predict&lt;span class="p"&gt;(&lt;/span&gt;glm.fit2&lt;span class="p"&gt;,&lt;/span&gt; newdata &lt;span class="o"&gt;=&lt;/span&gt; Default&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;train&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;],&lt;/span&gt; type &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;response&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+glm.pred &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kp"&gt;rep&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;No&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;length&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;probs&lt;span class="p"&gt;))&lt;/span&gt;
+glm.pred&lt;span class="p"&gt;[&lt;/span&gt;probs &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="m"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;Yes&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;ul&gt;
+&lt;li&gt;Compute the validation set error, which is the fraction of the observations in the validation set that are misclassified.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kp"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;glm.pred &lt;span class="o"&gt;!=&lt;/span&gt; Default&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;train&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;default&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;0.0286&lt;/p&gt;
+&lt;p&gt;We obtain a test error of &lt;span class="math"&gt;\(2.86\%\)&lt;/span&gt; using the validation set approach.&lt;/p&gt;
+&lt;h1&gt;6.&lt;/h1&gt;
+&lt;p&gt;We continue to consider the use of a logistic regression model to predict the probability of “default” using “income” and “balance” on the “Default” data set. In particular, we will now computes estimates for the standard errors of the “income” and “balance” logistic regression coefficients in two different ways : (1) using the bootstrap, and (2) using the standard formula for computing the standard errors in the glm() function. Do not forget to set a random seed before beginning your analysis.&lt;/p&gt;
+&lt;h3&gt;a.&lt;/h3&gt;
+&lt;p&gt;Using the summary() and glm() functions, determine the estimated standard errors for the coefficients associated with income and balance in a multiple logistic regression model that uses both predictors.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;fit.glm &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;default &lt;span class="o"&gt;~&lt;/span&gt; income &lt;span class="o"&gt;+&lt;/span&gt; balance&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; Default&lt;span class="p"&gt;,&lt;/span&gt; family &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;binomial&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kp"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;fit.glm&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;Call&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+&lt;span class="n"&gt;glm&lt;/span&gt;&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;formula&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;income&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;balance&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;binomial&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;,&lt;/span&gt; 
+    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Default&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;Deviance&lt;/span&gt; &lt;span class="n"&gt;Residuals&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; 
+    &lt;span class="n"&gt;Min&lt;/span&gt;       &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;   &lt;span class="n"&gt;Median&lt;/span&gt;       &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="n"&gt;Q&lt;/span&gt;      &lt;span class="n"&gt;Max&lt;/span&gt;  
+&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;2.4725&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.1444&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.0574&lt;/span&gt;  &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;0.0211&lt;/span&gt;   &lt;span class="mf"&gt;3.7245&lt;/span&gt;
+
+&lt;span class="n"&gt;Coefficients&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
+              &lt;span class="n"&gt;Estimate&lt;/span&gt; &lt;span class="n"&gt;Std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;Error&lt;/span&gt; &lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="n"&gt;value&lt;/span&gt; &lt;span class="n"&gt;Pr&lt;/span&gt;&lt;span class="o"&gt;(&amp;gt;|&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="o"&gt;|)&lt;/span&gt;    
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Intercept&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;1.154&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt;  &lt;span class="mf"&gt;4.348&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;01&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mf"&gt;26.545&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;income&lt;/span&gt;       &lt;span class="mf"&gt;2.081&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt;  &lt;span class="mf"&gt;4.985&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;06&lt;/span&gt;   &lt;span class="mf"&gt;4.174&lt;/span&gt; &lt;span class="mf"&gt;2.99&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="n"&gt;balance&lt;/span&gt;      &lt;span class="mf"&gt;5.647&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;03&lt;/span&gt;  &lt;span class="mf"&gt;2.274&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;04&lt;/span&gt;  &lt;span class="mf"&gt;24.836&lt;/span&gt;  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;16&lt;/span&gt; &lt;span class="o"&gt;***&lt;/span&gt;
+&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="n"&gt;Signif&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;codes&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;  &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;***&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.001&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt; &lt;span class="err"&gt;‘&lt;/span&gt; &lt;span class="err"&gt;’&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+
+&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="n"&gt;Dispersion&lt;/span&gt; &lt;span class="n"&gt;parameter&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;binomial&lt;/span&gt; &lt;span class="n"&gt;family&lt;/span&gt; &lt;span class="n"&gt;taken&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;Null&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;2920.6&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;9999&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;Residual&lt;/span&gt; &lt;span class="n"&gt;deviance&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;1579.0&lt;/span&gt;  &lt;span class="n"&gt;on&lt;/span&gt; &lt;span class="mi"&gt;9997&lt;/span&gt;  &lt;span class="n"&gt;degrees&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;freedom&lt;/span&gt;
+&lt;span class="n"&gt;AIC&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1585&lt;/span&gt;
+
+&lt;span class="n"&gt;Number&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;Fisher&lt;/span&gt; &lt;span class="n"&gt;Scoring&lt;/span&gt; &lt;span class="n"&gt;iterations&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;8&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;b.&lt;/h3&gt;
+&lt;p&gt;Write a function, boot.fn(), that takes as input the “Default” data set as well as an index of the observations, and that outputs the coefficient estimates for “income” and “balance” in the multiple logistic regression model.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;boot.fn &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; &lt;span class="kr"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;data&lt;span class="p"&gt;,&lt;/span&gt; index&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    fit &lt;span class="o"&gt;&amp;lt;-&lt;/span&gt; glm&lt;span class="p"&gt;(&lt;/span&gt;default &lt;span class="o"&gt;~&lt;/span&gt; income &lt;span class="o"&gt;+&lt;/span&gt; balance&lt;span class="p"&gt;,&lt;/span&gt; data &lt;span class="o"&gt;=&lt;/span&gt; data&lt;span class="p"&gt;,&lt;/span&gt; family &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;binomial&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; subset &lt;span class="o"&gt;=&lt;/span&gt; index&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="kr"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;coef&lt;span class="p"&gt;(&lt;/span&gt;fit&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;c.&lt;/h3&gt;
+&lt;p&gt;Use the boot() function together with your boot.fn() function to estimate the standard errors of the logistic regression coefficients for “income” and “balance”.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;library&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;boot&lt;span class="p"&gt;)&lt;/span&gt;
+boot&lt;span class="p"&gt;(&lt;/span&gt;Default&lt;span class="p"&gt;,&lt;/span&gt; boot.fn&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="m"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;ORDINARY NONPARAMETRIC BOOTSTRAP
+
+
+Call:
+boot(data = Default, statistic = boot.fn, R = 1000)
+
+
+Bootstrap Statistics :
+         original        bias     std. error
+t1* -1.154047e+01 -8.331926e-03 4.240329e-01
+t2*  2.080898e-05  5.792741e-08 4.590086e-06
+t3*  5.647103e-03  2.526993e-06 2.268457e-04
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width &lt; 768) ? "left" : align;
+        indent = (screen.width &lt; 768) ? "0em" : indent;
+        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' &amp;&amp; location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+&lt;/script&gt;</content></entry></feed>

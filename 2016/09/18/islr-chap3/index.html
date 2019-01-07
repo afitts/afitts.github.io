@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+  <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif;  width:500px;}
+    /*
+      Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      We recommend moving this block and the preceding CSS link to the HEAD of your HTML file.
+     */
+  </style>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="google-site-verification" content="AgIAQN_qsniIQWOq659Bnhzx-LZts2FdgP1kLgtQg-k" />
+  <meta name="google-site-verification" content="-wneVy0z_MWocNaXikWZzyTe__HZbZDCRfLYEJ1sAg8" />
+
+  <title>ISLR Chapter 3 Exercises</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Alex Fitts">
+  <meta name="copyright" content="&copy; Copyright Greg Reda, 2013 to Present">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts 
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans|Merriweather|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?cfc9322a">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Feeds
+  ================================================== -->
+  <link rel="alternate" type="application/atom+xml" href="http://afitts.github.io/feeds/all.atom.xml" title="Alex Fitts Full Atom Feed">
+
+	<!-- Facebook Open Graph
+  ================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ISLR Chapter 3 Exercises">
+  <meta property="og:url" content="http://afitts.github.io/2016/09/18/islr-chap3/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Alex Fitts">
+  <meta property="og:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+
+  <!-- Twitter Cards
+  ================================================== -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Alex_Fitts">
+  <meta name="twitter:creator" content="@Alex_Fitts">
+  <meta name="twitter:domain" content="gregreda.com">
+  <meta name="twitter:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+  <meta name="twitter:title" content="ISLR Chapter 3 Exercises">
+  <meta name="twitter:description" content="">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/theme/images/favicon.ico">
+	<link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns"> <!-- Yes, I know this is a douchey class name -->
+      <ul>
+        <li>
+          <a href="/" title="Home"><img id="logo" src="/theme/images/avatar.jpg"></a>
+        </li>
+        <li>
+          <h1><a href="/" title="Home">Alex Fitts</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/Alex_Fitts" title="Twitter">
+            <i class="fa fa-fw fa-twitter"></i>
+          </a>
+          </li>
+        <li>
+          <a class="icon" href="https://github.com/afitts" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://www.linkedin.com/in/alex-fitts-64163b128/" title="LinkedIn">
+            <i class="fa fa-fw fa-linkedin"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/pub/">Publications</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/blog/">Blog</a></li>
+	<li><a href="/pdfs/FittsResume.pdf">Resume</a></li>
+        <!--        <li><a href="/coffee/">Coffee?</a></li> -->
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->		<section id="content" class="twelve columns">
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/2016/09/18/islr-chap3/" title="Permalink to ISLR Chapter 3 Exercises">ISLR Chapter 3 Exercises</a></h1>
+  <h5 class="article-date">September 18, 2016
+  </h5>
+  <hr class="small"></hr>
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+    <h1>Chapter 3 Exercises</h1>
+<h1>1.</h1>
+<p>The small p values for TV and radio correspond to the low probability of observing the t statistics we see by chance. Hence TV and radio <em>do</em> have a relationship with the response, sales. However, newspaper’s large p-value corresponds to an unlikely relationship with sales or a very weak one.</p>
+<h1>2.</h1>
+<p>The difference between the KNN classifier and KNN regression methods is KNN classifiers results in a qualitative classification of <span class="math">\(X\)</span> into a specific group while KNN regression methods are used to non parametrically fit many valued observations (<span class="math">\(f(x)\)</span>).</p>
+<h1>3.</h1>
+<ul>
+<li>a. i. False. ii. False. iii. False. iv. iv.True. <span class="math">\(X_5\)</span> dominates for high enough GPA, thus meaning on average males make more for high enough GPA.</li>
+<li>b. <span class="math">\(Y=50+20\cdot(4.0)+0.07\cdot(110)+35+0.01(4.0\cdot110)-10(4.0) = 137.1\)</span> thousand $$</li>
+<li>c. False. There can be an interaction effect; it’s just not a strong effect. Need to look at the associated p-value to determine whether the GPA*IQ interaction term is significant or not.</li>
+</ul>
+<h1>4.</h1>
+<h3>a.</h3>
+<p>The cubic regression may give the tighter fit on the training data (i.e. lower RSS) but there’s no telling whether this is over fitting to the data or not. This scenario is more likely with a larger epsilon. </p>
+<h3>b.</h3>
+<p>The linear regression will certainly give a better fit to test data than the cubic regression as it expects data pulled from a linear relation while the cubic regression will not only expect a different relation but will also have the possibility of being incorrectly fit to the noise in the training set.</p>
+<h3>c.</h3>
+<p>In most cases one would expect the cubic regression to fare better as it has a more flexible fit; however, if the actual relation is linear than one might expect a better fit from the linear.</p>
+<h3>d.</h3>
+<p>Not clear.</p>
+<h1>5.</h1>
+<h1>6.</h1>
+<h1>7.</h1>
+<h1>8.</h1>
+<p>This question involves the use of simple linear regression on the Auto data set.</p>
+<h3>a.</h3>
+<p>Use the lm() function to perform a simple linear regression with mpg as the response and horsepower as the predictor. Use the summary() function to print the results. Comment on the output.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>MASS<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>ISLR<span class="p">)</span>
+<span class="kn">attach</span><span class="p">(</span>Auto<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>lm.fit<span class="o">=</span>lm<span class="p">(</span>mpg<span class="o">~</span>horsepower<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>lm.fit<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">Call</span><span class="o">:</span>
+<span class="n">lm</span><span class="o">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">mpg</span> <span class="o">~</span> <span class="n">horsepower</span><span class="o">)</span>
+
+<span class="n">Residuals</span><span class="o">:</span>
+     <span class="n">Min</span>       <span class="mi">1</span><span class="n">Q</span>   <span class="n">Median</span>       <span class="mi">3</span><span class="n">Q</span>      <span class="n">Max</span> 
+<span class="o">-</span><span class="mf">13.5710</span>  <span class="o">-</span><span class="mf">3.2592</span>  <span class="o">-</span><span class="mf">0.3435</span>   <span class="mf">2.7630</span>  <span class="mf">16.9240</span>
+
+<span class="n">Coefficients</span><span class="o">:</span>
+             <span class="n">Estimate</span> <span class="n">Std</span><span class="o">.</span> <span class="n">Error</span> <span class="n">t</span> <span class="n">value</span> <span class="n">Pr</span><span class="o">(&gt;|</span><span class="n">t</span><span class="o">|)</span>    
+<span class="o">(</span><span class="n">Intercept</span><span class="o">)</span> <span class="mf">39.935861</span>   <span class="mf">0.717499</span>   <span class="mf">55.66</span>   <span class="o">&lt;</span><span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="n">horsepower</span>  <span class="o">-</span><span class="mf">0.157845</span>   <span class="mf">0.006446</span>  <span class="o">-</span><span class="mf">24.49</span>   <span class="o">&lt;</span><span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="o">---</span>
+<span class="n">Signif</span><span class="o">.</span> <span class="n">codes</span><span class="o">:</span>  <span class="mi">0</span> <span class="err">‘</span><span class="o">***</span><span class="err">’</span> <span class="mf">0.001</span> <span class="err">‘</span><span class="o">**</span><span class="err">’</span> <span class="mf">0.01</span> <span class="err">‘</span><span class="o">*</span><span class="err">’</span> <span class="mf">0.05</span> <span class="err">‘</span><span class="o">.</span><span class="err">’</span> <span class="mf">0.1</span> <span class="err">‘</span> <span class="err">’</span> <span class="mi">1</span>
+
+<span class="n">Residual</span> <span class="n">standard</span> <span class="n">error</span><span class="o">:</span> <span class="mf">4.906</span> <span class="n">on</span> <span class="mi">390</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">Multiple</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.6059</span><span class="o">,</span>    <span class="n">Adjusted</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.6049</span> 
+<span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="o">:</span> <span class="mf">599.7</span> <span class="n">on</span> <span class="mi">1</span> <span class="n">and</span> <span class="mi">390</span> <span class="n">DF</span><span class="o">,</span>  <span class="n">p</span><span class="o">-</span><span class="n">value</span><span class="o">:</span> <span class="o">&lt;</span> <span class="mf">2.2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span>
+</pre></div>
+
+
+<p>i. Is there a relationship between the predictor and the response?</p>
+<p>Yes, there is a relationship between the predictor and the response as determined by testing the null hypothesis of all regression coefficients to zero. Since the F-statistic is much larger than 1 and has a correspondingly small p-value we can confirm the likelihood that the null hypothesis is false and that there is a statistically significant relationship between mpg and horsepower.</p>
+<p>ii. How strong is the relationship between the predictor and the response?</p>
+<p>To calculate the residual error with respect to the response we take the mean of mpg, 23.446, and the RSE of the fit, 4.906 which indicates a <span class="math">\(4.906/23.446 *100 = 20.92\%\)</span> percentage error. The <span class="math">\(R^2=0.6059\)</span> indicates that <span class="math">\(60.59\%\)</span> of the variance of mpg is explained by horsepower.</p>
+<p>iii. Is the relationship between the predictor and the response positive or negative?</p>
+<p>Looking at the sign of the regression coefficient of horsepower,we see that the relationship between mpg and horsepower is negative.</p>
+<p>iv. What is the predicted mpg associated with a horsepower of 98? What are the associated 95 % confidence and prediction intervals?</p>
+<div class="highlight"><pre>mean_mpg <span class="o">=</span> <span class="m">39.935861</span> <span class="o">-</span> <span class="m">0.157845</span><span class="o">*</span><span class="m">98</span>
+mean_mpg
+predict<span class="p">(</span>lm.fit<span class="p">,</span> <span class="kt">data.frame</span><span class="p">(</span>horsepower<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">98</span><span class="p">)),</span> interval<span class="o">=</span><span class="s">&quot;confidence&quot;</span><span class="p">)</span>
+predict<span class="p">(</span>lm.fit<span class="p">,</span> <span class="kt">data.frame</span><span class="p">(</span>horsepower<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">98</span><span class="p">)),</span> interval<span class="o">=</span><span class="s">&quot;prediction&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>24.467051</p>
+<table>
+<thead><tr><th></th><th scope=col>fit</th><th scope=col>lwr</th><th scope=col>upr</th></tr></thead>
+<tbody>
+    <tr><th scope=row>1</th><td>24.46708</td><td>23.97308</td><td>24.96108</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead><tr><th></th><th scope=col>fit</th><th scope=col>lwr</th><th scope=col>upr</th></tr></thead>
+<tbody>
+    <tr><th scope=row>1</th><td>24.46708</td><td>14.80940</td><td>34.12476</td></tr>
+</tbody>
+</table>
+
+<p>Reminder: What are confidence and prediction intervals?</p>
+<p>We use a confidence interval to quantify the uncertainty surrounding the average sales over a large number of cities. For example, given that <span class="math">\(\text{\)</span>}100,000<span class="math">\( is spent on TV advertising and $20,000\)</span> is spent on radio advertising in each city, the <span class="math">\(95\%\)</span> confidence interval is <span class="math">\([10,985, 11,528]\)</span>. We interpret this to mean that <span class="math">\(95\%\)</span> of intervals of this form will contain the true value of <span class="math">\(f(X)\)</span> On the other hand, a prediction interval can be used to quantify the uncertainty surrounding sales for a particular city. Given that <span class="math">\(100,000\)</span> is spent on TV advertising and <span class="math">\(20,000\)</span> is spent on radio advertising in that city the <span class="math">\(95\%\)</span> prediction interval is <span class="math">\([7,930, 14,580]\)</span>. We interpret this to mean that <span class="math">\(95\%\)</span> of intervals of this form will contain the true value of Y for this city. </p>
+<h3>b.</h3>
+<p>Plot the response and the predictor. Use the abline() function to display the least squares regression line.</p>
+<div class="highlight"><pre>plot<span class="p">(</span>horsepower<span class="p">,</span>mpg<span class="p">)</span>
+abline<span class="p">(</span>lm.fit<span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_7_0.png"></p>
+<h3>c.</h3>
+<p>Use the plot() function to produce diagnostic plots of the least squares regression fit. Comment on any problems you see with the fit.</p>
+<div class="highlight"><pre>par<span class="p">(</span>mfrow<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+plot<span class="p">(</span>lm.fit<span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_9_0.png"></p>
+<div class="highlight"><pre>plot<span class="p">(</span>hatvalues <span class="p">(</span>lm.fit<span class="p">))</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_10_0.png"></p>
+<p>Plotting the residuals indicates that mpg most likely has a non-linear relationship with horsepower. It does not appear that there are any high-leverage (unusual value of x) points. </p>
+<h1>9.</h1>
+<p>This question involves the use of multiple linear regression on the Auto data set.</p>
+<h3>a.</h3>
+<p>Produce a scatterplot matrix which includes all of the variables in the data set.</p>
+<div class="highlight"><pre>pairs<span class="p">(</span>Auto<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Simple Scatterplot Matrix of Auto variables&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_13_0.png"></p>
+<h3>b.</h3>
+<p>Compute the matrix of correlations between the variables using the function cor(). You will need to exclude the name variable, which is qualitative.</p>
+<div class="highlight"><pre>Autocor <span class="o">=</span> cor<span class="p">(</span><span class="kp">subset</span><span class="p">(</span>Auto<span class="p">,</span>select<span class="o">=-</span><span class="kt">c</span><span class="p">(</span>name<span class="p">)))</span>
+Autocor
+</pre></div>
+
+
+<table>
+<thead><tr><th></th><th scope=col>mpg</th><th scope=col>cylinders</th><th scope=col>displacement</th><th scope=col>horsepower</th><th scope=col>weight</th><th scope=col>acceleration</th><th scope=col>year</th><th scope=col>origin</th></tr></thead>
+<tbody>
+    <tr><th scope=row>mpg</th><td> 1.0000000</td><td>-0.7776175</td><td>-0.8051269</td><td>-0.7784268</td><td>-0.8322442</td><td> 0.4233285</td><td> 0.5805410</td><td> 0.5652088</td></tr>
+    <tr><th scope=row>cylinders</th><td>-0.7776175</td><td> 1.0000000</td><td> 0.9508233</td><td> 0.8429834</td><td> 0.8975273</td><td>-0.5046834</td><td>-0.3456474</td><td>-0.5689316</td></tr>
+    <tr><th scope=row>displacement</th><td>-0.8051269</td><td> 0.9508233</td><td> 1.0000000</td><td> 0.8972570</td><td> 0.9329944</td><td>-0.5438005</td><td>-0.3698552</td><td>-0.6145351</td></tr>
+    <tr><th scope=row>horsepower</th><td>-0.7784268</td><td> 0.8429834</td><td> 0.8972570</td><td> 1.0000000</td><td> 0.8645377</td><td>-0.6891955</td><td>-0.4163615</td><td>-0.4551715</td></tr>
+    <tr><th scope=row>weight</th><td>-0.8322442</td><td> 0.8975273</td><td> 0.9329944</td><td> 0.8645377</td><td> 1.0000000</td><td>-0.4168392</td><td>-0.3091199</td><td>-0.5850054</td></tr>
+    <tr><th scope=row>acceleration</th><td> 0.4233285</td><td>-0.5046834</td><td>-0.5438005</td><td>-0.6891955</td><td>-0.4168392</td><td> 1.0000000</td><td> 0.2903161</td><td> 0.2127458</td></tr>
+    <tr><th scope=row>year</th><td> 0.5805410</td><td>-0.3456474</td><td>-0.3698552</td><td>-0.4163615</td><td>-0.3091199</td><td> 0.2903161</td><td> 1.0000000</td><td> 0.1815277</td></tr>
+    <tr><th scope=row>origin</th><td> 0.5652088</td><td>-0.5689316</td><td>-0.6145351</td><td>-0.4551715</td><td>-0.5850054</td><td> 0.2127458</td><td> 0.1815277</td><td> 1.0000000</td></tr>
+</tbody>
+</table>
+
+<h3>c.</h3>
+<p>Use the lm() function to perform a multiple linear regression with mpg as the response and all other variables except name as the predictors. Use the summary() function to print the results. Comment on the output.</p>
+<div class="highlight"><pre>lm.fit2<span class="o">=</span>lm<span class="p">(</span>mpg<span class="o">~</span><span class="m">.</span><span class="o">-</span>name<span class="p">,</span>data <span class="o">=</span> Auto<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>lm.fit2<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">Call</span><span class="o">:</span>
+<span class="n">lm</span><span class="o">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">mpg</span> <span class="o">~</span> <span class="o">.</span> <span class="o">-</span> <span class="n">name</span><span class="o">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">Auto</span><span class="o">)</span>
+
+<span class="n">Residuals</span><span class="o">:</span>
+    <span class="n">Min</span>      <span class="mi">1</span><span class="n">Q</span>  <span class="n">Median</span>      <span class="mi">3</span><span class="n">Q</span>     <span class="n">Max</span> 
+<span class="o">-</span><span class="mf">9.5903</span> <span class="o">-</span><span class="mf">2.1565</span> <span class="o">-</span><span class="mf">0.1169</span>  <span class="mf">1.8690</span> <span class="mf">13.0604</span>
+
+<span class="n">Coefficients</span><span class="o">:</span>
+               <span class="n">Estimate</span> <span class="n">Std</span><span class="o">.</span> <span class="n">Error</span> <span class="n">t</span> <span class="n">value</span> <span class="n">Pr</span><span class="o">(&gt;|</span><span class="n">t</span><span class="o">|)</span>    
+<span class="o">(</span><span class="n">Intercept</span><span class="o">)</span>  <span class="o">-</span><span class="mf">17.218435</span>   <span class="mf">4.644294</span>  <span class="o">-</span><span class="mf">3.707</span>  <span class="mf">0.00024</span> <span class="o">***</span>
+<span class="n">cylinders</span>     <span class="o">-</span><span class="mf">0.493376</span>   <span class="mf">0.323282</span>  <span class="o">-</span><span class="mf">1.526</span>  <span class="mf">0.12780</span>    
+<span class="n">displacement</span>   <span class="mf">0.019896</span>   <span class="mf">0.007515</span>   <span class="mf">2.647</span>  <span class="mf">0.00844</span> <span class="o">**</span> 
+<span class="n">horsepower</span>    <span class="o">-</span><span class="mf">0.016951</span>   <span class="mf">0.013787</span>  <span class="o">-</span><span class="mf">1.230</span>  <span class="mf">0.21963</span>    
+<span class="n">weight</span>        <span class="o">-</span><span class="mf">0.006474</span>   <span class="mf">0.000652</span>  <span class="o">-</span><span class="mf">9.929</span>  <span class="o">&lt;</span> <span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="n">acceleration</span>   <span class="mf">0.080576</span>   <span class="mf">0.098845</span>   <span class="mf">0.815</span>  <span class="mf">0.41548</span>    
+<span class="n">year</span>           <span class="mf">0.750773</span>   <span class="mf">0.050973</span>  <span class="mf">14.729</span>  <span class="o">&lt;</span> <span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="n">origin</span>         <span class="mf">1.426141</span>   <span class="mf">0.278136</span>   <span class="mf">5.127</span> <span class="mf">4.67</span><span class="n">e</span><span class="o">-</span><span class="mi">07</span> <span class="o">***</span>
+<span class="o">---</span>
+<span class="n">Signif</span><span class="o">.</span> <span class="n">codes</span><span class="o">:</span>  <span class="mi">0</span> <span class="err">‘</span><span class="o">***</span><span class="err">’</span> <span class="mf">0.001</span> <span class="err">‘</span><span class="o">**</span><span class="err">’</span> <span class="mf">0.01</span> <span class="err">‘</span><span class="o">*</span><span class="err">’</span> <span class="mf">0.05</span> <span class="err">‘</span><span class="o">.</span><span class="err">’</span> <span class="mf">0.1</span> <span class="err">‘</span> <span class="err">’</span> <span class="mi">1</span>
+
+<span class="n">Residual</span> <span class="n">standard</span> <span class="n">error</span><span class="o">:</span> <span class="mf">3.328</span> <span class="n">on</span> <span class="mi">384</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">Multiple</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.8215</span><span class="o">,</span>    <span class="n">Adjusted</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.8182</span> 
+<span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="o">:</span> <span class="mf">252.4</span> <span class="n">on</span> <span class="mi">7</span> <span class="n">and</span> <span class="mi">384</span> <span class="n">DF</span><span class="o">,</span>  <span class="n">p</span><span class="o">-</span><span class="n">value</span><span class="o">:</span> <span class="o">&lt;</span> <span class="mf">2.2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span>
+</pre></div>
+
+
+<p>i. Is there a relationship between the predictors and the response?</p>
+<p>Yes, there is a relationship between the predictor and the response as determined by testing the null hypothesis of all regression coefficients to zero. Since the F-statistic is much larger than 1 and has a correspondingly small p-value we can confirm the likelihood that the null hypothesis is false and that there is a statistically significant relationship between the variables and mpg.</p>
+<p>ii. Which predictors appear to have a statistically significant relationship to the response?</p>
+<p>Weight, year, origin and possibly displacement.</p>
+<p>iii. What does the coefficient for the year variable suggest?</p>
+<p>The regression coefficient for year, <span class="math">\(0.7508\)</span>, suggests that for every one year, mpg increases by the coefficient. In other words, cars become more fuel efficient every year by almost 1 mpg / year.</p>
+<h3>d.</h3>
+<p>Use the plot() function to produce diagnostic plots of the linear regression fit. Comment on any problems you see with the fit. Do the residual plots suggest any unusually large outliers? Does the leverage plot identify any observations with unusually high leverage?</p>
+<div class="highlight"><pre>par<span class="p">(</span>mfrow<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+plot<span class="p">(</span>lm.fit2<span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_20_0.png"></p>
+<div class="highlight"><pre>plot<span class="p">(</span>predict<span class="p">(</span>lm.fit2<span class="p">),</span> rstudent<span class="p">(</span>lm.fit2<span class="p">))</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_21_0.png"></p>
+<p>The residuals plot suggests that there could be a non-linearity to the data and that there could be interaction terms. There are a handful of points with slightly large (<span class="math">\(&gt;10\)</span>) residuals. Though it is difficult to identify whether this is a 'large' residual. To discern this we can plot the studentized residuals, computed by dividing each residual <span class="math">\(e_i\)</span> by its estimated standard error. Typical values are between -3 and 3. Since we have a couple points above the 3 threshold we can say that they are indeed outliers.  Point 14 has a high leverage but a low residual.</p>
+<h3>e.</h3>
+<p>Use the * and : symbols to fit linear regression models with interaction effects. Do any interactions appear to be statistically significant?</p>
+<div class="highlight"><pre>a <span class="o">&lt;-</span> <span class="kp">as.data.frame</span><span class="p">(</span><span class="kp">as.table</span><span class="p">(</span>Autocor<span class="p">))</span>
+a <span class="o">=</span> <span class="kp">subset</span><span class="p">(</span>a<span class="p">,</span> <span class="kp">abs</span><span class="p">(</span>Freq<span class="p">)</span> <span class="o">&gt;</span> <span class="m">0.9</span><span class="p">)</span>
+a
+lm.fit3<span class="o">=</span>lm<span class="p">(</span>mpg<span class="o">~</span>displacement<span class="o">*</span>cylinders<span class="o">+</span>weight<span class="o">*</span>displacement<span class="p">,</span>data <span class="o">=</span> Auto<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>lm.fit3<span class="p">)</span>
+</pre></div>
+
+
+<table>
+<thead><tr><th></th><th scope=col>Var1</th><th scope=col>Var2</th><th scope=col>Freq</th></tr></thead>
+<tbody>
+    <tr><th scope=row>1</th><td>mpg</td><td>mpg</td><td>1  </td></tr>
+    <tr><th scope=row>10</th><td>cylinders</td><td>cylinders</td><td>1        </td></tr>
+    <tr><th scope=row>11</th><td>displacement     </td><td>cylinders        </td><td>0.950823300827783</td></tr>
+    <tr><th scope=row>18</th><td>cylinders        </td><td>displacement     </td><td>0.950823300827783</td></tr>
+    <tr><th scope=row>19</th><td>displacement</td><td>displacement</td><td>1           </td></tr>
+    <tr><th scope=row>21</th><td>weight           </td><td>displacement     </td><td>0.932994404089011</td></tr>
+    <tr><th scope=row>28</th><td>horsepower</td><td>horsepower</td><td>1         </td></tr>
+    <tr><th scope=row>35</th><td>displacement     </td><td>weight           </td><td>0.932994404089011</td></tr>
+    <tr><th scope=row>37</th><td>weight</td><td>weight</td><td>1     </td></tr>
+    <tr><th scope=row>46</th><td>acceleration</td><td>acceleration</td><td>1           </td></tr>
+    <tr><th scope=row>55</th><td>year</td><td>year</td><td>1   </td></tr>
+    <tr><th scope=row>64</th><td>origin</td><td>origin</td><td>1     </td></tr>
+</tbody>
+</table>
+
+<div class="highlight"><pre><span class="n">Call</span><span class="o">:</span>
+<span class="n">lm</span><span class="o">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">mpg</span> <span class="o">~</span> <span class="n">displacement</span> <span class="o">*</span> <span class="n">cylinders</span> <span class="o">+</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">displacement</span><span class="o">,</span> 
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Auto</span><span class="o">)</span>
+
+<span class="n">Residuals</span><span class="o">:</span>
+     <span class="n">Min</span>       <span class="mi">1</span><span class="n">Q</span>   <span class="n">Median</span>       <span class="mi">3</span><span class="n">Q</span>      <span class="n">Max</span> 
+<span class="o">-</span><span class="mf">13.2934</span>  <span class="o">-</span><span class="mf">2.5184</span>  <span class="o">-</span><span class="mf">0.3476</span>   <span class="mf">1.8399</span>  <span class="mf">17.7723</span>
+
+<span class="n">Coefficients</span><span class="o">:</span>
+                         <span class="n">Estimate</span> <span class="n">Std</span><span class="o">.</span> <span class="n">Error</span> <span class="n">t</span> <span class="n">value</span> <span class="n">Pr</span><span class="o">(&gt;|</span><span class="n">t</span><span class="o">|)</span>    
+<span class="o">(</span><span class="n">Intercept</span><span class="o">)</span>             <span class="mf">5.262</span><span class="n">e</span><span class="o">+</span><span class="mi">01</span>  <span class="mf">2.237</span><span class="n">e</span><span class="o">+</span><span class="mi">00</span>  <span class="mf">23.519</span>  <span class="o">&lt;</span> <span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="n">displacement</span>           <span class="o">-</span><span class="mf">7.351</span><span class="n">e</span><span class="o">-</span><span class="mi">02</span>  <span class="mf">1.669</span><span class="n">e</span><span class="o">-</span><span class="mi">02</span>  <span class="o">-</span><span class="mf">4.403</span> <span class="mf">1.38</span><span class="n">e</span><span class="o">-</span><span class="mi">05</span> <span class="o">***</span>
+<span class="n">cylinders</span>               <span class="mf">7.606</span><span class="n">e</span><span class="o">-</span><span class="mi">01</span>  <span class="mf">7.669</span><span class="n">e</span><span class="o">-</span><span class="mi">01</span>   <span class="mf">0.992</span>    <span class="mf">0.322</span>    
+<span class="n">weight</span>                 <span class="o">-</span><span class="mf">9.888</span><span class="n">e</span><span class="o">-</span><span class="mi">03</span>  <span class="mf">1.329</span><span class="n">e</span><span class="o">-</span><span class="mi">03</span>  <span class="o">-</span><span class="mf">7.438</span> <span class="mf">6.69</span><span class="n">e</span><span class="o">-</span><span class="mi">13</span> <span class="o">***</span>
+<span class="n">displacement</span><span class="o">:</span><span class="n">cylinders</span> <span class="o">-</span><span class="mf">2.986</span><span class="n">e</span><span class="o">-</span><span class="mi">03</span>  <span class="mf">3.426</span><span class="n">e</span><span class="o">-</span><span class="mi">03</span>  <span class="o">-</span><span class="mf">0.872</span>    <span class="mf">0.384</span>    
+<span class="n">displacement</span><span class="o">:</span><span class="n">weight</span>     <span class="mf">2.128</span><span class="n">e</span><span class="o">-</span><span class="mi">05</span>  <span class="mf">5.002</span><span class="n">e</span><span class="o">-</span><span class="mi">06</span>   <span class="mf">4.254</span> <span class="mf">2.64</span><span class="n">e</span><span class="o">-</span><span class="mi">05</span> <span class="o">***</span>
+<span class="o">---</span>
+<span class="n">Signif</span><span class="o">.</span> <span class="n">codes</span><span class="o">:</span>  <span class="mi">0</span> <span class="err">‘</span><span class="o">***</span><span class="err">’</span> <span class="mf">0.001</span> <span class="err">‘</span><span class="o">**</span><span class="err">’</span> <span class="mf">0.01</span> <span class="err">‘</span><span class="o">*</span><span class="err">’</span> <span class="mf">0.05</span> <span class="err">‘</span><span class="o">.</span><span class="err">’</span> <span class="mf">0.1</span> <span class="err">‘</span> <span class="err">’</span> <span class="mi">1</span>
+
+<span class="n">Residual</span> <span class="n">standard</span> <span class="n">error</span><span class="o">:</span> <span class="mf">4.103</span> <span class="n">on</span> <span class="mi">386</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">Multiple</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.7272</span><span class="o">,</span>    <span class="n">Adjusted</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.7237</span> 
+<span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="o">:</span> <span class="mf">205.8</span> <span class="n">on</span> <span class="mi">5</span> <span class="n">and</span> <span class="mi">386</span> <span class="n">DF</span><span class="o">,</span>  <span class="n">p</span><span class="o">-</span><span class="n">value</span><span class="o">:</span> <span class="o">&lt;</span> <span class="mf">2.2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span>
+</pre></div>
+
+
+<p>Using the correlation matrix, I was able to find the pairs of variables that were correlated the most strongly. Having done this, I found that the displacement and weight appear to have a statistically significant interaction affect.</p>
+<h3>f.</h3>
+<p>Try a few different transformations of the variables, such as <span class="math">\(log(X)\)</span>, <span class="math">\(\sqrt{X}\)</span>, <span class="math">\(X^2\)</span>. Comment on your findings.</p>
+<div class="highlight"><pre>lm.fit4<span class="o">=</span>lm<span class="p">(</span>mpg<span class="o">~</span><span class="kp">log</span><span class="p">(</span>horsepower<span class="p">)</span><span class="o">+</span><span class="kp">I</span><span class="p">(</span>displacement<span class="o">^</span><span class="m">.5</span><span class="p">)</span><span class="o">+</span><span class="kp">log</span><span class="p">(</span>weight<span class="p">),</span>data <span class="o">=</span> Auto<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>lm.fit4<span class="p">)</span>
+par<span class="p">(</span>mfrow <span class="o">=</span> <span class="kt">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">))</span>
+plot<span class="p">(</span>lm.fit4<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">Call</span><span class="o">:</span>
+<span class="n">lm</span><span class="o">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">mpg</span> <span class="o">~</span> <span class="n">log</span><span class="o">(</span><span class="n">horsepower</span><span class="o">)</span> <span class="o">+</span> <span class="n">I</span><span class="o">(</span><span class="n">displacement</span><span class="o">^</span><span class="mf">0.5</span><span class="o">)</span> <span class="o">+</span> <span class="n">log</span><span class="o">(</span><span class="n">weight</span><span class="o">),</span> 
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Auto</span><span class="o">)</span>
+
+<span class="n">Residuals</span><span class="o">:</span>
+     <span class="n">Min</span>       <span class="mi">1</span><span class="n">Q</span>   <span class="n">Median</span>       <span class="mi">3</span><span class="n">Q</span>      <span class="n">Max</span> 
+<span class="o">-</span><span class="mf">11.0750</span>  <span class="o">-</span><span class="mf">2.4785</span>  <span class="o">-</span><span class="mf">0.3462</span>   <span class="mf">2.0992</span>  <span class="mf">15.2919</span>
+
+<span class="n">Coefficients</span><span class="o">:</span>
+                    <span class="n">Estimate</span> <span class="n">Std</span><span class="o">.</span> <span class="n">Error</span> <span class="n">t</span> <span class="n">value</span> <span class="n">Pr</span><span class="o">(&gt;|</span><span class="n">t</span><span class="o">|)</span>    
+<span class="o">(</span><span class="n">Intercept</span><span class="o">)</span>         <span class="mf">166.3627</span>    <span class="mf">14.2417</span>  <span class="mf">11.681</span>  <span class="o">&lt;</span> <span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="n">log</span><span class="o">(</span><span class="n">horsepower</span><span class="o">)</span>      <span class="o">-</span><span class="mf">7.1167</span>     <span class="mf">1.3076</span>  <span class="o">-</span><span class="mf">5.442</span> <span class="mf">9.33</span><span class="n">e</span><span class="o">-</span><span class="mi">08</span> <span class="o">***</span>
+<span class="n">I</span><span class="o">(</span><span class="n">displacement</span><span class="o">^</span><span class="mf">0.5</span><span class="o">)</span>  <span class="o">-</span><span class="mf">0.1900</span>     <span class="mf">0.1697</span>  <span class="o">-</span><span class="mf">1.119</span>    <span class="mf">0.264</span>    
+<span class="n">log</span><span class="o">(</span><span class="n">weight</span><span class="o">)</span>         <span class="o">-</span><span class="mf">13.5327</span>     <span class="mf">2.1255</span>  <span class="o">-</span><span class="mf">6.367</span> <span class="mf">5.46</span><span class="n">e</span><span class="o">-</span><span class="mi">10</span> <span class="o">***</span>
+<span class="o">---</span>
+<span class="n">Signif</span><span class="o">.</span> <span class="n">codes</span><span class="o">:</span>  <span class="mi">0</span> <span class="err">‘</span><span class="o">***</span><span class="err">’</span> <span class="mf">0.001</span> <span class="err">‘</span><span class="o">**</span><span class="err">’</span> <span class="mf">0.01</span> <span class="err">‘</span><span class="o">*</span><span class="err">’</span> <span class="mf">0.05</span> <span class="err">‘</span><span class="o">.</span><span class="err">’</span> <span class="mf">0.1</span> <span class="err">‘</span> <span class="err">’</span> <span class="mi">1</span>
+
+<span class="n">Residual</span> <span class="n">standard</span> <span class="n">error</span><span class="o">:</span> <span class="mf">3.992</span> <span class="n">on</span> <span class="mi">388</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">Multiple</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.7404</span><span class="o">,</span>    <span class="n">Adjusted</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.7384</span> 
+<span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="o">:</span> <span class="mf">368.9</span> <span class="n">on</span> <span class="mi">3</span> <span class="n">and</span> <span class="mi">388</span> <span class="n">DF</span><span class="o">,</span>  <span class="n">p</span><span class="o">-</span><span class="n">value</span><span class="o">:</span> <span class="o">&lt;</span> <span class="mf">2.2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter3_exercises_files/Chapter3_exercises_27_1.png"></p>
+<p>Looking at the residuals vs fitted there seems to be a strong heteroscedasticity in the data. To alleviate this we can try transforming the response using a concave function!</p>
+<h1>10</h1>
+<p>This question should be answered using the Carseats data</p>
+<h3>a.</h3>
+<p>Fit a multiple regression model to predict Sales using Price,Urban, and US.</p>
+<div class="highlight"><pre><span class="kn">attach</span><span class="p">(</span>Carseats<span class="p">)</span>
+lm.fit5 <span class="o">=</span> lm<span class="p">(</span>Sales<span class="o">~</span>Price<span class="o">+</span>Urban<span class="o">+</span>US<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>lm.fit5<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>The following objects are masked from Carseats (pos = 3):
+
+    Advertising, Age, CompPrice, Education, Income, Population, Price,
+    Sales, ShelveLoc, Urban, US
+
+
+
+
+
+Call:
+lm(formula = Sales ~ Price + Urban + US)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.9206 -1.6220 -0.0564  1.5786  7.0581
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 13.043469   0.651012  20.036  &lt; 2e-16 ***
+Price       -0.054459   0.005242 -10.389  &lt; 2e-16 ***
+UrbanYes    -0.021916   0.271650  -0.081    0.936    
+USYes        1.200573   0.259042   4.635 4.86e-06 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 2.472 on 396 degrees of freedom
+Multiple R-squared:  0.2393,    Adjusted R-squared:  0.2335 
+F-statistic: 41.52 on 3 and 396 DF,  p-value: &lt; 2.2e-16
+</pre></div>
+
+
+<h3>b.</h3>
+<p>Provide an interpretation of each coefficient in the model. Be careful—some of the variables in the model are qualitative!</p>
+<p>Price has a negative correlation with Sales, higher price = less sales.
+UrbanYes the linear regressions does not suggest that selling the car specifically in an urban area affects sales.
+USYes If the store is in the US, it is associated with an increase in sales.</p>
+<h3>c.</h3>
+<p>Write out the model in equation form, being careful to handle the qualitative variables properly.</p>
+<p><span class="math">\(Sales = -0.054459*Price-0.021916*UrbanYes+1.200573*USYes\)</span></p>
+<h3>d.</h3>
+<p>For which of the predictors can you reject the null hypothesis <span class="math">\(H_0:\beta_j=0\)</span>?</p>
+<p>UrbanYes</p>
+<h3>e.</h3>
+<p>On the basis of your response to the previous question, fit a smaller model that only uses the predictors for which there is evidence of association with the outcome.</p>
+<div class="highlight"><pre>lm.fit6 <span class="o">=</span> lm<span class="p">(</span>Sales<span class="o">~</span>Price<span class="o">+</span>US<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>lm.fit6<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">Call</span><span class="o">:</span>
+<span class="n">lm</span><span class="o">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">Sales</span> <span class="o">~</span> <span class="n">Price</span> <span class="o">+</span> <span class="n">US</span><span class="o">)</span>
+
+<span class="n">Residuals</span><span class="o">:</span>
+    <span class="n">Min</span>      <span class="mi">1</span><span class="n">Q</span>  <span class="n">Median</span>      <span class="mi">3</span><span class="n">Q</span>     <span class="n">Max</span> 
+<span class="o">-</span><span class="mf">6.9269</span> <span class="o">-</span><span class="mf">1.6286</span> <span class="o">-</span><span class="mf">0.0574</span>  <span class="mf">1.5766</span>  <span class="mf">7.0515</span>
+
+<span class="n">Coefficients</span><span class="o">:</span>
+            <span class="n">Estimate</span> <span class="n">Std</span><span class="o">.</span> <span class="n">Error</span> <span class="n">t</span> <span class="n">value</span> <span class="n">Pr</span><span class="o">(&gt;|</span><span class="n">t</span><span class="o">|)</span>    
+<span class="o">(</span><span class="n">Intercept</span><span class="o">)</span> <span class="mf">13.03079</span>    <span class="mf">0.63098</span>  <span class="mf">20.652</span>  <span class="o">&lt;</span> <span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="n">Price</span>       <span class="o">-</span><span class="mf">0.05448</span>    <span class="mf">0.00523</span> <span class="o">-</span><span class="mf">10.416</span>  <span class="o">&lt;</span> <span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="n">USYes</span>        <span class="mf">1.19964</span>    <span class="mf">0.25846</span>   <span class="mf">4.641</span> <span class="mf">4.71</span><span class="n">e</span><span class="o">-</span><span class="mi">06</span> <span class="o">***</span>
+<span class="o">---</span>
+<span class="n">Signif</span><span class="o">.</span> <span class="n">codes</span><span class="o">:</span>  <span class="mi">0</span> <span class="err">‘</span><span class="o">***</span><span class="err">’</span> <span class="mf">0.001</span> <span class="err">‘</span><span class="o">**</span><span class="err">’</span> <span class="mf">0.01</span> <span class="err">‘</span><span class="o">*</span><span class="err">’</span> <span class="mf">0.05</span> <span class="err">‘</span><span class="o">.</span><span class="err">’</span> <span class="mf">0.1</span> <span class="err">‘</span> <span class="err">’</span> <span class="mi">1</span>
+
+<span class="n">Residual</span> <span class="n">standard</span> <span class="n">error</span><span class="o">:</span> <span class="mf">2.469</span> <span class="n">on</span> <span class="mi">397</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">Multiple</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.2393</span><span class="o">,</span>    <span class="n">Adjusted</span> <span class="n">R</span><span class="o">-</span><span class="n">squared</span><span class="o">:</span>  <span class="mf">0.2354</span> 
+<span class="n">F</span><span class="o">-</span><span class="n">statistic</span><span class="o">:</span> <span class="mf">62.43</span> <span class="n">on</span> <span class="mi">2</span> <span class="n">and</span> <span class="mi">397</span> <span class="n">DF</span><span class="o">,</span>  <span class="n">p</span><span class="o">-</span><span class="n">value</span><span class="o">:</span> <span class="o">&lt;</span> <span class="mf">2.2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span>
+</pre></div>
+
+
+<h3>f.</h3>
+<p>How well do the models in (a) and (e) fit the data?</p>
+<p>Not very well. They have low <span class="math">\(R^2\)</span> values. Adding UrbanYes does little to improve the fit of the model.</p>
+<h3>g.</h3>
+<p>Using the model from (e), obtain 95% confidence intervals for the coefficient(s).</p>
+<div class="highlight"><pre>
+</pre></div>
+
+
+<h3>h.</h3>
+<p>Is there evidence of outliers or high leverage observations in the model from (e)?</p>
+<div class="highlight"><pre>
+</pre></div>
+
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+
+  <hr class="small"></hr>
+  <div class="article-sharing">
+      <ul>
+      <!-- Twitter Sharing
+      ================================================================== -->
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="Alex_Fitts">Tweet</a></li>
+
+      <!-- Facebook Sharing
+      ================================================================== -->
+      <li><div class="fb-share-button"
+          data-href="http://afitts.github.io/2016/09/18/islr-chap3/"
+          data-layout="button_count">
+      </div></li>
+      </ul>
+    </div>
+
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Back to Home</a>
+    </div>
+    <hr class="small"></hr>
+  </div>
+  <script>
+    // hide ipython notebook cell numbers
+  $('div.prompt').hide();
+  </script>
+		</section>
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Generated with <a href="http://getpelican.com">Pelican</a>. Layout done with <a href="http://getskeleton.com">Skeleton</a>. Icons are <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Hosted on <a href="http://aws.amazon.com/s3/">S3</a>.</p>
+  <p>&copy; Copyright Alex Fitts, 2016 to present</p>
+</footer>	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34295039-1']);
+  _gaq.push(['_setDomainName', 'gregreda.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+</body> <!-- End body -->
+
+<!-- JavaScript
+=================================================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- twitter.js
+==================================================================== -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
+
+<!-- Facebook SDK for JS
+==================================================================== -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+</html>

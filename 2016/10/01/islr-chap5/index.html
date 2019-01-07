@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+  <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif;  width:500px;}
+    /*
+      Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      We recommend moving this block and the preceding CSS link to the HEAD of your HTML file.
+     */
+  </style>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="google-site-verification" content="AgIAQN_qsniIQWOq659Bnhzx-LZts2FdgP1kLgtQg-k" />
+  <meta name="google-site-verification" content="-wneVy0z_MWocNaXikWZzyTe__HZbZDCRfLYEJ1sAg8" />
+
+  <title>ISLR Chapter 5 Exercises</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Alex Fitts">
+  <meta name="copyright" content="&copy; Copyright Greg Reda, 2013 to Present">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts 
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans|Merriweather|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?cfc9322a">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Feeds
+  ================================================== -->
+  <link rel="alternate" type="application/atom+xml" href="http://afitts.github.io/feeds/all.atom.xml" title="Alex Fitts Full Atom Feed">
+
+	<!-- Facebook Open Graph
+  ================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ISLR Chapter 5 Exercises">
+  <meta property="og:url" content="http://afitts.github.io/2016/10/01/islr-chap5/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Alex Fitts">
+  <meta property="og:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+
+  <!-- Twitter Cards
+  ================================================== -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Alex_Fitts">
+  <meta name="twitter:creator" content="@Alex_Fitts">
+  <meta name="twitter:domain" content="gregreda.com">
+  <meta name="twitter:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+  <meta name="twitter:title" content="ISLR Chapter 5 Exercises">
+  <meta name="twitter:description" content="">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/theme/images/favicon.ico">
+	<link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns"> <!-- Yes, I know this is a douchey class name -->
+      <ul>
+        <li>
+          <a href="/" title="Home"><img id="logo" src="/theme/images/avatar.jpg"></a>
+        </li>
+        <li>
+          <h1><a href="/" title="Home">Alex Fitts</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/Alex_Fitts" title="Twitter">
+            <i class="fa fa-fw fa-twitter"></i>
+          </a>
+          </li>
+        <li>
+          <a class="icon" href="https://github.com/afitts" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://www.linkedin.com/in/alex-fitts-64163b128/" title="LinkedIn">
+            <i class="fa fa-fw fa-linkedin"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/pub/">Publications</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/blog/">Blog</a></li>
+	<li><a href="/pdfs/FittsResume.pdf">Resume</a></li>
+        <!--        <li><a href="/coffee/">Coffee?</a></li> -->
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->		<section id="content" class="twelve columns">
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/2016/10/01/islr-chap5/" title="Permalink to ISLR Chapter 5 Exercises">ISLR Chapter 5 Exercises</a></h1>
+  <h5 class="article-date">October 01, 2016
+  </h5>
+  <hr class="small"></hr>
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+    <h1>Chapter 5 Exercises</h1>
+<h1>5.</h1>
+<p>In Chapter 4, we used logistic regression to predict the probability of default using income and balance on the Default data set. We will now estimate the test error of this logistic regression model using the validation set approach. Do not forget to set a random seed before beginning your analysis.</p>
+<h3>a .</h3>
+<p>Fit a logistic regression model that uses income and balance to predict default.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>ISLR<span class="p">)</span>
+<span class="kn">attach</span><span class="p">(</span>Default<span class="p">)</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+glm.fit <span class="o">=</span> glm<span class="p">(</span>default<span class="o">~</span>income<span class="o">+</span>balance<span class="p">,</span>family<span class="o">=</span><span class="s">&#39;binomial&#39;</span><span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>glm.fit<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>The following objects are masked from Default (pos = 3):
+
+    balance, default, income, student
+
+
+
+
+
+Call:
+glm(formula = default ~ income + balance, family = &quot;binomial&quot;)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.4725  -0.1444  -0.0574  -0.0211   3.7245
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept) -1.154e+01  4.348e-01 -26.545  &lt; 2e-16 ***
+income       2.081e-05  4.985e-06   4.174 2.99e-05 ***
+balance      5.647e-03  2.274e-04  24.836  &lt; 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 2920.6  on 9999  degrees of freedom
+Residual deviance: 1579.0  on 9997  degrees of freedom
+AIC: 1585
+
+Number of Fisher Scoring iterations: 8
+</pre></div>
+
+
+<h3>b.</h3>
+<p>Using the validation set approach, estimate the test error of this model. In order to do this, you must perform the following steps:
+* Split the sample set into a training set and a validation set.</p>
+<div class="highlight"><pre>train <span class="o">=</span> <span class="kp">sample</span><span class="p">(</span><span class="kp">dim</span><span class="p">(</span>Default<span class="p">)[</span><span class="m">1</span><span class="p">],</span> <span class="kp">dim</span><span class="p">(</span>Default<span class="p">)[</span><span class="m">1</span><span class="p">]</span> <span class="o">/</span> <span class="m">2</span><span class="p">)</span>
+</pre></div>
+
+
+<ul>
+<li>Fit a multiple logistic regression model using only the training observations.</li>
+</ul>
+<div class="highlight"><pre>glm.fit2 <span class="o">=</span> glm<span class="p">(</span>default<span class="o">~</span>income<span class="o">+</span>balance<span class="p">,</span>data <span class="o">=</span> Default<span class="p">,</span>family<span class="o">=</span><span class="s">&#39;binomial&#39;</span><span class="p">,</span>subset<span class="o">=</span>train<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>glm.fit2<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">Call</span><span class="o">:</span>
+<span class="n">glm</span><span class="o">(</span><span class="n">formula</span> <span class="o">=</span> <span class="k">default</span> <span class="o">~</span> <span class="n">income</span> <span class="o">+</span> <span class="n">balance</span><span class="o">,</span> <span class="n">family</span> <span class="o">=</span> <span class="s2">&quot;binomial&quot;</span><span class="o">,</span> 
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Default</span><span class="o">,</span> <span class="n">subset</span> <span class="o">=</span> <span class="n">train</span><span class="o">)</span>
+
+<span class="n">Deviance</span> <span class="n">Residuals</span><span class="o">:</span> 
+    <span class="n">Min</span>       <span class="mi">1</span><span class="n">Q</span>   <span class="n">Median</span>       <span class="mi">3</span><span class="n">Q</span>      <span class="n">Max</span>  
+<span class="o">-</span><span class="mf">2.3583</span>  <span class="o">-</span><span class="mf">0.1268</span>  <span class="o">-</span><span class="mf">0.0475</span>  <span class="o">-</span><span class="mf">0.0165</span>   <span class="mf">3.8116</span>
+
+<span class="n">Coefficients</span><span class="o">:</span>
+              <span class="n">Estimate</span> <span class="n">Std</span><span class="o">.</span> <span class="n">Error</span> <span class="n">z</span> <span class="n">value</span> <span class="n">Pr</span><span class="o">(&gt;|</span><span class="n">z</span><span class="o">|)</span>    
+<span class="o">(</span><span class="n">Intercept</span><span class="o">)</span> <span class="o">-</span><span class="mf">1.208</span><span class="n">e</span><span class="o">+</span><span class="mi">01</span>  <span class="mf">6.658</span><span class="n">e</span><span class="o">-</span><span class="mi">01</span> <span class="o">-</span><span class="mf">18.148</span>   <span class="o">&lt;</span><span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="n">income</span>       <span class="mf">1.858</span><span class="n">e</span><span class="o">-</span><span class="mi">05</span>  <span class="mf">7.573</span><span class="n">e</span><span class="o">-</span><span class="mi">06</span>   <span class="mf">2.454</span>   <span class="mf">0.0141</span> <span class="o">*</span>  
+<span class="n">balance</span>      <span class="mf">6.053</span><span class="n">e</span><span class="o">-</span><span class="mi">03</span>  <span class="mf">3.467</span><span class="n">e</span><span class="o">-</span><span class="mi">04</span>  <span class="mf">17.457</span>   <span class="o">&lt;</span><span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="o">---</span>
+<span class="n">Signif</span><span class="o">.</span> <span class="n">codes</span><span class="o">:</span>  <span class="mi">0</span> <span class="err">‘</span><span class="o">***</span><span class="err">’</span> <span class="mf">0.001</span> <span class="err">‘</span><span class="o">**</span><span class="err">’</span> <span class="mf">0.01</span> <span class="err">‘</span><span class="o">*</span><span class="err">’</span> <span class="mf">0.05</span> <span class="err">‘</span><span class="o">.</span><span class="err">’</span> <span class="mf">0.1</span> <span class="err">‘</span> <span class="err">’</span> <span class="mi">1</span>
+
+<span class="o">(</span><span class="n">Dispersion</span> <span class="n">parameter</span> <span class="k">for</span> <span class="n">binomial</span> <span class="n">family</span> <span class="n">taken</span> <span class="n">to</span> <span class="n">be</span> <span class="mi">1</span><span class="o">)</span>
+
+    <span class="n">Null</span> <span class="n">deviance</span><span class="o">:</span> <span class="mf">1457.0</span>  <span class="n">on</span> <span class="mi">4999</span>  <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">Residual</span> <span class="n">deviance</span><span class="o">:</span>  <span class="mf">734.4</span>  <span class="n">on</span> <span class="mi">4997</span>  <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">AIC</span><span class="o">:</span> <span class="mf">740.4</span>
+
+<span class="n">Number</span> <span class="n">of</span> <span class="n">Fisher</span> <span class="n">Scoring</span> <span class="n">iterations</span><span class="o">:</span> <span class="mi">8</span>
+</pre></div>
+
+
+<ul>
+<li>Obtain a prediction of default status for each individual in the validation set by computing the posterior probability of default for that individual, and classifying the individual to the default category if the posterior probability is greater than 0.5.</li>
+</ul>
+<div class="highlight"><pre>probs <span class="o">&lt;-</span> predict<span class="p">(</span>glm.fit2<span class="p">,</span> newdata <span class="o">=</span> Default<span class="p">[</span><span class="o">-</span>train<span class="p">,</span> <span class="p">],</span> type <span class="o">=</span> <span class="s">&quot;response&quot;</span><span class="p">)</span>
+glm.pred <span class="o">&lt;-</span> <span class="kp">rep</span><span class="p">(</span><span class="s">&quot;No&quot;</span><span class="p">,</span> <span class="kp">length</span><span class="p">(</span>probs<span class="p">))</span>
+glm.pred<span class="p">[</span>probs <span class="o">&gt;</span> <span class="m">0.5</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Yes&quot;</span>
+</pre></div>
+
+
+<ul>
+<li>Compute the validation set error, which is the fraction of the observations in the validation set that are misclassified.</li>
+</ul>
+<div class="highlight"><pre><span class="kp">mean</span><span class="p">(</span>glm.pred <span class="o">!=</span> Default<span class="p">[</span><span class="o">-</span>train<span class="p">,</span> <span class="p">]</span><span class="o">$</span>default<span class="p">)</span>
+</pre></div>
+
+
+<p>0.0286</p>
+<p>We obtain a test error of <span class="math">\(2.86\%\)</span> using the validation set approach.</p>
+<h1>6.</h1>
+<p>We continue to consider the use of a logistic regression model to predict the probability of “default” using “income” and “balance” on the “Default” data set. In particular, we will now computes estimates for the standard errors of the “income” and “balance” logistic regression coefficients in two different ways : (1) using the bootstrap, and (2) using the standard formula for computing the standard errors in the glm() function. Do not forget to set a random seed before beginning your analysis.</p>
+<h3>a.</h3>
+<p>Using the summary() and glm() functions, determine the estimated standard errors for the coefficients associated with income and balance in a multiple logistic regression model that uses both predictors.</p>
+<div class="highlight"><pre>fit.glm <span class="o">&lt;-</span> glm<span class="p">(</span>default <span class="o">~</span> income <span class="o">+</span> balance<span class="p">,</span> data <span class="o">=</span> Default<span class="p">,</span> family <span class="o">=</span> <span class="s">&quot;binomial&quot;</span><span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>fit.glm<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">Call</span><span class="o">:</span>
+<span class="n">glm</span><span class="o">(</span><span class="n">formula</span> <span class="o">=</span> <span class="k">default</span> <span class="o">~</span> <span class="n">income</span> <span class="o">+</span> <span class="n">balance</span><span class="o">,</span> <span class="n">family</span> <span class="o">=</span> <span class="s2">&quot;binomial&quot;</span><span class="o">,</span> 
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Default</span><span class="o">)</span>
+
+<span class="n">Deviance</span> <span class="n">Residuals</span><span class="o">:</span> 
+    <span class="n">Min</span>       <span class="mi">1</span><span class="n">Q</span>   <span class="n">Median</span>       <span class="mi">3</span><span class="n">Q</span>      <span class="n">Max</span>  
+<span class="o">-</span><span class="mf">2.4725</span>  <span class="o">-</span><span class="mf">0.1444</span>  <span class="o">-</span><span class="mf">0.0574</span>  <span class="o">-</span><span class="mf">0.0211</span>   <span class="mf">3.7245</span>
+
+<span class="n">Coefficients</span><span class="o">:</span>
+              <span class="n">Estimate</span> <span class="n">Std</span><span class="o">.</span> <span class="n">Error</span> <span class="n">z</span> <span class="n">value</span> <span class="n">Pr</span><span class="o">(&gt;|</span><span class="n">z</span><span class="o">|)</span>    
+<span class="o">(</span><span class="n">Intercept</span><span class="o">)</span> <span class="o">-</span><span class="mf">1.154</span><span class="n">e</span><span class="o">+</span><span class="mi">01</span>  <span class="mf">4.348</span><span class="n">e</span><span class="o">-</span><span class="mi">01</span> <span class="o">-</span><span class="mf">26.545</span>  <span class="o">&lt;</span> <span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="n">income</span>       <span class="mf">2.081</span><span class="n">e</span><span class="o">-</span><span class="mi">05</span>  <span class="mf">4.985</span><span class="n">e</span><span class="o">-</span><span class="mi">06</span>   <span class="mf">4.174</span> <span class="mf">2.99</span><span class="n">e</span><span class="o">-</span><span class="mi">05</span> <span class="o">***</span>
+<span class="n">balance</span>      <span class="mf">5.647</span><span class="n">e</span><span class="o">-</span><span class="mi">03</span>  <span class="mf">2.274</span><span class="n">e</span><span class="o">-</span><span class="mi">04</span>  <span class="mf">24.836</span>  <span class="o">&lt;</span> <span class="mi">2</span><span class="n">e</span><span class="o">-</span><span class="mi">16</span> <span class="o">***</span>
+<span class="o">---</span>
+<span class="n">Signif</span><span class="o">.</span> <span class="n">codes</span><span class="o">:</span>  <span class="mi">0</span> <span class="err">‘</span><span class="o">***</span><span class="err">’</span> <span class="mf">0.001</span> <span class="err">‘</span><span class="o">**</span><span class="err">’</span> <span class="mf">0.01</span> <span class="err">‘</span><span class="o">*</span><span class="err">’</span> <span class="mf">0.05</span> <span class="err">‘</span><span class="o">.</span><span class="err">’</span> <span class="mf">0.1</span> <span class="err">‘</span> <span class="err">’</span> <span class="mi">1</span>
+
+<span class="o">(</span><span class="n">Dispersion</span> <span class="n">parameter</span> <span class="k">for</span> <span class="n">binomial</span> <span class="n">family</span> <span class="n">taken</span> <span class="n">to</span> <span class="n">be</span> <span class="mi">1</span><span class="o">)</span>
+
+    <span class="n">Null</span> <span class="n">deviance</span><span class="o">:</span> <span class="mf">2920.6</span>  <span class="n">on</span> <span class="mi">9999</span>  <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">Residual</span> <span class="n">deviance</span><span class="o">:</span> <span class="mf">1579.0</span>  <span class="n">on</span> <span class="mi">9997</span>  <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">AIC</span><span class="o">:</span> <span class="mi">1585</span>
+
+<span class="n">Number</span> <span class="n">of</span> <span class="n">Fisher</span> <span class="n">Scoring</span> <span class="n">iterations</span><span class="o">:</span> <span class="mi">8</span>
+</pre></div>
+
+
+<h3>b.</h3>
+<p>Write a function, boot.fn(), that takes as input the “Default” data set as well as an index of the observations, and that outputs the coefficient estimates for “income” and “balance” in the multiple logistic regression model.</p>
+<div class="highlight"><pre>boot.fn <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>data<span class="p">,</span> index<span class="p">)</span> <span class="p">{</span>
+    fit <span class="o">&lt;-</span> glm<span class="p">(</span>default <span class="o">~</span> income <span class="o">+</span> balance<span class="p">,</span> data <span class="o">=</span> data<span class="p">,</span> family <span class="o">=</span> <span class="s">&quot;binomial&quot;</span><span class="p">,</span> subset <span class="o">=</span> index<span class="p">)</span>
+    <span class="kr">return</span> <span class="p">(</span>coef<span class="p">(</span>fit<span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<h3>c.</h3>
+<p>Use the boot() function together with your boot.fn() function to estimate the standard errors of the logistic regression coefficients for “income” and “balance”.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>boot<span class="p">)</span>
+boot<span class="p">(</span>Default<span class="p">,</span> boot.fn<span class="p">,</span> <span class="m">1000</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>ORDINARY NONPARAMETRIC BOOTSTRAP
+
+
+Call:
+boot(data = Default, statistic = boot.fn, R = 1000)
+
+
+Bootstrap Statistics :
+         original        bias     std. error
+t1* -1.154047e+01 -8.331926e-03 4.240329e-01
+t2*  2.080898e-05  5.792741e-08 4.590086e-06
+t3*  5.647103e-03  2.526993e-06 2.268457e-04
+</pre></div>
+
+
+<div class="highlight"><pre>
+</pre></div>
+
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+
+  <hr class="small"></hr>
+  <div class="article-sharing">
+      <ul>
+      <!-- Twitter Sharing
+      ================================================================== -->
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="Alex_Fitts">Tweet</a></li>
+
+      <!-- Facebook Sharing
+      ================================================================== -->
+      <li><div class="fb-share-button"
+          data-href="http://afitts.github.io/2016/10/01/islr-chap5/"
+          data-layout="button_count">
+      </div></li>
+      </ul>
+    </div>
+
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Back to Home</a>
+    </div>
+    <hr class="small"></hr>
+  </div>
+  <script>
+    // hide ipython notebook cell numbers
+  $('div.prompt').hide();
+  </script>
+		</section>
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Generated with <a href="http://getpelican.com">Pelican</a>. Layout done with <a href="http://getskeleton.com">Skeleton</a>. Icons are <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Hosted on <a href="http://aws.amazon.com/s3/">S3</a>.</p>
+  <p>&copy; Copyright Alex Fitts, 2016 to present</p>
+</footer>	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34295039-1']);
+  _gaq.push(['_setDomainName', 'gregreda.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+</body> <!-- End body -->
+
+<!-- JavaScript
+=================================================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- twitter.js
+==================================================================== -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
+
+<!-- Facebook SDK for JS
+==================================================================== -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+</html>

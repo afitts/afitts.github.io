@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+  <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif;  width:500px;}
+    /*
+      Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      We recommend moving this block and the preceding CSS link to the HEAD of your HTML file.
+     */
+  </style>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="google-site-verification" content="AgIAQN_qsniIQWOq659Bnhzx-LZts2FdgP1kLgtQg-k" />
+  <meta name="google-site-verification" content="-wneVy0z_MWocNaXikWZzyTe__HZbZDCRfLYEJ1sAg8" />
+
+  <title>ISLR Chapter 4 Exercises</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Alex Fitts">
+  <meta name="copyright" content="&copy; Copyright Greg Reda, 2013 to Present">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts 
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans|Merriweather|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?cfc9322a">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Feeds
+  ================================================== -->
+  <link rel="alternate" type="application/atom+xml" href="http://afitts.github.io/feeds/all.atom.xml" title="Alex Fitts Full Atom Feed">
+
+	<!-- Facebook Open Graph
+  ================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ISLR Chapter 4 Exercises">
+  <meta property="og:url" content="http://afitts.github.io/2016/09/25/islr-chap4/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Alex Fitts">
+  <meta property="og:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+
+  <!-- Twitter Cards
+  ================================================== -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Alex_Fitts">
+  <meta name="twitter:creator" content="@Alex_Fitts">
+  <meta name="twitter:domain" content="gregreda.com">
+  <meta name="twitter:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+  <meta name="twitter:title" content="ISLR Chapter 4 Exercises">
+  <meta name="twitter:description" content="">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/theme/images/favicon.ico">
+	<link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns"> <!-- Yes, I know this is a douchey class name -->
+      <ul>
+        <li>
+          <a href="/" title="Home"><img id="logo" src="/theme/images/avatar.jpg"></a>
+        </li>
+        <li>
+          <h1><a href="/" title="Home">Alex Fitts</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/Alex_Fitts" title="Twitter">
+            <i class="fa fa-fw fa-twitter"></i>
+          </a>
+          </li>
+        <li>
+          <a class="icon" href="https://github.com/afitts" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://www.linkedin.com/in/alex-fitts-64163b128/" title="LinkedIn">
+            <i class="fa fa-fw fa-linkedin"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/pub/">Publications</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/blog/">Blog</a></li>
+	<li><a href="/pdfs/FittsResume.pdf">Resume</a></li>
+        <!--        <li><a href="/coffee/">Coffee?</a></li> -->
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->		<section id="content" class="twelve columns">
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/2016/09/25/islr-chap4/" title="Permalink to ISLR Chapter 4 Exercises">ISLR Chapter 4 Exercises</a></h1>
+  <h5 class="article-date">September 25, 2016
+  </h5>
+  <hr class="small"></hr>
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+    <h1>Chapter 3 Exercises</h1>
+<h1>4. The curse of dimensionality</h1>
+<p>When the number of features p is large, there tends to be a deterioration in the performance of KNN and other local approaches that perform prediction using only observations that are near the test observation for which a prediction must be made. This phenomenon is known as the curse of dimensionality, and it ties into the fact that non-parametric approaches often perform poorly when p is large. We will now investigate this curse.</p>
+<h3>a.</h3>
+<p>Suppose that we have a set of observations, each with measurements on <span class="math">\(p = 1\)</span> feature, <span class="math">\(X\)</span>. We assume that <span class="math">\(X\)</span> is uniformly (evenly) distributed on <span class="math">\([0,1]\)</span>. Associated with each observation is a response value. Suppose that we wish to predict a test observation’s response using only observations that are within <span class="math">\(10\%\)</span> of the range of <span class="math">\(X\)</span> closest to that test observation. For instance, in order to predict the response for a test observation with <span class="math">\(X = 0.6\)</span>,we will use observations in the range <span class="math">\([0.55,0.65]\)</span>. On average, what fraction of the available observations will we use to make the prediction?</p>
+<p>Naively, on average we would expect <span class="math">\(10\%\)</span> of observations to be available but we must be careful at the boundaries of the feature. By intergrating two linear functions to describe each boundary we actually get that on average we have <span class="math">\(9.75\%\)</span> of obervations available.</p>
+<p><span class="math">\(\int_{0.05}^{0.95}10dx+\int_{0}^{0.05}100x+5dx+\int_{0.95}^{1}105-100x-dx = 9+0.375+0.375=9.75\%\)</span></p>
+<h3>b.</h3>
+<p>Now suppose that we have a set of observations, each with measurements on <span class="math">\(p = 2\)</span> features, <span class="math">\(X_1\)</span> and <span class="math">\(X_2\)</span>. We assume that <span class="math">\((X_1,X_2)\)</span> are uniformly distributed on <span class="math">\([0,1]\times[0,1]\)</span>. We wish to predict a test observation’s response using only observations that are within <span class="math">\(10\%\)</span> of the range of <span class="math">\(X_1\)</span> and within <span class="math">\(10\%\)</span> of the range of <span class="math">\(X_2\)</span> closest to that test observation. For instance, in order to predict the response for a test observation with <span class="math">\(X_1 = 0.6\)</span> and <span class="math">\(X_2 = 0.35\)</span>, we will use observations in the range <span class="math">\([0.55, 0.65]\)</span> for X1 and in the range <span class="math">\([0.3, 0.4]\)</span> for X2. On average, what fraction of the available observations will we use to make the prediction?</p>
+<p>Since <span class="math">\(X_1\)</span> and <span class="math">\(X_2\)</span> are uniformly and independently distributed we can assume that the fraction of available observations will just be the product of two equations identical to the one used in part a. Given this we can expect that <span class="math">\((9.75\times9.75)=0.950625\)</span> or about <span class="math">\(1\%\)</span> of observations will be available to make the prediction.</p>
+<h3>c.</h3>
+<p>Now suppose that we have a set of observations on <span class="math">\(p = 100\)</span> features. Again the observations are uniformly distributed on each feature, and again each feature ranges in value from 0 to 1. We wish to predict a test observation’s response using observations within the <span class="math">\(10\%\)</span> of each feature’s range that is closest to that test observation. What fraction of the available observations will we use to make the prediction?</p>
+<p>Roughly <span class="math">\((9.75)^p=(9.75)^{100}\simeq0\%\)</span> of the observations will be available to make the prediction!</p>
+<h1>5.</h1>
+<p>We now examine the differences between LDA and QDA.</p>
+<h3>a.</h3>
+<p>If the Bayes decision boundary is linear, do we expect LDA or QDA to perform better on the training set? On the test set?</p>
+<p>One the training set we except the QDA to perform better as it is a more flexible form of fitting but is likely to overfit the training set data in this regard. On the test set we expect the LDA to perform better as it accurately parameterizes the form of the underlying decision boundary.</p>
+<h3>b.</h3>
+<p>If the Bayes decision boundary is non-linear, do we expect LDA or QDA to perform better on the training set? On the test set?</p>
+<p>QDA for both.</p>
+<h3>c.</h3>
+<p>In general, as the sample size n increases, do we expect the test prediction accuracy of QDA relative to LDA to improve, decline, or be unchanged? Why?</p>
+<p>As n increases we expect the test prediction accuracy of QDA to improve compared to LDA. Since QDA is more flexible, it can, in general, arrive at a better fit but if there is not a large enough sample size we will end up overfitting to the noise in the data. (A large n will help offset any variance in the data.</p>
+<h3>d.</h3>
+<p>True or False: Even if the Bayes decision boundary for a given problem is linear, we will probably achieve a superior test error rate using QDA rather than LDA because QDA is flexible enough to model a linear decision boundary. Justify your answer.</p>
+<p>False. Depends on the sample size.</p>
+<h1>6.</h1>
+<p>Suppose we collect data for a group of students in a statistics class with variables <span class="math">\(X_1 =\)</span> hours studied, <span class="math">\(X_2 =\)</span> undergrad GPA, and <span class="math">\(Y =\)</span> receive an A. We fit a logistic regression and produce estimated coefficient, <span class="math">\(\hat\beta_0 = −6, \hat\beta_1 = 0.05, \hat\beta_2 = 1\)</span>.</p>
+<h3>a.</h3>
+<p>Estimate the probability that a student who studies for 40 h and has an undergrad GPA of 3.5 gets an A in the class.
+</p>
+<div class="math">$$ p(X)=\frac{e^{\hat\beta_0+\hat\beta_1\cdot\rm Hours+\hat\beta_2\cdot\rm GPA}}{1+e^{\hat\beta_0+\hat\beta_1\cdot \rm Hours+\hat\beta_2\cdot \rm GPA}}=0.3775$$</div>
+<h3>b.</h3>
+<p>How many hours would the student in part (a) need to study to have a 50 % chance of getting an A in the class?
+</p>
+<div class="math">$$ 0.5=\frac{e^{-6+0.05*X_1+3.5}}{1+e^{-6+0.05*X_1+3.5}}\Rightarrow X_1=50\:\rm Hours$$</div>
+<p>
+Rough stuff! Sounds like a terrible class.</p>
+<h1>7.</h1>
+<p>Suppose that we wish to predict whether a given stock will issue a dividend this year (“Yes” or “No”) based on <span class="math">\(X\)</span>, last year’s percent profit. We examine a large number of companies and discover that the mean value of <span class="math">\(X\)</span> for companies that issued a dividend was <span class="math">\(\bar X = 10\)</span>, while the mean for those that didn’t was <span class="math">\(\bar X = 0\)</span>. In addition, the variance of <span class="math">\(X\)</span> for these two sets of companies was <span class="math">\(\hat\sigma^2 = 36\)</span>. Finally, <span class="math">\(80\%\)</span> of companies issued dividends. Assuming that <span class="math">\(X\)</span> follows a normal distribution, predict the probability that a company will issue a dividend this year given that its percentage profit was <span class="math">\(X = 4\)</span> last year. </p>
+<div class="math">$$p(Y\vert X) =\frac{\pi_kf_k(x)}{\sum_{l=1}^K\pi_lf_l(x)}=\frac{\pi_\mathrm{yes}exp(\frac{1}{2\sigma^2}(x-\mu_\mathrm{yes}^2))}{\pi_\mathrm{yes}exp\left(\frac{1}{2\sigma^2}(x-\mu_\mathrm{yes}^2)\right)+\pi_\mathrm{no}exp\left(\frac{1}{2\sigma^2}(x-\mu_\mathrm{no}^2)\right)}=0.752$$</div>
+<h1>8.</h1>
+<p>Suppose that we take a data set, divide it into equally-sized training and test sets, and then try out two different classification procedures. First we use logistic regression and get an error rate of <span class="math">\(20\%\)</span> on the training data and <span class="math">\(30\%\)</span> on the test data. Next we use 1-nearest neighbors (i.e. <span class="math">\(K = 1\)</span>) and get an average error rate (averaged over both test and training data sets) of <span class="math">\(18\%\)</span>. Based on these results, which method should we prefer to use for classification of new observations? Why?</p>
+<p>I would prefer to use logistic regression. 1-nearest neighbors will overfit the data and yield a training error rate of <span class="math">\(0\%\)</span>. Hence the test error rate is actually <span class="math">\(36\%\)</span> and worse than what is found with the logistic regression.</p>
+<h1>9.</h1>
+<p>This problem has to do with odds.</p>
+<h3>a.</h3>
+<p>On average, what fraction of people with an odds of <span class="math">\(0.37\)</span> of defaulting on their credit card payment will in fact default?
+</p>
+<div class="math">$$ \frac{p(X)}{1-p(x)} = 0.37\Rightarrow p(x)=0.27$$</div>
+<h3>b.</h3>
+<p>Suppose that an individual has a <span class="math">\(16\%\)</span> chance of defaulting on her credit card payment. What are the odds that she will default?
+</p>
+<div class="math">$$ \frac{0.16}{1-0.16} = 0.19$$</div>
+<h1>10.</h1>
+<p>This question should be answered using the Weekly data set, which is part of the ISLR package. This data is similar in nature to the Smarket data from this chapter’s lab, except that it contains 1,089 weekly returns for 21 years, from the beginning of 1990 to the end of 2010.</p>
+<h3>a.</h3>
+<p>Produce some numerical and graphical summaries of the Weekly data. Do there appear to be any patterns?</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>ISLR<span class="p">)</span>
+<span class="kn">attach</span><span class="p">(</span>Weekly<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>Weekly<span class="p">)</span>
+Cor<span class="o">=</span>cor<span class="p">(</span>Weekly<span class="p">[,</span><span class="m">-9</span><span class="p">])</span>
+Cor
+a <span class="o">&lt;-</span> <span class="kp">as.data.frame</span><span class="p">(</span><span class="kp">as.table</span><span class="p">(</span>Cor<span class="p">))</span>
+a <span class="o">=</span> <span class="kp">subset</span><span class="p">(</span>a<span class="p">,</span> <span class="kp">abs</span><span class="p">(</span>Freq<span class="p">)</span> <span class="o">&gt;</span> <span class="m">0.5</span><span class="p">)</span>
+a
+</pre></div>
+
+
+<div class="highlight"><pre>      <span class="nv">Year</span>           <span class="nv">Lag1</span>               <span class="nv">Lag2</span>               <span class="nv">Lag3</span>         
+ <span class="nv">Min</span><span class="p">.</span>   <span class="s-Atom">:</span><span class="mi">1990</span>   <span class="nv">Min</span><span class="p">.</span>   <span class="p">:-</span><span class="mf">18.1950</span>   <span class="nv">Min</span><span class="p">.</span>   <span class="p">:-</span><span class="mf">18.1950</span>   <span class="nv">Min</span><span class="p">.</span>   <span class="p">:-</span><span class="mf">18.1950</span>  
+ <span class="mi">1</span><span class="s-Atom">st</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span><span class="mi">1995</span>   <span class="mi">1</span><span class="s-Atom">st</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span> <span class="o">-</span><span class="mf">1.1540</span>   <span class="mi">1</span><span class="s-Atom">st</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span> <span class="o">-</span><span class="mf">1.1540</span>   <span class="mi">1</span><span class="s-Atom">st</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span> <span class="o">-</span><span class="mf">1.1580</span>  
+ <span class="nv">Median</span> <span class="s-Atom">:</span><span class="mi">2000</span>   <span class="nv">Median</span> <span class="s-Atom">:</span>  <span class="mf">0.2410</span>   <span class="nv">Median</span> <span class="s-Atom">:</span>  <span class="mf">0.2410</span>   <span class="nv">Median</span> <span class="s-Atom">:</span>  <span class="mf">0.2410</span>  
+ <span class="nv">Mean</span>   <span class="s-Atom">:</span><span class="mi">2000</span>   <span class="nv">Mean</span>   <span class="s-Atom">:</span>  <span class="mf">0.1506</span>   <span class="nv">Mean</span>   <span class="s-Atom">:</span>  <span class="mf">0.1511</span>   <span class="nv">Mean</span>   <span class="s-Atom">:</span>  <span class="mf">0.1472</span>  
+ <span class="mi">3</span><span class="s-Atom">rd</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span><span class="mi">2005</span>   <span class="mi">3</span><span class="s-Atom">rd</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span>  <span class="mf">1.4050</span>   <span class="mi">3</span><span class="s-Atom">rd</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span>  <span class="mf">1.4090</span>   <span class="mi">3</span><span class="s-Atom">rd</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span>  <span class="mf">1.4090</span>  
+ <span class="nv">Max</span><span class="p">.</span>   <span class="s-Atom">:</span><span class="mi">2010</span>   <span class="nv">Max</span><span class="p">.</span>   <span class="s-Atom">:</span> <span class="mf">12.0260</span>   <span class="nv">Max</span><span class="p">.</span>   <span class="s-Atom">:</span> <span class="mf">12.0260</span>   <span class="nv">Max</span><span class="p">.</span>   <span class="s-Atom">:</span> <span class="mf">12.0260</span>  
+      <span class="nv">Lag4</span>               <span class="nv">Lag5</span>              <span class="nv">Volume</span>            <span class="nv">Today</span>         
+ <span class="nv">Min</span><span class="p">.</span>   <span class="p">:-</span><span class="mf">18.1950</span>   <span class="nv">Min</span><span class="p">.</span>   <span class="p">:-</span><span class="mf">18.1950</span>   <span class="nv">Min</span><span class="p">.</span>   <span class="s-Atom">:</span><span class="mf">0.08747</span>   <span class="nv">Min</span><span class="p">.</span>   <span class="p">:-</span><span class="mf">18.1950</span>  
+ <span class="mi">1</span><span class="s-Atom">st</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span> <span class="o">-</span><span class="mf">1.1580</span>   <span class="mi">1</span><span class="s-Atom">st</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span> <span class="o">-</span><span class="mf">1.1660</span>   <span class="mi">1</span><span class="s-Atom">st</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span><span class="mf">0.33202</span>   <span class="mi">1</span><span class="s-Atom">st</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span> <span class="o">-</span><span class="mf">1.1540</span>  
+ <span class="nv">Median</span> <span class="s-Atom">:</span>  <span class="mf">0.2380</span>   <span class="nv">Median</span> <span class="s-Atom">:</span>  <span class="mf">0.2340</span>   <span class="nv">Median</span> <span class="s-Atom">:</span><span class="mf">1.00268</span>   <span class="nv">Median</span> <span class="s-Atom">:</span>  <span class="mf">0.2410</span>  
+ <span class="nv">Mean</span>   <span class="s-Atom">:</span>  <span class="mf">0.1458</span>   <span class="nv">Mean</span>   <span class="s-Atom">:</span>  <span class="mf">0.1399</span>   <span class="nv">Mean</span>   <span class="s-Atom">:</span><span class="mf">1.57462</span>   <span class="nv">Mean</span>   <span class="s-Atom">:</span>  <span class="mf">0.1499</span>  
+ <span class="mi">3</span><span class="s-Atom">rd</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span>  <span class="mf">1.4090</span>   <span class="mi">3</span><span class="s-Atom">rd</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span>  <span class="mf">1.4050</span>   <span class="mi">3</span><span class="s-Atom">rd</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span><span class="mf">2.05373</span>   <span class="mi">3</span><span class="s-Atom">rd</span> <span class="nv">Qu</span><span class="p">.</span><span class="s-Atom">:</span>  <span class="mf">1.4050</span>  
+ <span class="nv">Max</span><span class="p">.</span>   <span class="s-Atom">:</span> <span class="mf">12.0260</span>   <span class="nv">Max</span><span class="p">.</span>   <span class="s-Atom">:</span> <span class="mf">12.0260</span>   <span class="nv">Max</span><span class="p">.</span>   <span class="s-Atom">:</span><span class="mf">9.32821</span>   <span class="nv">Max</span><span class="p">.</span>   <span class="s-Atom">:</span> <span class="mf">12.0260</span>  
+ <span class="nv">Direction</span> 
+ <span class="nv">Down</span><span class="s-Atom">:</span><span class="mi">484</span>  
+ <span class="nv">Up</span>  <span class="s-Atom">:</span><span class="mi">605</span>
+</pre></div>
+
+
+<table>
+<thead><tr><th></th><th scope=col>Year</th><th scope=col>Lag1</th><th scope=col>Lag2</th><th scope=col>Lag3</th><th scope=col>Lag4</th><th scope=col>Lag5</th><th scope=col>Volume</th><th scope=col>Today</th></tr></thead>
+<tbody>
+    <tr><th scope=row>Year</th><td> 1.00000000</td><td>-0.03228927</td><td>-0.03339001</td><td>-0.03000649</td><td>-0.03112792</td><td>-0.03051910</td><td> 0.84194162</td><td>-0.03245989</td></tr>
+    <tr><th scope=row>Lag1</th><td>-0.032289274</td><td> 1.000000000</td><td>-0.074853051</td><td> 0.058635682</td><td>-0.071273876</td><td>-0.008183096</td><td>-0.064951313</td><td>-0.075031842</td></tr>
+    <tr><th scope=row>Lag2</th><td>-0.03339001</td><td>-0.07485305</td><td> 1.00000000</td><td>-0.07572091</td><td> 0.05838153</td><td>-0.07249948</td><td>-0.08551314</td><td> 0.05916672</td></tr>
+    <tr><th scope=row>Lag3</th><td>-0.03000649</td><td> 0.05863568</td><td>-0.07572091</td><td> 1.00000000</td><td>-0.07539587</td><td> 0.06065717</td><td>-0.06928771</td><td>-0.07124364</td></tr>
+    <tr><th scope=row>Lag4</th><td>-0.031127923</td><td>-0.071273876</td><td> 0.058381535</td><td>-0.075395865</td><td> 1.000000000</td><td>-0.075675027</td><td>-0.061074617</td><td>-0.007825873</td></tr>
+    <tr><th scope=row>Lag5</th><td>-0.030519101</td><td>-0.008183096</td><td>-0.072499482</td><td> 0.060657175</td><td>-0.075675027</td><td> 1.000000000</td><td>-0.058517414</td><td> 0.011012698</td></tr>
+    <tr><th scope=row>Volume</th><td> 0.84194162</td><td>-0.06495131</td><td>-0.08551314</td><td>-0.06928771</td><td>-0.06107462</td><td>-0.05851741</td><td> 1.00000000</td><td>-0.03307778</td></tr>
+    <tr><th scope=row>Today</th><td>-0.032459894</td><td>-0.075031842</td><td> 0.059166717</td><td>-0.071243639</td><td>-0.007825873</td><td> 0.011012698</td><td>-0.033077783</td><td> 1.000000000</td></tr>
+</tbody>
+</table>
+
+<table>
+<thead><tr><th></th><th scope=col>Var1</th><th scope=col>Var2</th><th scope=col>Freq</th></tr></thead>
+<tbody>
+    <tr><th scope=row>1</th><td>Year</td><td>Year</td><td>1   </td></tr>
+    <tr><th scope=row>7</th><td>Volume           </td><td>Year             </td><td>0.841941618703162</td></tr>
+    <tr><th scope=row>10</th><td>Lag1</td><td>Lag1</td><td>1   </td></tr>
+    <tr><th scope=row>19</th><td>Lag2</td><td>Lag2</td><td>1   </td></tr>
+    <tr><th scope=row>28</th><td>Lag3</td><td>Lag3</td><td>1   </td></tr>
+    <tr><th scope=row>37</th><td>Lag4</td><td>Lag4</td><td>1   </td></tr>
+    <tr><th scope=row>46</th><td>Lag5</td><td>Lag5</td><td>1   </td></tr>
+    <tr><th scope=row>49</th><td>Year             </td><td>Volume           </td><td>0.841941618703162</td></tr>
+    <tr><th scope=row>55</th><td>Volume</td><td>Volume</td><td>1     </td></tr>
+    <tr><th scope=row>64</th><td>Today</td><td>Today</td><td>1    </td></tr>
+</tbody>
+</table>
+
+<p>It appears that the only stong correlation present in the data is between Volume and time. Plotting the Volume confirms this.</p>
+<div class="highlight"><pre>plot<span class="p">(</span>Volume<span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_14_0.png"></p>
+<h3>b.</h3>
+<p>Use the full data set to perform a logistic regression with Direction as the response and the five lag variables plus Volume as predictors. Use the summary function to print the results. Do any of the predictors appear to be statistically significant? If so, which ones?</p>
+<div class="highlight"><pre>glm.fit <span class="o">=</span> glm<span class="p">(</span>Direction<span class="o">~</span><span class="m">.</span><span class="o">-</span>Direction<span class="o">-</span>Today<span class="o">-</span>Year<span class="p">,</span>data <span class="o">=</span> Weekly<span class="p">,</span>family<span class="o">=</span>binomial<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>glm.fit<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">Call</span><span class="o">:</span>
+<span class="n">glm</span><span class="o">(</span><span class="n">formula</span> <span class="o">=</span> <span class="n">Direction</span> <span class="o">~</span> <span class="o">.</span> <span class="o">-</span> <span class="n">Direction</span> <span class="o">-</span> <span class="n">Today</span> <span class="o">-</span> <span class="n">Year</span><span class="o">,</span> <span class="n">family</span> <span class="o">=</span> <span class="n">binomial</span><span class="o">,</span> 
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Weekly</span><span class="o">)</span>
+
+<span class="n">Deviance</span> <span class="n">Residuals</span><span class="o">:</span> 
+    <span class="n">Min</span>       <span class="mi">1</span><span class="n">Q</span>   <span class="n">Median</span>       <span class="mi">3</span><span class="n">Q</span>      <span class="n">Max</span>  
+<span class="o">-</span><span class="mf">1.6949</span>  <span class="o">-</span><span class="mf">1.2565</span>   <span class="mf">0.9913</span>   <span class="mf">1.0849</span>   <span class="mf">1.4579</span>
+
+<span class="n">Coefficients</span><span class="o">:</span>
+            <span class="n">Estimate</span> <span class="n">Std</span><span class="o">.</span> <span class="n">Error</span> <span class="n">z</span> <span class="n">value</span> <span class="n">Pr</span><span class="o">(&gt;|</span><span class="n">z</span><span class="o">|)</span>   
+<span class="o">(</span><span class="n">Intercept</span><span class="o">)</span>  <span class="mf">0.26686</span>    <span class="mf">0.08593</span>   <span class="mf">3.106</span>   <span class="mf">0.0019</span> <span class="o">**</span>
+<span class="n">Lag1</span>        <span class="o">-</span><span class="mf">0.04127</span>    <span class="mf">0.02641</span>  <span class="o">-</span><span class="mf">1.563</span>   <span class="mf">0.1181</span>   
+<span class="n">Lag2</span>         <span class="mf">0.05844</span>    <span class="mf">0.02686</span>   <span class="mf">2.175</span>   <span class="mf">0.0296</span> <span class="o">*</span> 
+<span class="n">Lag3</span>        <span class="o">-</span><span class="mf">0.01606</span>    <span class="mf">0.02666</span>  <span class="o">-</span><span class="mf">0.602</span>   <span class="mf">0.5469</span>   
+<span class="n">Lag4</span>        <span class="o">-</span><span class="mf">0.02779</span>    <span class="mf">0.02646</span>  <span class="o">-</span><span class="mf">1.050</span>   <span class="mf">0.2937</span>   
+<span class="n">Lag5</span>        <span class="o">-</span><span class="mf">0.01447</span>    <span class="mf">0.02638</span>  <span class="o">-</span><span class="mf">0.549</span>   <span class="mf">0.5833</span>   
+<span class="n">Volume</span>      <span class="o">-</span><span class="mf">0.02274</span>    <span class="mf">0.03690</span>  <span class="o">-</span><span class="mf">0.616</span>   <span class="mf">0.5377</span>   
+<span class="o">---</span>
+<span class="n">Signif</span><span class="o">.</span> <span class="n">codes</span><span class="o">:</span>  <span class="mi">0</span> <span class="err">‘</span><span class="o">***</span><span class="err">’</span> <span class="mf">0.001</span> <span class="err">‘</span><span class="o">**</span><span class="err">’</span> <span class="mf">0.01</span> <span class="err">‘</span><span class="o">*</span><span class="err">’</span> <span class="mf">0.05</span> <span class="err">‘</span><span class="o">.</span><span class="err">’</span> <span class="mf">0.1</span> <span class="err">‘</span> <span class="err">’</span> <span class="mi">1</span>
+
+<span class="o">(</span><span class="n">Dispersion</span> <span class="n">parameter</span> <span class="k">for</span> <span class="n">binomial</span> <span class="n">family</span> <span class="n">taken</span> <span class="n">to</span> <span class="n">be</span> <span class="mi">1</span><span class="o">)</span>
+
+    <span class="n">Null</span> <span class="n">deviance</span><span class="o">:</span> <span class="mf">1496.2</span>  <span class="n">on</span> <span class="mi">1088</span>  <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">Residual</span> <span class="n">deviance</span><span class="o">:</span> <span class="mf">1486.4</span>  <span class="n">on</span> <span class="mi">1082</span>  <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span>
+<span class="n">AIC</span><span class="o">:</span> <span class="mf">1500.4</span>
+
+<span class="n">Number</span> <span class="n">of</span> <span class="n">Fisher</span> <span class="n">Scoring</span> <span class="n">iterations</span><span class="o">:</span> <span class="mi">4</span>
+</pre></div>
+
+
+<p>Lag2 has a p value of 0.03 which is slightly significant if we accept 0.05 as our significance threshold.</p>
+<h3>c.</h3>
+<p>Compute the confusion matrix and overall fraction of correct predictions. Explain what the confusion matrix is telling you about the types of mistakes made by logistic regression.</p>
+<div class="highlight"><pre>glm.probs <span class="o">=</span> predict<span class="p">(</span>glm.fit<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;response&quot;</span><span class="p">)</span>
+glm.pred <span class="o">=</span> <span class="kp">rep</span><span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span><span class="kp">length</span><span class="p">(</span>glm.probs<span class="p">))</span>
+glm.pred<span class="p">[</span>glm.probs <span class="o">&gt;</span> <span class="m">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Up&quot;</span>
+<span class="kp">table</span><span class="p">(</span>glm.pred<span class="p">,</span>Direction<span class="p">)</span>
+<span class="kp">mean</span><span class="p">(</span>glm.pred <span class="o">==</span> Direction<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>        Direction
+glm.pred Down  Up
+    Down   54  48
+    Up    430 557
+</pre></div>
+
+
+<p>0.561065197428834</p>
+<p>The diagonal elements of the confusion matrix provide the correct predictions. By taking the mean of the prediction we get the fraction of days that the fit was correct. Here it was correct on <span class="math">\(56\%\)</span> of the days.</p>
+<h3>d.</h3>
+<p>Now fit the logistic regression model using a training data period from 1990 to 2008, with Lag2 as the only predictor. Compute the confusion matrix and the overall fraction of correct predictions for the held out data (that is, the data from 2009 and 2010).</p>
+<div class="highlight"><pre>train<span class="o">=</span><span class="p">(</span>Year<span class="o">&lt;</span><span class="m">2009</span><span class="p">)</span>
+glm.fit2 <span class="o">=</span> glm<span class="p">(</span>Direction<span class="o">~</span>Lag2<span class="p">,</span>family<span class="o">=</span>binomial<span class="p">,</span>subset<span class="o">=</span>train<span class="p">)</span>
+glm.probs2 <span class="o">=</span> predict<span class="p">(</span>glm.fit2<span class="p">,</span>Weekly<span class="p">[</span><span class="o">!</span>train<span class="p">,],</span>type<span class="o">=</span><span class="s">&quot;response&quot;</span><span class="p">)</span>
+glm.pred2 <span class="o">=</span> <span class="kp">rep</span><span class="p">(</span><span class="s">&quot;Down&quot;</span><span class="p">,</span><span class="kp">length</span><span class="p">(</span>glm.probs2<span class="p">))</span>
+glm.pred2<span class="p">[</span>glm.probs2 <span class="o">&gt;</span><span class="m">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;Up&quot;</span>
+<span class="kp">table</span><span class="p">(</span>glm.pred2<span class="p">,</span>Direction<span class="p">[</span><span class="o">!</span>train<span class="p">])</span>
+<span class="kp">mean</span><span class="p">(</span>glm.pred2 <span class="o">==</span> Direction<span class="p">[</span><span class="o">!</span>train<span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre>glm.pred2 Down Up
+     Down    9  5
+     Up     34 56
+</pre></div>
+
+
+<p>0.625</p>
+<p>The correct percentage of predicitons is <span class="math">\(62.5\%\)</span>.</p>
+<h3>e.</h3>
+<p>Repeat (d) using LDA.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span>MASS<span class="p">)</span>
+lda.fit <span class="o">=</span> lda<span class="p">(</span>Direction<span class="o">~</span>Lag2<span class="p">,</span>subset<span class="o">=</span>train<span class="p">)</span>
+lda.pred <span class="o">=</span> predict<span class="p">(</span>lda.fit<span class="p">,</span>Weekly<span class="p">[</span><span class="o">!</span>train<span class="p">,])</span>
+<span class="c1">#The predict of the LDA function spits own class (similar to what it spits out for glm), posterior and the LDs (x).</span>
+lda.class <span class="o">=</span> lda.pred<span class="o">$</span><span class="kp">class</span>
+<span class="kp">table</span><span class="p">(</span>lda.class<span class="p">,</span>Direction<span class="p">[</span><span class="o">!</span>train<span class="p">])</span>
+<span class="kp">mean</span><span class="p">(</span>lda.class <span class="o">==</span> Direction<span class="p">[</span><span class="o">!</span>train<span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre>lda.class Down Up
+     Down    9  5
+     Up     34 56
+</pre></div>
+
+
+<p>0.625</p>
+<h3>f.</h3>
+<p>Repeat (d) using QDA.</p>
+<div class="highlight"><pre>qda.fit <span class="o">=</span> qda<span class="p">(</span>Direction<span class="o">~</span>Lag2<span class="p">,</span>subset<span class="o">=</span>train<span class="p">)</span>
+qda.pred <span class="o">=</span> predict<span class="p">(</span>qda.fit<span class="p">,</span>Weekly<span class="p">[</span><span class="o">!</span>train<span class="p">,])</span>
+qda.class <span class="o">=</span> qda.pred<span class="o">$</span><span class="kp">class</span>
+<span class="kp">table</span><span class="p">(</span>qda.class<span class="p">,</span>Direction<span class="p">[</span><span class="o">!</span>train<span class="p">])</span>
+<span class="kp">mean</span><span class="p">(</span>qda.class<span class="o">==</span>Direction<span class="p">[</span><span class="o">!</span>train<span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre>qda.class Down Up
+     Down    0  0
+     Up     43 61
+</pre></div>
+
+
+<p>0.586538461538462</p>
+<h3>g.</h3>
+<p>Repeat (d) using KNN with <span class="math">\(K=1\)</span>.</p>
+<div class="highlight"><pre><span class="kn">library</span><span class="p">(</span><span class="kp">class</span><span class="p">)</span>
+train.X <span class="o">=</span> <span class="kt">matrix</span><span class="p">(</span>Lag2<span class="p">[</span>train<span class="p">])</span> <span class="c1">#Make sure these</span>
+test.X <span class="o">=</span> <span class="kt">matrix</span><span class="p">(</span>Lag2<span class="p">[</span><span class="o">!</span>train<span class="p">])</span> <span class="c1">#are matrices.</span>
+train.Direction <span class="o">=</span> Direction<span class="p">[</span>train<span class="p">]</span>
+<span class="kp">set.seed</span><span class="p">(</span><span class="m">1</span><span class="p">)</span>
+knn.pred <span class="o">=</span> knn<span class="p">(</span>train.X<span class="p">,</span>test.X<span class="p">,</span>train.Direction<span class="p">,</span>k<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+<span class="kp">table</span><span class="p">(</span>knn.pred<span class="p">,</span>Direction<span class="p">[</span><span class="o">!</span>train<span class="p">])</span>
+<span class="kp">mean</span><span class="p">(</span>knn.pred<span class="o">==</span>Direction<span class="p">[</span><span class="o">!</span>train<span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre>knn.pred Down Up
+    Down   21 30
+    Up     22 31
+</pre></div>
+
+
+<p>0.5</p>
+<h3>h.</h3>
+<p>Which of these methods appears to provide the best results on this data?
+LDA and logistic regression have the best results</p>
+<h3>i.</h3>
+<p>Experiment with different combinations of predictors, including possible transformations and interactions, for each of 
+the methods. Report the variables, method, and associated confusion matrix that appears to provide the best results on the held out data. Note that you should also experiment with values for K in the KNN classifier.</p>
+<h1>11.</h1>
+<p>In this problem, you will develop a model to predict whether a given car gets high or low gas mileage based on the Auto data set.</p>
+<h3>a.</h3>
+<p>Create a binary variable, mpg01, that contains a 1 if mpg contains a value above its median, and a 0 if mpg contains a value below its median. You can compute the median using the median() function. Note you may find it helpful to use the data.frame() function to create a single data set containing both mpg01 and the other Auto variables.</p>
+<div class="highlight"><pre><span class="kn">attach</span><span class="p">(</span>Auto<span class="p">)</span>
+<span class="kp">summary</span><span class="p">(</span>Auto<span class="p">)</span>
+mpg01 <span class="o">=</span> <span class="kp">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="kp">length</span><span class="p">(</span>mpg<span class="p">))</span>
+mpg01<span class="p">[</span>mpg<span class="o">&gt;</span>median<span class="p">(</span>mpg<span class="p">)]</span> <span class="o">=</span> <span class="m">1</span>
+Auto01 <span class="o">=</span> <span class="kt">data.frame</span><span class="p">(</span>Auto<span class="p">,</span>mpg01<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>      mpg          cylinders      displacement     horsepower        weight    
+ Min.   : 9.00   Min.   :3.000   Min.   : 68.0   Min.   : 46.0   Min.   :1613  
+ 1st Qu.:17.00   1st Qu.:4.000   1st Qu.:105.0   1st Qu.: 75.0   1st Qu.:2225  
+ Median :22.75   Median :4.000   Median :151.0   Median : 93.5   Median :2804  
+ Mean   :23.45   Mean   :5.472   Mean   :194.4   Mean   :104.5   Mean   :2978  
+ 3rd Qu.:29.00   3rd Qu.:8.000   3rd Qu.:275.8   3rd Qu.:126.0   3rd Qu.:3615  
+ Max.   :46.60   Max.   :8.000   Max.   :455.0   Max.   :230.0   Max.   :5140
+
+  acceleration        year           origin                      name    
+ Min.   : 8.00   Min.   :70.00   Min.   :1.000   amc matador       :  5  
+ 1st Qu.:13.78   1st Qu.:73.00   1st Qu.:1.000   ford pinto        :  5  
+ Median :15.50   Median :76.00   Median :1.000   toyota corolla    :  5  
+ Mean   :15.54   Mean   :75.98   Mean   :1.577   amc gremlin       :  4  
+ 3rd Qu.:17.02   3rd Qu.:79.00   3rd Qu.:2.000   amc hornet        :  4  
+ Max.   :24.80   Max.   :82.00   Max.   :3.000   chevrolet chevette:  4  
+                                                 (Other)           :365
+</pre></div>
+
+
+<h3>b.</h3>
+<p>Explore the data graphically in order to investigate the association between mpg01 and the other features. Which of the other features seem most likely to be useful in predicting mpg01? Scatterplots and boxplots may be useful tools to answer this question. Describe your findings.</p>
+<div class="highlight"><pre>cor<span class="p">(</span>Auto01<span class="p">[,</span><span class="m">-9</span><span class="p">])</span>
+pairs<span class="p">(</span>Auto01<span class="p">)</span>
+</pre></div>
+
+
+<table>
+<thead><tr><th></th><th scope=col>mpg</th><th scope=col>cylinders</th><th scope=col>displacement</th><th scope=col>horsepower</th><th scope=col>weight</th><th scope=col>acceleration</th><th scope=col>year</th><th scope=col>origin</th><th scope=col>mpg01</th></tr></thead>
+<tbody>
+    <tr><th scope=row>mpg</th><td> 1.0000000</td><td>-0.7776175</td><td>-0.8051269</td><td>-0.7784268</td><td>-0.8322442</td><td> 0.4233285</td><td> 0.5805410</td><td> 0.5652088</td><td> 0.8369392</td></tr>
+    <tr><th scope=row>cylinders</th><td>-0.7776175</td><td> 1.0000000</td><td> 0.9508233</td><td> 0.8429834</td><td> 0.8975273</td><td>-0.5046834</td><td>-0.3456474</td><td>-0.5689316</td><td>-0.7591939</td></tr>
+    <tr><th scope=row>displacement</th><td>-0.8051269</td><td> 0.9508233</td><td> 1.0000000</td><td> 0.8972570</td><td> 0.9329944</td><td>-0.5438005</td><td>-0.3698552</td><td>-0.6145351</td><td>-0.7534766</td></tr>
+    <tr><th scope=row>horsepower</th><td>-0.7784268</td><td> 0.8429834</td><td> 0.8972570</td><td> 1.0000000</td><td> 0.8645377</td><td>-0.6891955</td><td>-0.4163615</td><td>-0.4551715</td><td>-0.6670526</td></tr>
+    <tr><th scope=row>weight</th><td>-0.8322442</td><td> 0.8975273</td><td> 0.9329944</td><td> 0.8645377</td><td> 1.0000000</td><td>-0.4168392</td><td>-0.3091199</td><td>-0.5850054</td><td>-0.7577566</td></tr>
+    <tr><th scope=row>acceleration</th><td> 0.4233285</td><td>-0.5046834</td><td>-0.5438005</td><td>-0.6891955</td><td>-0.4168392</td><td> 1.0000000</td><td> 0.2903161</td><td> 0.2127458</td><td> 0.3468215</td></tr>
+    <tr><th scope=row>year</th><td> 0.5805410</td><td>-0.3456474</td><td>-0.3698552</td><td>-0.4163615</td><td>-0.3091199</td><td> 0.2903161</td><td> 1.0000000</td><td> 0.1815277</td><td> 0.4299042</td></tr>
+    <tr><th scope=row>origin</th><td> 0.5652088</td><td>-0.5689316</td><td>-0.6145351</td><td>-0.4551715</td><td>-0.5850054</td><td> 0.2127458</td><td> 0.1815277</td><td> 1.0000000</td><td> 0.5136984</td></tr>
+    <tr><th scope=row>mpg01</th><td> 0.8369392</td><td>-0.7591939</td><td>-0.7534766</td><td>-0.6670526</td><td>-0.7577566</td><td> 0.3468215</td><td> 0.4299042</td><td> 0.5136984</td><td> 1.0000000</td></tr>
+</tbody>
+</table>
+
+<p><img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_32_1.png"></p>
+<div class="highlight"><pre>par<span class="p">(</span>mfrow<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">3</span><span class="p">))</span>
+boxplot<span class="p">(</span>mpg<span class="o">~</span>mpg01<span class="p">,</span>main<span class="o">=</span><span class="s">&quot;mpg vs. mpg01&quot;</span><span class="p">)</span>
+boxplot<span class="p">(</span>cylinders<span class="o">~</span>mpg01<span class="p">,</span>main<span class="o">=</span><span class="s">&quot;cylinders vs. mpg01&quot;</span><span class="p">)</span>
+boxplot<span class="p">(</span>displacement<span class="o">~</span>mpg01<span class="p">,</span>main<span class="o">=</span><span class="s">&quot;displacement vs. mpg01&quot;</span><span class="p">)</span>
+boxplot<span class="p">(</span>weight<span class="o">~</span>mpg01<span class="p">,</span>main<span class="o">=</span><span class="s">&quot;weight vs. mpg01&quot;</span><span class="p">)</span>
+boxplot<span class="p">(</span>horsepower<span class="o">~</span>mpg01<span class="p">,</span>main<span class="o">=</span><span class="s">&quot;horsepower vs. mpg01&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_33_0.png"></p>
+<p>mpg, cylinders, displacement, weight and horsepower all appear to have some relation to mpg01.</p>
+<h3>c.</h3>
+<p>Split the data into a test set and training set.</p>
+<div class="highlight"><pre>train <span class="o">=</span> <span class="p">(</span>year <span class="o">%%</span> <span class="m">2</span> <span class="o">==</span> <span class="m">0</span><span class="p">)</span>
+Auto.train <span class="o">=</span> Auto<span class="p">[</span>train<span class="p">,]</span>
+Auto.test <span class="o">=</span> Auto<span class="p">[</span><span class="o">!</span>train<span class="p">,]</span>
+mpg01.test <span class="o">=</span> mpg01<span class="p">[</span><span class="o">!</span>train<span class="p">]</span>
+</pre></div>
+
+
+<h3>d.</h3>
+<p>Perform LDA on the training data in order to predict mpg01 using the variables that seemed most associated with mpg01 in (b). What is the test error of the model obtained?</p>
+<div class="highlight"><pre>lda.fit2 <span class="o">=</span> lda<span class="p">(</span>mpg01<span class="o">~</span>mpg<span class="o">+</span>cylinders<span class="o">+</span>weight<span class="o">+</span>displacement<span class="o">+</span>horsepower<span class="p">,</span>data <span class="o">=</span> Auto<span class="p">,</span>subset<span class="o">=</span>train<span class="p">)</span>
+lda.pred2 <span class="o">=</span> predict<span class="p">(</span>lda.fit2<span class="p">,</span>Auto.test<span class="p">)</span>
+lda.class2 <span class="o">=</span> lda.pred2<span class="o">$</span><span class="kp">class</span>
+<span class="kp">table</span><span class="p">(</span>lda.class2<span class="p">,</span> mpg01.test<span class="p">)</span>
+<span class="kp">mean</span><span class="p">(</span>lda.class2 <span class="o">!=</span> mpg01.test<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>          mpg01.test
+lda.class2  0  1
+         0 88  6
+         1 12 76
+</pre></div>
+
+
+<p>0.0989010989010989</p>
+<p>The test error rate is <span class="math">\(\sim10\%\)</span>.</p>
+<h3>e.</h3>
+<p>Now for QDA.</p>
+<div class="highlight"><pre>qda.fit2 <span class="o">=</span> qda<span class="p">(</span>mpg01<span class="o">~</span>mpg<span class="o">+</span>cylinders<span class="o">+</span>weight<span class="o">+</span>displacement<span class="o">+</span>horsepower<span class="p">,</span>data <span class="o">=</span> Auto<span class="p">,</span>subset<span class="o">=</span>train<span class="p">)</span>
+qda.pred2 <span class="o">=</span> predict<span class="p">(</span>qda.fit2<span class="p">,</span>Auto.test<span class="p">)</span>
+qda.class2 <span class="o">=</span> qda.pred2<span class="o">$</span><span class="kp">class</span>
+<span class="kp">table</span><span class="p">(</span>qda.class2<span class="p">,</span>mpg01.test<span class="p">)</span>
+<span class="kp">mean</span><span class="p">(</span>qda.class2 <span class="o">!=</span> mpg01.test<span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>          mpg01.test
+qda.class2  0  1
+         0 89  9
+         1 11 73
+</pre></div>
+
+
+<p>0.10989010989011</p>
+<h3>f.</h3>
+<p>And for Logistic Regression.</p>
+<div class="highlight"><pre>glm.fit3 <span class="o">=</span> glm<span class="p">(</span>mpg01<span class="o">~</span>cylinders <span class="o">+</span> weight <span class="o">+</span> displacement <span class="o">+</span> horsepower<span class="p">,</span> family <span class="o">=</span> binomial<span class="p">,</span>subset<span class="o">=</span>train<span class="p">)</span>
+glm.probs3 <span class="o">=</span> predict<span class="p">(</span>glm.fit3<span class="p">,</span>Auto.test<span class="p">,</span>type<span class="o">=</span><span class="s">&quot;response&quot;</span><span class="p">)</span>
+glm.pred3 <span class="o">=</span> <span class="kp">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="kp">length</span><span class="p">(</span>glm.probs3<span class="p">))</span>
+glm.pred3<span class="p">[</span>glm.probs3 <span class="o">&gt;</span> <span class="m">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="m">1</span>
+<span class="kp">mean</span><span class="p">(</span>glm.pred3 <span class="o">!=</span> mpg01.test<span class="p">)</span>
+</pre></div>
+
+
+<p>0.120879120879121</p>
+<h3>g.</h3>
+<p>And finally KNN with several values of K. What is the best value for K?</p>
+<div class="highlight"><pre>
+</pre></div>
+
+
+<h1>12.</h1>
+<p>This problem involves writing functions.</p>
+<h3>a.</h3>
+<p>Write a function, Power(), that prints out the result of raising 2 to the 3rd power. In other words, your function should compute <span class="math">\(2^3\)</span> and print out the results.</p>
+<div class="highlight"><pre>Power <span class="o">=</span> <span class="kr">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="m">2</span><span class="o">^</span><span class="m">3</span>
+<span class="p">}</span>
+<span class="kp">print</span><span class="p">(</span>Power<span class="p">())</span>
+</pre></div>
+
+
+<div class="highlight"><pre>[1] 8
+</pre></div>
+
+
+<h3>b.</h3>
+<p>Create a new function, Power2(), that allows you to pass any two numbers, x and a, and prints out the value of x^a.</p>
+<div class="highlight"><pre>Power2 <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span>a<span class="p">)</span> <span class="p">{</span>
+    <span class="kp">print</span><span class="p">(</span>x<span class="o">^</span>a<span class="p">)</span>
+<span class="p">}</span>
+Power2<span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">8</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>[1] 6561
+</pre></div>
+
+
+<h3>d.</h3>
+<p>Now create a new function, Power3(), that actually returns the result x^a as an R object, rather than simply printing it to the screen.</p>
+<div class="highlight"><pre>Power3 <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span>a<span class="p">)</span> <span class="p">{</span>
+    <span class="kr">return</span><span class="p">(</span>x<span class="o">^</span>a<span class="p">)</span>
+<span class="p">}</span>
+Power3<span class="p">(</span><span class="m">3</span><span class="p">,</span><span class="m">8</span><span class="p">)</span>
+</pre></div>
+
+
+<p>6561</p>
+<h3>e.</h3>
+<p>Now using the Power3() function, create a plot of f(x) = x2. The x-axis should display a range of integers from 1 to 10, and the y-axis should display x2. Label the axes appropriately, and use an appropriate title for the figure.</p>
+<div class="highlight"><pre>x <span class="o">=</span> <span class="m">1</span><span class="o">:</span><span class="m">10</span>
+plot<span class="p">(</span>x<span class="p">,</span> Power3<span class="p">(</span>x<span class="p">,</span> <span class="m">2</span><span class="p">),</span> log <span class="o">=</span> <span class="s">&quot;xy&quot;</span><span class="p">,</span> ylab <span class="o">=</span> <span class="s">&quot;Log of y = x^2&quot;</span><span class="p">,</span> xlab <span class="o">=</span> <span class="s">&quot;Log of x&quot;</span><span class="p">,</span> 
+    main <span class="o">=</span> <span class="s">&quot;Log of x^2 versus Log of x&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_52_0.png"></p>
+<h3>f.</h3>
+<p>Create a function, PlotPower(), that allows you to create a plot of x against x^a for a fixed a and for a range of values of x. For instance, if you call</p>
+<div class="highlight"><pre>PlotPower <span class="o">=</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span>a<span class="p">)</span> <span class="p">{</span>
+    plot<span class="p">(</span>x<span class="p">,</span> Power3<span class="p">(</span>x<span class="p">,</span> a<span class="p">),</span> log <span class="o">=</span> <span class="s">&quot;xy&quot;</span><span class="p">,</span> ylab <span class="o">=</span> <span class="kp">sprintf</span><span class="p">(</span><span class="s">&quot;Log of y = x^%d&quot;</span><span class="p">,</span>a<span class="p">),</span>
+         xlab <span class="o">=</span> <span class="s">&quot;Log of x&quot;</span><span class="p">,</span> main <span class="o">=</span> <span class="kp">sprintf</span><span class="p">(</span><span class="s">&quot;Log of x^%d versus Log of x&quot;</span><span class="p">,</span>a<span class="p">))</span>
+<span class="p">}</span>
+PlotPower<span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">10</span> <span class="p">,</span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="Chapter4_exercises_files/Chapter4_exercises_54_0.png"></p>
+<div class="highlight"><pre>
+</pre></div>
+
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    var location_protocol = (false) ? 'https' : document.location.protocol;
+    if (location_protocol !== 'http' && location_protocol !== 'https') location_protocol = 'https:';
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = location_protocol + '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+  </div>
+
+  <hr class="small"></hr>
+  <div class="article-sharing">
+      <ul>
+      <!-- Twitter Sharing
+      ================================================================== -->
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="Alex_Fitts">Tweet</a></li>
+
+      <!-- Facebook Sharing
+      ================================================================== -->
+      <li><div class="fb-share-button"
+          data-href="http://afitts.github.io/2016/09/25/islr-chap4/"
+          data-layout="button_count">
+      </div></li>
+      </ul>
+    </div>
+
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Back to Home</a>
+    </div>
+    <hr class="small"></hr>
+  </div>
+  <script>
+    // hide ipython notebook cell numbers
+  $('div.prompt').hide();
+  </script>
+		</section>
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Generated with <a href="http://getpelican.com">Pelican</a>. Layout done with <a href="http://getskeleton.com">Skeleton</a>. Icons are <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Hosted on <a href="http://aws.amazon.com/s3/">S3</a>.</p>
+  <p>&copy; Copyright Alex Fitts, 2016 to present</p>
+</footer>	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34295039-1']);
+  _gaq.push(['_setDomainName', 'gregreda.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+</body> <!-- End body -->
+
+<!-- JavaScript
+=================================================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- twitter.js
+==================================================================== -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
+
+<!-- Facebook SDK for JS
+==================================================================== -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+</html>
