@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alex Fitts - 12</title><link href="http://afitts.github.io/" rel="alternate"></link><link href="http://afitts.github.io/feeds/12.atom.xml" rel="self"></link><id>http://afitts.github.io/</id><updated>2018-12-02T00:00:00-06:00</updated><entry><title>Histopathologic Cancer Detection with New Fastai Lib</title><link href="http://afitts.github.io/2018/12/02/cancer/" rel="alternate"></link><published>2018-12-02T00:00:00-06:00</published><updated>2018-12-02T00:00:00-06:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2018-12-02:/2018/12/02/cancer/</id><summary type="html">&lt;p&gt;We're going to tackle binary image classification with the newly released fastai-v1 library.&lt;/p&gt;
+&lt;p&gt;First we turn on autoreload incase we update any of our modules while running the notebook. We also include the magic matplotlib inline command to make sure our plots stay in our notebook after we've run it …&lt;/p&gt;</summary><content type="html">&lt;p&gt;We're going to tackle binary image classification with the newly released fastai-v1 library.&lt;/p&gt;
+&lt;p&gt;First we turn on autoreload incase we update any of our modules while running the notebook. We also include the magic matplotlib inline command to make sure our plots stay in our notebook after we've run it.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;reload_ext&lt;/span&gt; &lt;span class="n"&gt;autoreload&lt;/span&gt;
+&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;autoreload&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.vision&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;First let's download the data using the &lt;a href="https://github.com/Kaggle/kaggle-api"&gt;Kaggle API&lt;/a&gt; and unzip the test and training data. By placing an exclamation point at the start of each line, we can run bash commands in jupyter notebook.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;!&lt;/span&gt;&lt;span class="n"&gt;kaggle&lt;/span&gt; &lt;span class="n"&gt;competitions&lt;/span&gt; &lt;span class="n"&gt;download&lt;/span&gt; &lt;span class="n"&gt;histopathologic&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cancer&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;detection&lt;/span&gt;
+&lt;span class="err"&gt;!&lt;/span&gt;&lt;span class="n"&gt;unzip&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="err"&gt;!&lt;/span&gt;&lt;span class="n"&gt;unzip&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;./&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;First we need to gather our data. We will do this by pulling from the folders of images we downloaded from kaggle and placing them into the go-to image data object for fastai-v1: an &lt;code&gt;ImageDataBunch&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;from_folder&lt;/code&gt; method defaults to searching from a 'train/' and 'valid/' folder to create the datasets. You can easily override this behavior by passing the path to the train or valid folders. Also, as we do not have a specific validation data set, we will simply set the &lt;code&gt;valid_pct=0.2&lt;/code&gt; to randomly select 20% of the training sample as a validation set.&lt;/p&gt;
+&lt;p&gt;Finally, we need to specify if there are transforms we plan on augmenting the data with. Data augmentation is very useful as it not only allows us to create a larger amount of data to train with, but makes our neural net more generalizable! The &lt;code&gt;get_transforms&lt;/code&gt; function defaults to dihedral flips, up to 10 degree rotations (in either direction), applying up to a 10% zoom along with a few others (check out the source code to learn more, it's where i'm pulling all this info from!)&lt;/p&gt;
+&lt;p&gt;Also as Joni Juvonen pointed out in his &lt;a href="https://www.kaggle.com/qitvision/a-complete-ml-pipeline-fast-ai"&gt;notebook&lt;/a&gt;: &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We know that the label of the image is influenced only by the center region (32 x 32px) so it would make sense to crop our data to that region only. However, some useful information about the surroundings could be lost if we crop too close.  This hypothesis could be confirmed by training models with varying crop sizes. My initial results with 32 x 32px size showed worse performance than with 48 x 48px but I haven't done a search for optimal size.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So for now we'll crop to 48 pixels and come back to this point later&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tfms&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_transforms&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ImageDataBunch&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_folder&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;48&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;valid_pct&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                  &lt;span class="n"&gt;ds_tfms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;tfms&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;128&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show_batch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rows&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_9_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;Now let's move on to actually creating a model! We'll start from a pretrained model to see if we can gain anything from the preset activations of an already successful model.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;create_cnn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;resnet50&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;metrics&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;accuracy&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lr_find&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recorder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;LR Finder is complete, type {learner_name}.recorder.plot() to see the graph.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_12_1.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;lr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;1e-2&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;lr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Total time: 05:30 &lt;p&gt;&lt;table style='width:300px; margin-bottom:10px'&gt;
+  &lt;tr&gt;
+    &lt;th&gt;epoch&lt;/th&gt;
+    &lt;th&gt;train_loss&lt;/th&gt;
+    &lt;th&gt;valid_loss&lt;/th&gt;
+    &lt;th&gt;accuracy&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;1&lt;/th&gt;
+    &lt;th&gt;0.496852&lt;/th&gt;
+    &lt;th&gt;0.496922&lt;/th&gt;
+    &lt;th&gt;0.809157&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit_one_cycle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Total time: 05:26 &lt;p&gt;&lt;table style='width:300px; margin-bottom:10px'&gt;
+  &lt;tr&gt;
+    &lt;th&gt;epoch&lt;/th&gt;
+    &lt;th&gt;train_loss&lt;/th&gt;
+    &lt;th&gt;valid_loss&lt;/th&gt;
+    &lt;th&gt;accuracy&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;1&lt;/th&gt;
+    &lt;th&gt;0.469478&lt;/th&gt;
+    &lt;th&gt;0.473252&lt;/th&gt;
+    &lt;th&gt;0.813518&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/p&gt;
+&lt;p&gt;We can save our model's activations by using the save feature. That way, we can save any training we've done and come back to it at a later date.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;freeze&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;res50_2epochsfrozen&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Loading up a model's activations is just as easy. Just remember that we need to define the architecture of the model (contained within the &lt;code&gt;learn&lt;/code&gt; variable) before loading up the activations.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;load&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;res50_2epochsfrozen&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unfreeze&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now as has been suggested by Leslie Smith's 1cycle policy&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit_one_cycle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_lr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;slice&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recorder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot_lr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;show_moms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Total time: 07:07 &lt;p&gt;&lt;table style='width:300px; margin-bottom:10px'&gt;
+  &lt;tr&gt;
+    &lt;th&gt;epoch&lt;/th&gt;
+    &lt;th&gt;train_loss&lt;/th&gt;
+    &lt;th&gt;valid_loss&lt;/th&gt;
+    &lt;th&gt;accuracy&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;1&lt;/th&gt;
+    &lt;th&gt;0.433324&lt;/th&gt;
+    &lt;th&gt;0.415838&lt;/th&gt;
+    &lt;th&gt;0.838403&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_20_1.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recorder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot_losses&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_21_0.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit_one_cycle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_lr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;slice&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="s-Atom"&gt;style&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="cm"&gt;/* Turns off some styling */&lt;/span&gt;
+        &lt;span class="s-Atom"&gt;progress&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="cm"&gt;/* gets rid of default border in Firefox and Opera. */&lt;/span&gt;
+            &lt;span class="nn"&gt;border&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="cm"&gt;/* Needs to be in here for Safari polyfill so background images work as expected. */&lt;/span&gt;
+            &lt;span class="s-Atom"&gt;background&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nn"&gt;size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;interrupted&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nn"&gt;interrupted&lt;/span&gt;&lt;span class="p"&gt;::-&lt;/span&gt;&lt;span class="s-Atom"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nn"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;#&lt;/span&gt;&lt;span class="nv"&gt;F44336&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="s-Atom"&gt;&amp;lt;/style&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt; &lt;span class="s-Atom"&gt;value=&amp;#39;1&amp;#39;&lt;/span&gt; &lt;span class="s-Atom"&gt;class=&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class="s-Atom"&gt;max=&amp;#39;5&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s-Atom"&gt;style=&amp;#39;width:300px; height:20px; vertical-align: middle;&amp;#39;&amp;gt;&amp;lt;/progress&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="mf"&gt;20.00&lt;/span&gt;&lt;span class="c1"&gt;% [1/5 07:08&amp;lt;28:32]&lt;/span&gt;
+&lt;span class="s-Atom"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="o"&gt;div&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;table style='width:300px; margin-bottom:10px'&gt;
+  &lt;tr&gt;
+    &lt;th&gt;epoch&lt;/th&gt;
+    &lt;th&gt;train_loss&lt;/th&gt;
+    &lt;th&gt;valid_loss&lt;/th&gt;
+    &lt;th&gt;accuracy&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;1&lt;/th&gt;
+    &lt;th&gt;0.446564&lt;/th&gt;
+    &lt;th&gt;0.612841&lt;/th&gt;
+    &lt;th&gt;0.724286&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="s-Atom"&gt;style&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="cm"&gt;/* Turns off some styling */&lt;/span&gt;
+        &lt;span class="s-Atom"&gt;progress&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="cm"&gt;/* gets rid of default border in Firefox and Opera. */&lt;/span&gt;
+            &lt;span class="nn"&gt;border&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="cm"&gt;/* Needs to be in here for Safari polyfill so background images work as expected. */&lt;/span&gt;
+            &lt;span class="s-Atom"&gt;background&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nn"&gt;size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;interrupted&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nn"&gt;interrupted&lt;/span&gt;&lt;span class="p"&gt;::-&lt;/span&gt;&lt;span class="s-Atom"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nn"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;#&lt;/span&gt;&lt;span class="nv"&gt;F44336&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="s-Atom"&gt;&amp;lt;/style&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt; &lt;span class="s-Atom"&gt;value=&amp;#39;44&amp;#39;&lt;/span&gt; &lt;span class="s-Atom"&gt;class=&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class="s-Atom"&gt;max=&amp;#39;1734&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s-Atom"&gt;style=&amp;#39;width:300px; height:20px; vertical-align: middle;&amp;#39;&amp;gt;&amp;lt;/progress&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="mf"&gt;2.54&lt;/span&gt;&lt;span class="c1"&gt;% [44/1734 00:10&amp;lt;06:48 0.4454]&lt;/span&gt;
+&lt;span class="s-Atom"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="o"&gt;div&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;log_preds&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;targs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_preds&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;log_preds&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;
+&lt;span class="n"&gt;probs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;log_preds&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry></feed>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+  <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif;  width:500px;}
+    /*
+      Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      We recommend moving this block and the preceding CSS link to the HEAD of your HTML file.
+     */
+  </style>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="google-site-verification" content="AgIAQN_qsniIQWOq659Bnhzx-LZts2FdgP1kLgtQg-k" />
+  <meta name="google-site-verification" content="-wneVy0z_MWocNaXikWZzyTe__HZbZDCRfLYEJ1sAg8" />
+
+  <title>Histopathologic Cancer Detection with New Fastai Lib</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Alex Fitts">
+  <meta name="copyright" content="&copy; Copyright Greg Reda, 2013 to Present">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts 
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans|Merriweather|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?cfc9322a">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Feeds
+  ================================================== -->
+  <link rel="alternate" type="application/atom+xml" href="http://afitts.github.io/feeds/all.atom.xml" title="Alex Fitts Full Atom Feed">
+
+	<!-- Facebook Open Graph
+  ================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Histopathologic Cancer Detection with New Fastai Lib">
+  <meta property="og:url" content="http://afitts.github.io/2018/12/02/cancer/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Alex Fitts">
+  <meta property="og:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+
+  <!-- Twitter Cards
+  ================================================== -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Alex_Fitts">
+  <meta name="twitter:creator" content="@Alex_Fitts">
+  <meta name="twitter:domain" content="gregreda.com">
+  <meta name="twitter:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+  <meta name="twitter:title" content="Histopathologic Cancer Detection with New Fastai Lib">
+  <meta name="twitter:description" content="">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/theme/images/favicon.ico">
+	<link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns"> <!-- Yes, I know this is a douchey class name -->
+      <ul>
+        <li>
+          <a href="/" title="Home"><img id="logo" src="/theme/images/avatar.jpg"></a>
+        </li>
+        <li>
+          <h1><a href="/" title="Home">Alex Fitts</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/Alex_Fitts" title="Twitter">
+            <i class="fa fa-fw fa-twitter"></i>
+          </a>
+          </li>
+        <li>
+          <a class="icon" href="https://github.com/afitts" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://www.linkedin.com/in/alex-fitts-64163b128/" title="LinkedIn">
+            <i class="fa fa-fw fa-linkedin"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/pub/">Publications</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/blog/">Blog</a></li>
+	<li><a href="/pdfs/FittsResume.pdf">Resume</a></li>
+        <!--        <li><a href="/coffee/">Coffee?</a></li> -->
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->		<section id="content" class="twelve columns">
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/2018/12/02/cancer/" title="Permalink to Histopathologic Cancer Detection with New Fastai Lib">Histopathologic Cancer Detection with New Fastai Lib</a></h1>
+  <h5 class="article-date">December 02, 2018
+  </h5>
+  <hr class="small"></hr>
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+    <p>We're going to tackle binary image classification with the newly released fastai-v1 library.</p>
+<p>First we turn on autoreload incase we update any of our modules while running the notebook. We also include the magic matplotlib inline command to make sure our plots stay in our notebook after we've run it.</p>
+<div class="highlight"><pre><span class="o">%</span><span class="n">reload_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">fastai</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.vision</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+
+
+<p>First let's download the data using the <a href="https://github.com/Kaggle/kaggle-api">Kaggle API</a> and unzip the test and training data. By placing an exclamation point at the start of each line, we can run bash commands in jupyter notebook.</p>
+<div class="highlight"><pre><span class="err">!</span><span class="n">kaggle</span> <span class="n">competitions</span> <span class="n">download</span> <span class="n">histopathologic</span><span class="o">-</span><span class="n">cancer</span><span class="o">-</span><span class="n">detection</span>
+<span class="err">!</span><span class="n">unzip</span> <span class="o">-</span><span class="n">q</span> <span class="n">train</span><span class="o">.</span><span class="n">zip</span> <span class="o">-</span><span class="n">d</span> <span class="n">train</span><span class="o">/</span>
+<span class="err">!</span><span class="n">unzip</span> <span class="o">-</span><span class="n">q</span> <span class="n">test</span><span class="o">.</span><span class="n">zip</span> <span class="o">-</span><span class="n">d</span> <span class="n">test</span><span class="o">/</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s">&#39;./&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>First we need to gather our data. We will do this by pulling from the folders of images we downloaded from kaggle and placing them into the go-to image data object for fastai-v1: an <code>ImageDataBunch</code>. </p>
+<p>The <code>from_folder</code> method defaults to searching from a 'train/' and 'valid/' folder to create the datasets. You can easily override this behavior by passing the path to the train or valid folders. Also, as we do not have a specific validation data set, we will simply set the <code>valid_pct=0.2</code> to randomly select 20% of the training sample as a validation set.</p>
+<p>Finally, we need to specify if there are transforms we plan on augmenting the data with. Data augmentation is very useful as it not only allows us to create a larger amount of data to train with, but makes our neural net more generalizable! The <code>get_transforms</code> function defaults to dihedral flips, up to 10 degree rotations (in either direction), applying up to a 10% zoom along with a few others (check out the source code to learn more, it's where i'm pulling all this info from!)</p>
+<p>Also as Joni Juvonen pointed out in his <a href="https://www.kaggle.com/qitvision/a-complete-ml-pipeline-fast-ai">notebook</a>: </p>
+<blockquote>
+<p>We know that the label of the image is influenced only by the center region (32 x 32px) so it would make sense to crop our data to that region only. However, some useful information about the surroundings could be lost if we crop too close.  This hypothesis could be confirmed by training models with varying crop sizes. My initial results with 32 x 32px size showed worse performance than with 48 x 48px but I haven't done a search for optimal size.</p>
+</blockquote>
+<p>So for now we'll crop to 48 pixels and come back to this point later</p>
+<div class="highlight"><pre><span class="n">tfms</span> <span class="o">=</span> <span class="n">get_transforms</span><span class="p">()</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ImageDataBunch</span><span class="o">.</span><span class="n">from_folder</span><span class="p">(</span><span class="n">path</span><span class="p">,</span><span class="n">size</span> <span class="o">=</span> <span class="mi">48</span><span class="p">,</span> <span class="n">valid_pct</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
+                                  <span class="n">ds_tfms</span><span class="o">=</span><span class="n">tfms</span><span class="p">,</span><span class="n">bs</span><span class="o">=</span><span class="mi">128</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">data</span><span class="o">.</span><span class="n">show_batch</span><span class="p">(</span><span class="n">rows</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+</pre></div>
+
+
+<p><img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_9_0.png"></p>
+<p>Now let's move on to actually creating a model! We'll start from a pretrained model to see if we can gain anything from the preset activations of an already successful model.</p>
+<div class="highlight"><pre><span class="n">learn</span> <span class="o">=</span> <span class="n">create_cnn</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">models</span><span class="o">.</span><span class="n">resnet50</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="n">accuracy</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">lr_find</span><span class="p">()</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre>LR Finder is complete, type {learner_name}.recorder.plot() to see the graph.
+</pre></div>
+
+
+<p><img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_12_1.png"></p>
+<div class="highlight"><pre><span class="n">lr</span> <span class="o">=</span> <span class="mf">1e-2</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">lr</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Total time: 05:30 <p><table style='width:300px; margin-bottom:10px'>
+  <tr>
+    <th>epoch</th>
+    <th>train_loss</th>
+    <th>valid_loss</th>
+    <th>accuracy</th>
+  </tr>
+  <tr>
+    <th>1</th>
+    <th>0.496852</th>
+    <th>0.496922</th>
+    <th>0.809157</th>
+  </tr>
+</table></p>
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mf">1e-2</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Total time: 05:26 <p><table style='width:300px; margin-bottom:10px'>
+  <tr>
+    <th>epoch</th>
+    <th>train_loss</th>
+    <th>valid_loss</th>
+    <th>accuracy</th>
+  </tr>
+  <tr>
+    <th>1</th>
+    <th>0.469478</th>
+    <th>0.473252</th>
+    <th>0.813518</th>
+  </tr>
+</table></p>
+<p>We can save our model's activations by using the save feature. That way, we can save any training we've done and come back to it at a later date.</p>
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;res50_2epochsfrozen&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Loading up a model's activations is just as easy. Just remember that we need to define the architecture of the model (contained within the <code>learn</code> variable) before loading up the activations.</p>
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;res50_2epochsfrozen&#39;</span><span class="p">)</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">unfreeze</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Now as has been suggested by Leslie Smith's 1cycle policy</p>
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_lr</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">))</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot_lr</span><span class="p">(</span><span class="n">show_moms</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Total time: 07:07 <p><table style='width:300px; margin-bottom:10px'>
+  <tr>
+    <th>epoch</th>
+    <th>train_loss</th>
+    <th>valid_loss</th>
+    <th>accuracy</th>
+  </tr>
+  <tr>
+    <th>1</th>
+    <th>0.433324</th>
+    <th>0.415838</th>
+    <th>0.838403</th>
+  </tr>
+</table></p>
+<p><img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_20_1.png"></p>
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">recorder</span><span class="o">.</span><span class="n">plot_losses</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_21_0.png"></p>
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">fit_one_cycle</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">max_lr</span><span class="o">=</span><span class="nb">slice</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="o">&lt;div&gt;</span>
+    <span class="o">&lt;</span><span class="s-Atom">style</span><span class="o">&gt;</span>
+        <span class="cm">/* Turns off some styling */</span>
+        <span class="s-Atom">progress</span> <span class="p">{</span>
+            <span class="cm">/* gets rid of default border in Firefox and Opera. */</span>
+            <span class="nn">border</span><span class="p">:</span> <span class="s-Atom">none</span><span class="p">;</span>
+            <span class="cm">/* Needs to be in here for Safari polyfill so background images work as expected. */</span>
+            <span class="s-Atom">background</span><span class="o">-</span><span class="nn">size</span><span class="p">:</span> <span class="s-Atom">auto</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="p">.</span><span class="s-Atom">progress</span><span class="o">-</span><span class="s-Atom">bar</span><span class="o">-</span><span class="s-Atom">interrupted</span><span class="p">,</span> <span class="p">.</span><span class="s-Atom">progress</span><span class="o">-</span><span class="s-Atom">bar</span><span class="o">-</span><span class="nn">interrupted</span><span class="p">::-</span><span class="s-Atom">webkit</span><span class="o">-</span><span class="s-Atom">progress</span><span class="o">-</span><span class="s-Atom">bar</span> <span class="p">{</span>
+            <span class="nn">background</span><span class="p">:</span> <span class="s-Atom">#</span><span class="nv">F44336</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="s-Atom">&lt;/style</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="s-Atom">progress</span> <span class="s-Atom">value=&#39;1&#39;</span> <span class="s-Atom">class=&#39;&#39;</span> <span class="s-Atom">max=&#39;5&#39;</span><span class="p">,</span> <span class="s-Atom">style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress</span><span class="o">&gt;</span>
+  <span class="mf">20.00</span><span class="c1">% [1/5 07:08&lt;28:32]</span>
+<span class="s-Atom">&lt;/</span><span class="o">div&gt;</span>
+</pre></div>
+
+
+<table style='width:300px; margin-bottom:10px'>
+  <tr>
+    <th>epoch</th>
+    <th>train_loss</th>
+    <th>valid_loss</th>
+    <th>accuracy</th>
+  </tr>
+  <tr>
+    <th>1</th>
+    <th>0.446564</th>
+    <th>0.612841</th>
+    <th>0.724286</th>
+  </tr>
+</table>
+
+<div class="highlight"><pre><span class="o">&lt;div&gt;</span>
+    <span class="o">&lt;</span><span class="s-Atom">style</span><span class="o">&gt;</span>
+        <span class="cm">/* Turns off some styling */</span>
+        <span class="s-Atom">progress</span> <span class="p">{</span>
+            <span class="cm">/* gets rid of default border in Firefox and Opera. */</span>
+            <span class="nn">border</span><span class="p">:</span> <span class="s-Atom">none</span><span class="p">;</span>
+            <span class="cm">/* Needs to be in here for Safari polyfill so background images work as expected. */</span>
+            <span class="s-Atom">background</span><span class="o">-</span><span class="nn">size</span><span class="p">:</span> <span class="s-Atom">auto</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="p">.</span><span class="s-Atom">progress</span><span class="o">-</span><span class="s-Atom">bar</span><span class="o">-</span><span class="s-Atom">interrupted</span><span class="p">,</span> <span class="p">.</span><span class="s-Atom">progress</span><span class="o">-</span><span class="s-Atom">bar</span><span class="o">-</span><span class="nn">interrupted</span><span class="p">::-</span><span class="s-Atom">webkit</span><span class="o">-</span><span class="s-Atom">progress</span><span class="o">-</span><span class="s-Atom">bar</span> <span class="p">{</span>
+            <span class="nn">background</span><span class="p">:</span> <span class="s-Atom">#</span><span class="nv">F44336</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="s-Atom">&lt;/style</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="s-Atom">progress</span> <span class="s-Atom">value=&#39;44&#39;</span> <span class="s-Atom">class=&#39;&#39;</span> <span class="s-Atom">max=&#39;1734&#39;</span><span class="p">,</span> <span class="s-Atom">style=&#39;width:300px; height:20px; vertical-align: middle;&#39;&gt;&lt;/progress</span><span class="o">&gt;</span>
+  <span class="mf">2.54</span><span class="c1">% [44/1734 00:10&lt;06:48 0.4454]</span>
+<span class="s-Atom">&lt;/</span><span class="o">div&gt;</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">log_preds</span><span class="p">,</span> <span class="n">targs</span> <span class="o">=</span> <span class="n">learn</span><span class="o">.</span><span class="n">get_preds</span><span class="p">()</span>
+<span class="n">log_preds</span><span class="o">.</span><span class="n">shape</span>
+<span class="n">probs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">log_preds</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre>
+</pre></div>
+
+
+<div class="highlight"><pre>
+</pre></div>
+  </div>
+
+  <hr class="small"></hr>
+  <div class="article-sharing">
+      <ul>
+      <!-- Twitter Sharing
+      ================================================================== -->
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="Alex_Fitts">Tweet</a></li>
+
+      <!-- Facebook Sharing
+      ================================================================== -->
+      <li><div class="fb-share-button"
+          data-href="http://afitts.github.io/2018/12/02/cancer/"
+          data-layout="button_count">
+      </div></li>
+      </ul>
+    </div>
+
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Back to Home</a>
+    </div>
+    <hr class="small"></hr>
+  </div>
+  <script>
+    // hide ipython notebook cell numbers
+  $('div.prompt').hide();
+  </script>
+		</section>
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Generated with <a href="http://getpelican.com">Pelican</a>. Layout done with <a href="http://getskeleton.com">Skeleton</a>. Icons are <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Hosted on <a href="http://aws.amazon.com/s3/">S3</a>.</p>
+  <p>&copy; Copyright Alex Fitts, 2016 to present</p>
+</footer>	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34295039-1']);
+  _gaq.push(['_setDomainName', 'gregreda.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+</body> <!-- End body -->
+
+<!-- JavaScript
+=================================================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- twitter.js
+==================================================================== -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
+
+<!-- Facebook SDK for JS
+==================================================================== -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+</html>

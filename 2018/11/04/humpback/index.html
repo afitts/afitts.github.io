@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+  <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif;  width:500px;}
+    /*
+      Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      We recommend moving this block and the preceding CSS link to the HEAD of your HTML file.
+     */
+  </style>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="google-site-verification" content="AgIAQN_qsniIQWOq659Bnhzx-LZts2FdgP1kLgtQg-k" />
+  <meta name="google-site-verification" content="-wneVy0z_MWocNaXikWZzyTe__HZbZDCRfLYEJ1sAg8" />
+
+  <title>Humpback Whale ID with Neural Network</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Alex Fitts">
+  <meta name="copyright" content="&copy; Copyright Greg Reda, 2013 to Present">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts 
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans|Merriweather|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?cfc9322a">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Feeds
+  ================================================== -->
+  <link rel="alternate" type="application/atom+xml" href="http://afitts.github.io/feeds/all.atom.xml" title="Alex Fitts Full Atom Feed">
+
+	<!-- Facebook Open Graph
+  ================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Humpback Whale ID with Neural Network">
+  <meta property="og:url" content="http://afitts.github.io/2018/11/04/humpback/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Alex Fitts">
+  <meta property="og:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+
+  <!-- Twitter Cards
+  ================================================== -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Alex_Fitts">
+  <meta name="twitter:creator" content="@Alex_Fitts">
+  <meta name="twitter:domain" content="gregreda.com">
+  <meta name="twitter:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+  <meta name="twitter:title" content="Humpback Whale ID with Neural Network">
+  <meta name="twitter:description" content="">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/theme/images/favicon.ico">
+	<link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns"> <!-- Yes, I know this is a douchey class name -->
+      <ul>
+        <li>
+          <a href="/" title="Home"><img id="logo" src="/theme/images/avatar.jpg"></a>
+        </li>
+        <li>
+          <h1><a href="/" title="Home">Alex Fitts</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/Alex_Fitts" title="Twitter">
+            <i class="fa fa-fw fa-twitter"></i>
+          </a>
+          </li>
+        <li>
+          <a class="icon" href="https://github.com/afitts" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://www.linkedin.com/in/alex-fitts-64163b128/" title="LinkedIn">
+            <i class="fa fa-fw fa-linkedin"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/pub/">Publications</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/blog/">Blog</a></li>
+	<li><a href="/pdfs/FittsResume.pdf">Resume</a></li>
+        <!--        <li><a href="/coffee/">Coffee?</a></li> -->
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->		<section id="content" class="twelve columns">
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/2018/11/04/humpback/" title="Permalink to Humpback Whale ID with Neural Network">Humpback Whale ID with Neural Network</a></h1>
+  <h5 class="article-date">November 04, 2018
+  </h5>
+  <hr class="small"></hr>
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+    <h1>Let's try testing out the 'standard' routine for setting up an image Neural Net following lesson 3 from the fastai DL1 course.</h1>
+<div class="highlight"><pre><span class="o">%</span><span class="n">reload_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">fastai.imports</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.torch_imports</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.transforms</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.conv_learner</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.model</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.dataset</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.sgdr</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">fastai.plots</span> <span class="kn">import</span> <span class="o">*</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">paperspace</span><span class="o">/</span><span class="n">anaconda3</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">fastai</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">6</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">sklearn</span><span class="o">/</span><span class="n">ensemble</span><span class="o">/</span><span class="n">weight_boosting</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">29</span><span class="p">:</span> <span class="ne">DeprecationWarning</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">umath_tests</span> <span class="ow">is</span> <span class="n">an</span> <span class="n">internal</span> <span class="n">NumPy</span> <span class="n">module</span> <span class="ow">and</span> <span class="n">should</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">imported</span><span class="o">.</span> <span class="n">It</span> <span class="n">will</span> <span class="n">be</span> <span class="n">removed</span> <span class="ow">in</span> <span class="n">a</span> <span class="n">future</span> <span class="n">NumPy</span> <span class="n">release</span><span class="o">.</span>
+  <span class="kn">from</span> <span class="nn">numpy.core.umath_tests</span> <span class="kn">import</span> <span class="n">inner1d</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">set_device</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">PATH</span> <span class="o">=</span> <span class="s">&quot;data/humpback-whale/&quot;</span>
+<span class="n">sz</span> <span class="o">=</span> <span class="mi">224</span>
+<span class="n">arch</span> <span class="o">=</span> <span class="n">resnext101_64</span>
+<span class="n">bs</span> <span class="o">=</span> <span class="mi">58</span>
+</pre></div>
+
+
+<p>NOTE: Here we're taking a random 20% of the data for the validation set. This is different from when we looked at structured data. Is this sample a 'good' validation set, i.e. is it a good representation of the test set? Also, is this too much/too little?</p>
+<div class="highlight"><pre><span class="n">label_csv</span> <span class="o">=</span> <span class="n">f</span><span class="s">&#39;{PATH}train.csv&#39;</span>
+<span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">label_csv</span><span class="p">)))</span> <span class="o">-</span> <span class="mi">1</span> <span class="c"># header is not counted (-1)</span>
+<span class="n">val_idxs</span> <span class="o">=</span> <span class="n">get_cv_idxs</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="c"># random 20% data for validation set</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">n</span>
+</pre></div>
+
+
+<div class="highlight"><pre>25361
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">label_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">label_csv</span><span class="p">)</span>
+<span class="n">label_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Image</th>
+      <th>Id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0000e88ab.jpg</td>
+      <td>w_f48451c</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0001f9222.jpg</td>
+      <td>w_c3d896a</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>00029d126.jpg</td>
+      <td>w_20df2c5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>00050a15a.jpg</td>
+      <td>new_whale</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0005c1ef8.jpg</td>
+      <td>new_whale</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span class="n">label_df</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s">&quot;Id&quot;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="nb">len</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">&#39;Image&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Image</th>
+    </tr>
+    <tr>
+      <th>Id</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>new_whale</th>
+      <td>9664</td>
+    </tr>
+    <tr>
+      <th>w_23a388d</th>
+      <td>73</td>
+    </tr>
+    <tr>
+      <th>w_9b5109b</th>
+      <td>65</td>
+    </tr>
+    <tr>
+      <th>w_9c506f6</th>
+      <td>62</td>
+    </tr>
+    <tr>
+      <th>w_0369a5c</th>
+      <td>61</td>
+    </tr>
+    <tr>
+      <th>w_700ebb4</th>
+      <td>57</td>
+    </tr>
+    <tr>
+      <th>w_3de579a</th>
+      <td>54</td>
+    </tr>
+    <tr>
+      <th>w_564a34b</th>
+      <td>51</td>
+    </tr>
+    <tr>
+      <th>w_fd3e556</th>
+      <td>50</td>
+    </tr>
+    <tr>
+      <th>w_88e4537</th>
+      <td>49</td>
+    </tr>
+    <tr>
+      <th>w_2b069ba</th>
+      <td>48</td>
+    </tr>
+    <tr>
+      <th>w_d405854</th>
+      <td>47</td>
+    </tr>
+    <tr>
+      <th>w_789c969</th>
+      <td>45</td>
+    </tr>
+    <tr>
+      <th>w_f0fe284</th>
+      <td>45</td>
+    </tr>
+    <tr>
+      <th>w_5e8e218</th>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>w_778e474</th>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>w_343f088</th>
+      <td>40</td>
+    </tr>
+    <tr>
+      <th>w_5a2634c</th>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>w_a9304b9</th>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>w_60ce6fc</th>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>w_6822dbc</th>
+      <td>36</td>
+    </tr>
+    <tr>
+      <th>w_af367c3</th>
+      <td>35</td>
+    </tr>
+    <tr>
+      <th>w_1ca9ab1</th>
+      <td>34</td>
+    </tr>
+    <tr>
+      <th>w_f765256</th>
+      <td>34</td>
+    </tr>
+    <tr>
+      <th>w_17b0d3a</th>
+      <td>33</td>
+    </tr>
+    <tr>
+      <th>w_d72771c</th>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>w_8c25681</th>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>w_08630fd</th>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>w_6cda039</th>
+      <td>31</td>
+    </tr>
+    <tr>
+      <th>w_51fc1fc</th>
+      <td>30</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>w_ad01432</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_491bdcb</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_ad2bb89</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_48cc590</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_4982a49</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_ad6df15</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_ad7b758</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_ad880b8</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_48b6083</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_48b1730</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_adcaf2a</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_497efb9</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_49ae16f</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_abd9d0b</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_4a1b777</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_abeab1e</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_abee142</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_4ac8e76</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_4ab6b16</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_4a8467f</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_ac26398</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_ac608c7</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_49cd60d</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_ac6aee2</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_ac73445</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_49ee8e0</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_49e0d44</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_49d1bcd</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_49ce813</th>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>w_ffe8693</th>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5005 rows × 1 columns</p>
+</div>
+
+<p>Apparently there is a 'new whale' distinction. In order to have a proper validation set, we'll want a similar fraction of new whales as is in the test set. Also it appears as though a significant portion of these whales have <strong>very</strong> few examples. Looking at the distribution of images <a href="https://www.kaggle.com/kretes/eda-distributions-images-and-no-duplicates">kernal on kaggle</a> we see that almost 30% have 4 images or less while 30% have between 5-73 images.</p>
+<p>Let's now enhance our data set with some data augmentation. </p>
+<div class="highlight"><pre><span class="n">tfms</span> <span class="o">=</span> <span class="n">tfms_from_model</span><span class="p">(</span><span class="n">arch</span><span class="p">,</span> <span class="n">sz</span><span class="p">,</span> <span class="n">aug_tfms</span><span class="o">=</span><span class="n">transforms_side_on</span><span class="p">,</span> <span class="n">max_zoom</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">ImageClassifierData</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">PATH</span><span class="p">,</span> <span class="s">&#39;train&#39;</span><span class="p">,</span> <span class="n">f</span><span class="s">&#39;{PATH}train.csv&#39;</span><span class="p">,</span> <span class="n">test_name</span><span class="o">=</span><span class="s">&#39;test&#39;</span><span class="p">,</span> <span class="c"># we need to specify where the test set is if you want to submit to Kaggle competitions</span>
+                                   <span class="n">val_idxs</span><span class="o">=</span><span class="n">val_idxs</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">tfms</span><span class="o">=</span><span class="n">tfms</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="n">bs</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">fn</span> <span class="o">=</span> <span class="n">PATH</span> <span class="o">+</span> <span class="n">data</span><span class="o">.</span><span class="n">trn_ds</span><span class="o">.</span><span class="n">fnames</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span> <span class="n">fn</span>
+</pre></div>
+
+
+<div class="highlight"><pre>&#39;data/humpback-whale/train/0001f9222.jpg&#39;
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">img</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">fn</span><span class="p">);</span> <span class="n">img</span>
+</pre></div>
+
+
+<p><img alt="png" src="humpback_whale_id_files/humpback_whale_id_13_0.png"></p>
+<div class="highlight"><pre><span class="n">img</span><span class="o">.</span><span class="n">size</span>
+</pre></div>
+
+
+<div class="highlight"><pre>(1050, 700)
+</pre></div>
+
+
+<p>This is a large img. Let's check the dataset to see the typical img size.</p>
+<div class="highlight"><pre><span class="n">size_d</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">PATH</span> <span class="o">+</span> <span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">size</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">trn_ds</span><span class="o">.</span><span class="n">fnames</span><span class="p">}</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">row_sz</span><span class="p">,</span> <span class="n">col_sz</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">size_d</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">row_sz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">row_sz</span><span class="p">);</span> <span class="n">col_sz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">col_sz</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">row_sz</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>(array([ 1276., 18677.,   181.,    49.,    59.,    18.,     9.,     4.,     2.,    14.]),
+ array([  77. ,  665.2, 1253.4, 1841.6, 2429.8, 3018. , 3606.2, 4194.4, 4782.6, 5370.8, 5959. ]),
+ &lt;a list of 10 Patch objects&gt;)
+</pre></div>
+
+
+<p><img alt="png" src="humpback_whale_id_files/humpback_whale_id_19_1.png"></p>
+<div class="highlight"><pre><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">row_sz</span><span class="p">[</span><span class="n">row_sz</span><span class="o">&lt;</span><span class="mi">2000</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre>(array([   51.,   279.,   889.,  2197.,  2330., 14203.,    47.,    36.,    25.,    86.]),
+ array([  77. ,  268.4,  459.8,  651.2,  842.6, 1034. , 1225.4, 1416.8, 1608.2, 1799.6, 1991. ]),
+ &lt;a list of 10 Patch objects&gt;)
+</pre></div>
+
+
+<p><img alt="png" src="humpback_whale_id_files/humpback_whale_id_20_1.png"></p>
+<div class="highlight"><pre><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">col_sz</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>(array([ 288., 3006., 5454., 6607., 4771.,  138.,   18.,    1.,    2.,    4.]),
+ array([  30. ,  184.5,  339. ,  493.5,  648. ,  802.5,  957. , 1111.5, 1266. , 1420.5, 1575. ]),
+ &lt;a list of 10 Patch objects&gt;)
+</pre></div>
+
+
+<p><img alt="png" src="humpback_whale_id_files/humpback_whale_id_21_1.png"></p>
+<div class="highlight"><pre><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">col_sz</span><span class="p">[</span><span class="n">col_sz</span><span class="o">&lt;</span><span class="mi">1000</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre>(array([  66.,  595., 2125., 2870., 4137., 5163., 4416.,  760.,  129.,   12.]),
+ array([ 30. , 126.9, 223.8, 320.7, 417.6, 514.5, 611.4, 708.3, 805.2, 902.1, 999. ]),
+ &lt;a list of 10 Patch objects&gt;)
+</pre></div>
+
+
+<p><img alt="png" src="humpback_whale_id_files/humpback_whale_id_22_1.png"></p>
+<p>Looks like 75% of the data has a length between 1000 and 1200 pixels. Meanwhile there's a distribution of heights from 200 to 800 pixels.</p>
+<div class="highlight"><pre><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">trn_ds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">test_ds</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>(20289, 7960)
+</pre></div>
+
+
+<div class="highlight"><pre><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">classes</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">classes</span><span class="p">[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre>(5005, [&#39;new_whale&#39;, &#39;w_0003639&#39;, &#39;w_0003c59&#39;, &#39;w_0027efa&#39;, &#39;w_00289b1&#39;])
+</pre></div>
+
+
+<p>## Inital Model</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">get_data</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span> <span class="n">bs</span><span class="p">):</span> <span class="c"># sz: image size, bs: batch size</span>
+    <span class="n">tfms</span> <span class="o">=</span> <span class="n">tfms_from_model</span><span class="p">(</span><span class="n">arch</span><span class="p">,</span> <span class="n">sz</span><span class="p">,</span> <span class="n">aug_tfms</span><span class="o">=</span><span class="n">transforms_side_on</span><span class="p">,</span> <span class="n">max_zoom</span><span class="o">=</span><span class="mf">1.1</span><span class="p">)</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">ImageClassifierData</span><span class="o">.</span><span class="n">from_csv</span><span class="p">(</span><span class="n">PATH</span><span class="p">,</span> <span class="s">&#39;train&#39;</span><span class="p">,</span> <span class="n">f</span><span class="s">&#39;{PATH}train.csv&#39;</span><span class="p">,</span> <span class="n">test_name</span><span class="o">=</span><span class="s">&#39;test&#39;</span><span class="p">,</span>
+                                       <span class="n">val_idxs</span><span class="o">=</span><span class="n">val_idxs</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">tfms</span><span class="o">=</span><span class="n">tfms</span><span class="p">,</span> <span class="n">bs</span><span class="o">=</span><span class="n">bs</span><span class="p">)</span>
+
+    <span class="c"># http://forums.fast.ai/t/how-to-train-on-the-full-dataset-using-imageclassifierdata-from-csv/7761/13</span>
+    <span class="c"># http://forums.fast.ai/t/how-to-train-on-the-full-dataset-using-imageclassifierdata-from-csv/7761/37</span>
+    <span class="k">return</span> <span class="n">data</span> <span class="k">if</span> <span class="n">sz</span> <span class="o">&gt;</span> <span class="mi">300</span> <span class="k">else</span> <span class="n">data</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">340</span><span class="p">,</span> <span class="s">&#39;tmp&#39;</span><span class="p">)</span> <span class="c"># Reading the jpgs and resizing is slow for big images, so resizing them all to 340 first saves time</span>
+</pre></div>
+
+
+<h3>Precompute</h3>
+<div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span> <span class="n">bs</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>HBox(children=(IntProgress(value=0, max=6), HTML(value=&#39;&#39;)))
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span> <span class="o">=</span> <span class="n">ConvLearner</span><span class="o">.</span><span class="n">pretrained</span><span class="p">(</span><span class="n">arch</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">precompute</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>100%|██████████| 350/350 [08:13&lt;00:00,  1.31s/it]
+100%|██████████| 88/88 [02:03&lt;00:00,  1.18s/it]
+100%|██████████| 138/138 [03:13&lt;00:00,  1.08s/it]
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>HBox(children=(IntProgress(value=0, description=&#39;Epoch&#39;, max=5, style=ProgressStyle(description_width=&#39;initial…
+
+
+epoch      trn_loss   val_loss   accuracy                   
+    0      5.966936   5.62474    0.382492  
+    1      5.387898   5.427078   0.386632                   
+    2      5.112792   5.266909   0.39097                    
+    3      4.83662    5.152948   0.394125                   
+    4      4.501909   5.058384   0.397871
+
+
+
+
+
+
+[array([5.05838]), 0.39787066199049964]
+</pre></div>
+
+
+<h3>Augment</h3>
+<div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">metrics</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">data</span> <span class="o">=</span> <span class="n">get_data</span><span class="p">(</span><span class="n">sz</span><span class="p">,</span> <span class="n">bs</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>HBox(children=(IntProgress(value=0, max=6), HTML(value=&#39;&#39;)))
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span> <span class="o">=</span> <span class="n">ConvLearner</span><span class="o">.</span><span class="n">pretrained</span><span class="p">(</span><span class="n">arch</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">precompute</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">ps</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>HBox(children=(IntProgress(value=0, description=&#39;Epoch&#39;, max=2, style=ProgressStyle(description_width=&#39;initial…
+
+
+epoch      trn_loss   val_loss   accuracy                   
+    0      5.927065   5.657636   0.382098  
+    1      5.434787   5.466563   0.38545
+
+
+
+
+
+
+[array([5.46656]), 0.3854495253037861]
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">precompute</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">cycle_len</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>HBox(children=(IntProgress(value=0, description=&#39;Epoch&#39;, max=5, style=ProgressStyle(description_width=&#39;initial…
+
+
+epoch      trn_loss   val_loss   accuracy                   
+    0      5.329419   5.374768   0.389196  
+    1      5.330996   5.319299   0.388604                   
+    2      5.116787   5.266834   0.390379                   
+    3      5.099875   5.216399   0.39235                    
+    4      5.039721   5.178133   0.392153
+
+
+
+
+
+
+[array([5.17813]), 0.39215299620495797]
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&#39;224_pre&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Given that simply guessing new_whale for every photo gives an accuaracy of 32.5</p>
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;224_pre&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<h3>Increase size</h3>
+<div class="highlight"><pre><span class="c"># Starting training on small images for a few epochs, then switching to bigger images, and continuing training is an amazingly effective way to avoid overfitting.</span>
+
+<span class="c"># http://forums.fast.ai/t/planet-classification-challenge/7824/96</span>
+<span class="c"># set_data doesn’t change the model at all. It just gives it new data to train with.</span>
+<span class="n">learn</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">get_data</span><span class="p">(</span><span class="mi">299</span><span class="p">,</span> <span class="n">bs</span><span class="p">))</span> 
+<span class="n">learn</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre>HBox(children=(IntProgress(value=0, max=6), HTML(value=&#39;&#39;)))
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">learn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="mf">1e-2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">cycle_len</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="nx">HBox</span><span class="p">(</span><span class="nx">children</span><span class="o">=</span><span class="p">(</span><span class="nx">IntProgress</span><span class="p">(</span><span class="nx">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nx">description</span><span class="o">=</span><span class="s1">&#39;Epoch&#39;</span><span class="p">,</span> <span class="nx">max</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="nx">style</span><span class="o">=</span><span class="nx">ProgressStyle</span><span class="p">(</span><span class="nx">description_width</span><span class="o">=</span><span class="err">&#39;</span><span class="nx">initial</span><span class="err">…</span>
+
+
+  <span class="mi">2</span><span class="o">%|</span><span class="err">▏</span>         <span class="o">|</span> <span class="mi">7</span><span class="o">/</span><span class="mi">350</span> <span class="cp">[</span><span class="mi">00</span><span class="p">:</span><span class="mi">19</span><span class="o">&lt;</span><span class="mi">15</span><span class="p">:</span><span class="mi">37</span><span class="p">,</span>  <span class="mf">2.73</span><span class="nx">s</span><span class="p">/</span><span class="nx">it</span><span class="p">,</span> <span class="n">loss</span><span class="o">=</span><span class="mf">5.08</span><span class="cp">]</span>
+
+
+<span class="o">---------------------------------------------------------------------------</span>
+
+<span class="nx">KeyboardInterrupt</span>                         <span class="nx">Traceback</span> <span class="p">(</span><span class="nx">most</span> <span class="nx">recent</span> <span class="nx">call</span> <span class="nx">last</span><span class="p">)</span>
+
+<span class="o">&lt;</span><span class="nx">ipython</span><span class="o">-</span><span class="nx">input</span><span class="o">-</span><span class="mi">43</span><span class="o">-</span><span class="mi">6</span><span class="nx">a6bf8b06eed</span><span class="o">&gt;</span> <span class="k">in</span> <span class="o">&lt;</span><span class="nx">module</span><span class="o">&gt;</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="nx">learn</span><span class="p">.</span><span class="nx">fit</span><span class="p">(</span><span class="mi">1</span><span class="nx">e</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="nx">cycle_len</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+
+<span class="o">~</span><span class="err">/kaggle/fastai/learner.py in fit(self, lrs, n_cycle, wds, **kwargs)</span>
+    <span class="mi">300</span>         <span class="nx">self</span><span class="p">.</span><span class="nx">sched</span> <span class="o">=</span> <span class="nx">None</span>
+    <span class="mi">301</span>         <span class="nx">layer_opt</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">get_layer_opt</span><span class="p">(</span><span class="nx">lrs</span><span class="p">,</span> <span class="nx">wds</span><span class="p">)</span>
+<span class="o">--&gt;</span> <span class="mi">302</span>         <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">fit_gen</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">model</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">data</span><span class="p">,</span> <span class="nx">layer_opt</span><span class="p">,</span> <span class="nx">n_cycle</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">303</span> 
+    <span class="mi">304</span>     <span class="nx">def</span> <span class="nx">warm_up</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">lr</span><span class="p">,</span> <span class="nx">wds</span><span class="o">=</span><span class="nx">None</span><span class="p">)</span><span class="o">:</span>
+
+
+<span class="o">~</span><span class="err">/kaggle/fastai/learner.py in fit_gen(self, model, data, layer_opt, n_cycle, cycle_len, cycle_mult, cycle_save_name, best_save_name, use_clr, use_clr_beta, metrics, callbacks, use_wd_sched, norm_wds, wds_sched_mult, use_swa, swa_start, swa_eval_freq, **kwargs)</span>
+    <span class="mi">247</span>             <span class="nx">metrics</span><span class="o">=</span><span class="nx">metrics</span><span class="p">,</span> <span class="nx">callbacks</span><span class="o">=</span><span class="nx">callbacks</span><span class="p">,</span> <span class="nx">reg_fn</span><span class="o">=</span><span class="nx">self</span><span class="p">.</span><span class="nx">reg_fn</span><span class="p">,</span> <span class="nx">clip</span><span class="o">=</span><span class="nx">self</span><span class="p">.</span><span class="nx">clip</span><span class="p">,</span> <span class="nx">fp16</span><span class="o">=</span><span class="nx">self</span><span class="p">.</span><span class="nx">fp16</span><span class="p">,</span>
+    <span class="mi">248</span>             <span class="nx">swa_model</span><span class="o">=</span><span class="nx">self</span><span class="p">.</span><span class="nx">swa_model</span> <span class="k">if</span> <span class="nx">use_swa</span> <span class="k">else</span> <span class="nx">None</span><span class="p">,</span> <span class="nx">swa_start</span><span class="o">=</span><span class="nx">swa_start</span><span class="p">,</span>
+<span class="o">--&gt;</span> <span class="mi">249</span>             <span class="nx">swa_eval_freq</span><span class="o">=</span><span class="nx">swa_eval_freq</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">250</span> 
+    <span class="mi">251</span>     <span class="nx">def</span> <span class="nx">get_layer_groups</span><span class="p">(</span><span class="nx">self</span><span class="p">)</span><span class="o">:</span> <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">models</span><span class="p">.</span><span class="nx">get_layer_groups</span><span class="p">()</span>
+
+
+<span class="o">~</span><span class="err">/kaggle/fastai/model.py in fit(model, data, n_epochs, opt, crit, metrics, callbacks, stepper, swa_model, swa_start, swa_eval_freq, visualize, **kwargs)</span>
+    <span class="mi">139</span>             <span class="nx">batch_num</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="mi">140</span>             <span class="k">for</span> <span class="nx">cb</span> <span class="k">in</span> <span class="nx">callbacks</span><span class="o">:</span> <span class="nx">cb</span><span class="p">.</span><span class="nx">on_batch_begin</span><span class="p">()</span>
+<span class="o">--&gt;</span> <span class="mi">141</span>             <span class="nx">loss</span> <span class="o">=</span> <span class="nx">model_stepper</span><span class="p">.</span><span class="nx">step</span><span class="p">(</span><span class="nx">V</span><span class="p">(</span><span class="nx">x</span><span class="p">),</span><span class="nx">V</span><span class="p">(</span><span class="nx">y</span><span class="p">),</span> <span class="nx">epoch</span><span class="p">)</span>
+    <span class="mi">142</span>             <span class="nx">avg_loss</span> <span class="o">=</span> <span class="nx">avg_loss</span> <span class="o">*</span> <span class="nx">avg_mom</span> <span class="o">+</span> <span class="nx">loss</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="nx">avg_mom</span><span class="p">)</span>
+    <span class="mi">143</span>             <span class="nx">debias_loss</span> <span class="o">=</span> <span class="nx">avg_loss</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="nx">avg_mom</span><span class="o">**</span><span class="nx">batch_num</span><span class="p">)</span>
+
+
+<span class="o">~</span><span class="err">/kaggle/fastai/model.py in step(self, xs, y, epoch)</span>
+     <span class="mi">48</span>     <span class="nx">def</span> <span class="nx">step</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">xs</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">epoch</span><span class="p">)</span><span class="o">:</span>
+     <span class="mi">49</span>         <span class="nx">xtra</span> <span class="o">=</span> <span class="cp">[]</span>
+<span class="o">---&gt;</span> <span class="mi">50</span>         <span class="nx">output</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">m</span><span class="p">(</span><span class="o">*</span><span class="nx">xs</span><span class="p">)</span>
+     <span class="mi">51</span>         <span class="k">if</span> <span class="nx">isinstance</span><span class="p">(</span><span class="nx">output</span><span class="p">,</span><span class="nx">tuple</span><span class="p">)</span><span class="o">:</span> <span class="nx">output</span><span class="p">,</span><span class="o">*</span><span class="nx">xtra</span> <span class="o">=</span> <span class="nx">output</span>
+     <span class="mi">52</span>         <span class="k">if</span> <span class="nx">self</span><span class="p">.</span><span class="nx">fp16</span><span class="o">:</span> <span class="nx">self</span><span class="p">.</span><span class="nx">m</span><span class="p">.</span><span class="nx">zero_grad</span><span class="p">()</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)</span>
+    <span class="mi">355</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_slow_forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">356</span>         <span class="k">else</span><span class="o">:</span>
+<span class="o">--&gt;</span> <span class="mi">357</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">358</span>         <span class="k">for</span> <span class="nx">hook</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_forward_hooks</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+    <span class="mi">359</span>             <span class="nx">hook_result</span> <span class="o">=</span> <span class="nx">hook</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)</span>
+     <span class="mi">65</span>     <span class="nx">def</span> <span class="nx">forward</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span><span class="o">:</span>
+     <span class="mi">66</span>         <span class="k">for</span> <span class="nx">module</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_modules</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+<span class="o">---&gt;</span> <span class="mi">67</span>             <span class="nx">input</span> <span class="o">=</span> <span class="nx">module</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span>
+     <span class="mi">68</span>         <span class="k">return</span> <span class="nx">input</span>
+     <span class="mi">69</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)</span>
+    <span class="mi">355</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_slow_forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">356</span>         <span class="k">else</span><span class="o">:</span>
+<span class="o">--&gt;</span> <span class="mi">357</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">358</span>         <span class="k">for</span> <span class="nx">hook</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_forward_hooks</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+    <span class="mi">359</span>             <span class="nx">hook_result</span> <span class="o">=</span> <span class="nx">hook</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)</span>
+     <span class="mi">65</span>     <span class="nx">def</span> <span class="nx">forward</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span><span class="o">:</span>
+     <span class="mi">66</span>         <span class="k">for</span> <span class="nx">module</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_modules</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+<span class="o">---&gt;</span> <span class="mi">67</span>             <span class="nx">input</span> <span class="o">=</span> <span class="nx">module</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span>
+     <span class="mi">68</span>         <span class="k">return</span> <span class="nx">input</span>
+     <span class="mi">69</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)</span>
+    <span class="mi">355</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_slow_forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">356</span>         <span class="k">else</span><span class="o">:</span>
+<span class="o">--&gt;</span> <span class="mi">357</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">358</span>         <span class="k">for</span> <span class="nx">hook</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_forward_hooks</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+    <span class="mi">359</span>             <span class="nx">hook_result</span> <span class="o">=</span> <span class="nx">hook</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)</span>
+     <span class="mi">65</span>     <span class="nx">def</span> <span class="nx">forward</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span><span class="o">:</span>
+     <span class="mi">66</span>         <span class="k">for</span> <span class="nx">module</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_modules</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+<span class="o">---&gt;</span> <span class="mi">67</span>             <span class="nx">input</span> <span class="o">=</span> <span class="nx">module</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span>
+     <span class="mi">68</span>         <span class="k">return</span> <span class="nx">input</span>
+     <span class="mi">69</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)</span>
+    <span class="mi">355</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_slow_forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">356</span>         <span class="k">else</span><span class="o">:</span>
+<span class="o">--&gt;</span> <span class="mi">357</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">358</span>         <span class="k">for</span> <span class="nx">hook</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_forward_hooks</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+    <span class="mi">359</span>             <span class="nx">hook_result</span> <span class="o">=</span> <span class="nx">hook</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+
+
+<span class="o">~</span><span class="err">/kaggle/fastai/models/resnext_101_64x4d.py in forward(self, input)</span>
+     <span class="mi">22</span> <span class="kr">class</span> <span class="nx">LambdaMap</span><span class="p">(</span><span class="nx">LambdaBase</span><span class="p">)</span><span class="o">:</span>
+     <span class="mi">23</span>     <span class="nx">def</span> <span class="nx">forward</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span><span class="o">:</span>
+<span class="o">---&gt;</span> <span class="mi">24</span>         <span class="k">return</span> <span class="nx">list</span><span class="p">(</span><span class="nx">map</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">lambda_func</span><span class="p">,</span><span class="nx">self</span><span class="p">.</span><span class="nx">forward_prepare</span><span class="p">(</span><span class="nx">input</span><span class="p">)))</span>
+     <span class="mi">25</span> 
+     <span class="mi">26</span> <span class="kr">class</span> <span class="nx">LambdaReduce</span><span class="p">(</span><span class="nx">LambdaBase</span><span class="p">)</span><span class="o">:</span>
+
+
+<span class="o">~</span><span class="err">/kaggle/fastai/models/resnext_101_64x4d.py in forward_prepare(self, input)</span>
+     <span class="mi">13</span>         <span class="nx">output</span> <span class="o">=</span> <span class="cp">[]</span>
+     <span class="mi">14</span>         <span class="k">for</span> <span class="nx">module</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_modules</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+<span class="o">---&gt;</span> <span class="mi">15</span>             <span class="nx">output</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">module</span><span class="p">(</span><span class="nx">input</span><span class="p">))</span>
+     <span class="mi">16</span>         <span class="k">return</span> <span class="nx">output</span> <span class="k">if</span> <span class="nx">output</span> <span class="k">else</span> <span class="nx">input</span>
+     <span class="mi">17</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)</span>
+    <span class="mi">355</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_slow_forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">356</span>         <span class="k">else</span><span class="o">:</span>
+<span class="o">--&gt;</span> <span class="mi">357</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">358</span>         <span class="k">for</span> <span class="nx">hook</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_forward_hooks</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+    <span class="mi">359</span>             <span class="nx">hook_result</span> <span class="o">=</span> <span class="nx">hook</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)</span>
+     <span class="mi">65</span>     <span class="nx">def</span> <span class="nx">forward</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span><span class="o">:</span>
+     <span class="mi">66</span>         <span class="k">for</span> <span class="nx">module</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_modules</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+<span class="o">---&gt;</span> <span class="mi">67</span>             <span class="nx">input</span> <span class="o">=</span> <span class="nx">module</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span>
+     <span class="mi">68</span>         <span class="k">return</span> <span class="nx">input</span>
+     <span class="mi">69</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)</span>
+    <span class="mi">355</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_slow_forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">356</span>         <span class="k">else</span><span class="o">:</span>
+<span class="o">--&gt;</span> <span class="mi">357</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">358</span>         <span class="k">for</span> <span class="nx">hook</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_forward_hooks</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+    <span class="mi">359</span>             <span class="nx">hook_result</span> <span class="o">=</span> <span class="nx">hook</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)</span>
+     <span class="mi">65</span>     <span class="nx">def</span> <span class="nx">forward</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span><span class="o">:</span>
+     <span class="mi">66</span>         <span class="k">for</span> <span class="nx">module</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_modules</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+<span class="o">---&gt;</span> <span class="mi">67</span>             <span class="nx">input</span> <span class="o">=</span> <span class="nx">module</span><span class="p">(</span><span class="nx">input</span><span class="p">)</span>
+     <span class="mi">68</span>         <span class="k">return</span> <span class="nx">input</span>
+     <span class="mi">69</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)</span>
+    <span class="mi">355</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_slow_forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">356</span>         <span class="k">else</span><span class="o">:</span>
+<span class="o">--&gt;</span> <span class="mi">357</span>             <span class="nx">result</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">forward</span><span class="p">(</span><span class="o">*</span><span class="nx">input</span><span class="p">,</span> <span class="o">**</span><span class="nx">kwargs</span><span class="p">)</span>
+    <span class="mi">358</span>         <span class="k">for</span> <span class="nx">hook</span> <span class="k">in</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_forward_hooks</span><span class="p">.</span><span class="nx">values</span><span class="p">()</span><span class="o">:</span>
+    <span class="mi">359</span>             <span class="nx">hook_result</span> <span class="o">=</span> <span class="nx">hook</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">,</span> <span class="nx">result</span><span class="p">)</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/conv.py in forward(self, input)</span>
+    <span class="mi">280</span>     <span class="nx">def</span> <span class="nx">forward</span><span class="p">(</span><span class="nx">self</span><span class="p">,</span> <span class="nx">input</span><span class="p">)</span><span class="o">:</span>
+    <span class="mi">281</span>         <span class="k">return</span> <span class="nx">F</span><span class="p">.</span><span class="nx">conv2d</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">weight</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">bias</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">stride</span><span class="p">,</span>
+<span class="o">--&gt;</span> <span class="mi">282</span>                         <span class="nx">self</span><span class="p">.</span><span class="nx">padding</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">dilation</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">groups</span><span class="p">)</span>
+    <span class="mi">283</span> 
+    <span class="mi">284</span>
+
+
+<span class="o">~</span><span class="err">/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/functional.py in conv2d(input, weight, bias, stride, padding, dilation, groups)</span>
+     <span class="mi">88</span>                 <span class="nx">_pair</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="nx">groups</span><span class="p">,</span> <span class="nx">torch</span><span class="p">.</span><span class="nx">backends</span><span class="p">.</span><span class="nx">cudnn</span><span class="p">.</span><span class="nx">benchmark</span><span class="p">,</span>
+     <span class="mi">89</span>                 <span class="nx">torch</span><span class="p">.</span><span class="nx">backends</span><span class="p">.</span><span class="nx">cudnn</span><span class="p">.</span><span class="nx">deterministic</span><span class="p">,</span> <span class="nx">torch</span><span class="p">.</span><span class="nx">backends</span><span class="p">.</span><span class="nx">cudnn</span><span class="p">.</span><span class="nx">enabled</span><span class="p">)</span>
+<span class="o">---&gt;</span> <span class="mi">90</span>     <span class="k">return</span> <span class="nx">f</span><span class="p">(</span><span class="nx">input</span><span class="p">,</span> <span class="nx">weight</span><span class="p">,</span> <span class="nx">bias</span><span class="p">)</span>
+     <span class="mi">91</span> 
+     <span class="mi">92</span>
+
+
+<span class="nx">KeyboardInterrupt</span><span class="o">:</span>
+</pre></div>
+
+
+<div class="highlight"><pre>
+</pre></div>
+  </div>
+
+  <hr class="small"></hr>
+  <div class="article-sharing">
+      <ul>
+      <!-- Twitter Sharing
+      ================================================================== -->
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="Alex_Fitts">Tweet</a></li>
+
+      <!-- Facebook Sharing
+      ================================================================== -->
+      <li><div class="fb-share-button"
+          data-href="http://afitts.github.io/2018/11/04/humpback/"
+          data-layout="button_count">
+      </div></li>
+      </ul>
+    </div>
+
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Back to Home</a>
+    </div>
+    <hr class="small"></hr>
+  </div>
+  <script>
+    // hide ipython notebook cell numbers
+  $('div.prompt').hide();
+  </script>
+		</section>
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Generated with <a href="http://getpelican.com">Pelican</a>. Layout done with <a href="http://getskeleton.com">Skeleton</a>. Icons are <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Hosted on <a href="http://aws.amazon.com/s3/">S3</a>.</p>
+  <p>&copy; Copyright Alex Fitts, 2016 to present</p>
+</footer>	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34295039-1']);
+  _gaq.push(['_setDomainName', 'gregreda.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+</body> <!-- End body -->
+
+<!-- JavaScript
+=================================================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- twitter.js
+==================================================================== -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
+
+<!-- Facebook SDK for JS
+==================================================================== -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+</html>
