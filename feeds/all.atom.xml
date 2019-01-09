@@ -201,7 +201,7 @@
 
 
 &lt;div class="highlight"&gt;&lt;pre&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Humpback Whale ID with Neural Network</title><link href="http://afitts.github.io/2018/11/04/humpback/" rel="alternate"></link><published>2018-11-04T00:00:00-05:00</published><updated>2018-11-04T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2018-11-04:/2018/11/04/humpback/</id><summary type="html">&lt;h1&gt;Let's try testing out the 'standard' routine for setting up an image Neural Net following lesson 3 from the fastai DL1 course.&lt;/h1&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Humpback Whale ID with Neural Networks</title><link href="http://afitts.github.io/2018/11/04/humpback/" rel="alternate"></link><published>2018-11-04T00:00:00-05:00</published><updated>2018-11-04T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2018-11-04:/2018/11/04/humpback/</id><summary type="html">&lt;h1&gt;Let's try testing out the 'standard' routine for setting up an image Neural Net following lesson 3 from the fastai DL1 course.&lt;/h1&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;reload_ext&lt;/span&gt; &lt;span class="n"&gt;autoreload&lt;/span&gt;
 &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;autoreload&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
 &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
