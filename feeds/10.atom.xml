@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom"><title>Alex Fitts - 10</title><link href="http://afitts.github.io/" rel="alternate"></link><link href="http://afitts.github.io/feeds/10.atom.xml" rel="self"></link><id>http://afitts.github.io/</id><updated>2018-10-12T00:00:00-05:00</updated><entry><title>How I learned to stop worrying and love Random Forests (Part 1)</title><link href="http://afitts.github.io/2018/10/12/rf_part1/" rel="alternate"></link><published>2018-10-12T00:00:00-05:00</published><updated>2018-10-12T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2018-10-12:/2018/10/12/rf_part1/</id><summary type="html">&lt;p&gt;In this notebook I'll show how a non-paramtric model like Random Forests can not only fit structured data incredibly well but can also be easily interpretable! To do this I'll review step-by-step the Random Forest model training workflow covered in the Fast.ai Machine Learning &lt;a href="https://course.fast.ai/ml"&gt;course&lt;/a&gt; (which I highly recommend …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In this notebook I'll show how a non-paramtric model like Random Forests can not only fit structured data incredibly well but can also be easily interpretable! To do this I'll review step-by-step the Random Forest model training workflow covered in the Fast.ai Machine Learning &lt;a href="https://course.fast.ai/ml"&gt;course&lt;/a&gt; (which I highly recommend. No where else will you find such a practical view of learning and using machine learning). I'll be exploring the &lt;a href="http://www.amstat.org/publications/jse/v19n3/decock.pdf"&gt;Ames Housing dataset&lt;/a&gt; which is the subject of the kaggle &lt;a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques"&gt;Housing Prices competition&lt;/a&gt;.&lt;/p&gt;
-&lt;h2&gt;Background&lt;/h2&gt;
-&lt;p&gt;The bias-variance tradeoff is an oft quoted dilemma in machine learning. For those who haven't it goes something like this: &lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Variance is the amount by which our estimation of the response (our model's predictions) changes with different training data. Ideally the estimate of the response should not vary too much between training sets. High variance can cause an algorithm to model the random noise in the training data, rather than the intended outputs (otherwise known as overfitting).&lt;/li&gt;
-&lt;li&gt;Bias is the error that is introduced by approximating a complex problem with a much simpler (and inflexible) model. High bias can cause an algorithm to miss the relevant relations between features and target outputs (otherwise known as underfitting).&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The goal of machine learning is to simultaneously have low bias and low variance in our models.&lt;/p&gt;
-&lt;p&gt;When selecting a model type for machine learning we have two choices: parametric or non-paramtric. A parametrized model is where we assume an underlying functional form for the relationship between our features, &lt;span class="math"&gt;\(X\)&lt;/span&gt;, and the response, &lt;span class="math"&gt;\(Y\)&lt;/span&gt;. Fitting a parametric model simply boils down to estimating the parameters for the underlying function of our model. Parametric moddels generally have high bias but relatively low variance; they are seen as a relatively inflexible approach, but provide easy inference though and are seen as more 'intellectually pure'.&lt;/p&gt;
-&lt;p&gt;A non-parametric model assumes no functional form for our model and tries to estimate a form that fits the data as close as possible without being too rough or wiggly. Very flexible, good for prediction though always run the risk of overfitting. There is a general trade-off between prediction accuracy and model interpretability&lt;/p&gt;
-&lt;p&gt;As a general rule, as we use more flexible methods, the variance will increase and the bias will decrease. The relative rate of change of these two quantities determines whether the test error increases or decreases. As we increase the flexibility of a class of methods, the bias tends to initially decrease faster than the variance increases. Consequently, the expected test error declines. However, at some point increasing flexibility has little impact on the bias but starts to significantly increase the variance. When this happens the test error increases.&lt;/p&gt;
 &lt;h2&gt;Imports&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;load_ext&lt;/span&gt; &lt;span class="n"&gt;autoreload&lt;/span&gt;
 &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;autoreload&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
@@ -84854,6 +84844,7 @@ How do we figure out how important &lt;code&gt;OverallQual&lt;/code&gt; is? We h
 
 &lt;p&gt;Let's look at the partial dependence to see if we can find any interactions between the features.&lt;/p&gt;
 &lt;h2&gt;Partial Dependence Plots&lt;/h2&gt;
+&lt;p&gt;So now we're at the point where we want to try and really understand the data better by taking advantage of our new trained model. We are going to use something called partial dependence. What we are going to do is we are going to find the features that are important and how they relate to the dependent variable. First let's look at a few univariate relationships.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;df_keep2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_feather&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;tmp/house-prices-ohe-trim&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -84947,32 +84938,22 @@ How do we figure out how important &lt;code&gt;OverallQual&lt;/code&gt; is? We h
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;ggplot is the main way Jeremy reccommends looking at univariate relationships. By adding standard error equals true (se=True), it also shows me the confidence interval of this smoother. loess stands for locally weighted regression which is this idea of doing lots of little mini regressions.&lt;/p&gt;
+&lt;p&gt;ggplot provides a great way of looking at univariate relationships. By adding standard error equals true (se=True), it also shows me the confidence interval of this smoother. loess stands for locally weighted regression which is this idea of doing lots of little mini regressions.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ggplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_all&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;OverallQual&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;SalePrice&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;stat_smooth&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;se&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;loess&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_106_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_107_0.png"&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&amp;lt;ggplot: (-9223363268887317700)&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;Looks like something occurs at an OverallQual of 6. The slope of the log of the sale price shifts to a higher value.&lt;/p&gt;
+&lt;p&gt;Looks like something occurs at an &lt;code&gt;OverallQual&lt;/code&gt; of 6. The slope of the log of the sale price shifts to a higher value.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ggplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_all&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;GrLivArea&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;SalePrice&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;stat_smooth&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;se&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;loess&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_108_0.png"&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;lt;ggplot: (8767966078335)&amp;gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Looks like it starts to level off after 2000. I wonder how this would do with log GrLivArea&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ggplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_all&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;GrLivArea&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;SalePrice&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;stat_smooth&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;se&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;loess&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_110_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_109_0.png"&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&amp;lt;ggplot: (8746504262043)&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -84981,21 +84962,13 @@ How do we figure out how important &lt;code&gt;OverallQual&lt;/code&gt; is? We h
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_111_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_110_0.png"&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&amp;lt;ggplot: (8767967175088)&amp;gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;ggplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x_all&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;aes&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;TotalBsmtSF&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;SalePrice&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;stat_smooth&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;se&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;method&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;loess&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_112_0.png"&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;lt;ggplot: (-9223363268887702966)&amp;gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Univariate plots are interesting but they do not tell the whole story. For example, what we really want to know is the relationship between &lt;code&gt;SalePrice&lt;/code&gt; and &lt;code&gt;OverallQual&lt;/code&gt; all other things being equal. We can look at this by viewing some partial dependence plots. &lt;/p&gt;
+&lt;p&gt;While all our previous univariate relationships were basically straight lines, here we have some odd behavior. The problem is that when you look at a univariate relationship like this, there is a whole lot of collinearity going on — a whole lot of interactions that are being lost. For example, why did the price drop? Is it actually because things made between 1920 and 1960 are less valuable? Or is it actually because most of them were also sold during that time and there was maybe a recession then? &lt;/p&gt;
+&lt;p&gt;So what we really want to be able to do is say “well, what’s the relationship between &lt;code&gt;SalePrice&lt;/code&gt; and &lt;code&gt;YearBuilt&lt;/code&gt; all other things being equal. “All other things being equal” basically means if we sold something in 1990 vs. 1920 and it was exactly the same thing to exactly the same person in exactly the same auction so on and so forth, what would have been the difference in price? We can do this by using a partial dependence plot (pdp for short). What this analysis does is takes a random sample of 500 rows from the training data, assigns each row a new &lt;code&gt;YearBuilt&lt;/code&gt; and uses our random forest model to predict what the new &lt;code&gt;SalePrice&lt;/code&gt;'s. We do this for the entire range of &lt;code&gt;YearBuilt&lt;/code&gt; and we get the following plot:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;pdpbox&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;pdp&lt;/span&gt;
 &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;plotnine&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -85017,6 +84990,19 @@ How do we figure out how important &lt;code&gt;OverallQual&lt;/code&gt; is? We h
 &lt;/pre&gt;&lt;/div&gt;
 
 
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plot_pdp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;YearBuilt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;model_feat&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;(&amp;lt;Figure size 1080x684 with 2 Axes&amp;gt;,
+ {&amp;#39;title_ax&amp;#39;: &amp;lt;matplotlib.axes._subplots.AxesSubplot at 0x7f47446a77b8&amp;gt;,
+  &amp;#39;pdp_ax&amp;#39;: &amp;lt;matplotlib.axes._subplots.AxesSubplot at 0x7f4746a282b0&amp;gt;})
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_117_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;Each blue line represents a different batch of 500 random samples while the black line is the average of all the lines. While this isn't a completely straight line, it appears much more linear than the U shape we saw above. Hence it would appear that the high &lt;code&gt;SalePrice&lt;/code&gt; isn't because of a specific feature of these old houses, perhaps these are historical houses that hold some special connotation that isn't represented in the data. &lt;/p&gt;
+&lt;p&gt;While we're at it, let's see if we can better understand that kink that was in the &lt;code&gt;OverallQual&lt;/code&gt; curve.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plot_pdp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;OverallQual&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;model_feat&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -85027,7 +85013,7 @@ How do we figure out how important &lt;code&gt;OverallQual&lt;/code&gt; is? We h
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_118_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_120_1.png"&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plot_pdp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;OverallQual&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;model_feat&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;clusters&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -85038,7 +85024,8 @@ How do we figure out how important &lt;code&gt;OverallQual&lt;/code&gt; is? We h
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_119_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_121_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;All other things being equal, there does indeed appear to be something special about an &lt;code&gt;OverallQual&lt;/code&gt; of 6. Most likely this feature is simply a shorthand for a number of other features. Let keep exploring the data.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plot_pdp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;GrLivArea&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;model_feat&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -85049,7 +85036,7 @@ How do we figure out how important &lt;code&gt;OverallQual&lt;/code&gt; is? We h
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_120_1.png"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_123_1.png"&gt;&lt;/p&gt;
 &lt;p&gt;The above plot makes it seem like &lt;code&gt;GrLivArea&lt;/code&gt; should definitely be in log. After rerunning the feature importance, &lt;code&gt;GrLivArea&lt;/code&gt; jumped from ~0.15 to ~0.24! Definitely seems like a good move. Now lets see the new plot:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plot_pdp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;GrLivArea&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;model_feat&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -85061,20 +85048,7 @@ How do we figure out how important &lt;code&gt;OverallQual&lt;/code&gt; is? We h
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_122_1.png"&gt;&lt;/p&gt;
-&lt;p&gt;Remember, back at the univariate plots this was basically a straight line. Something happens at roughly&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plot_pdp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;YearBuilt&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;model_feat&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;(&amp;lt;Figure size 1080x684 with 2 Axes&amp;gt;,
- {&amp;#39;title_ax&amp;#39;: &amp;lt;matplotlib.axes._subplots.AxesSubplot at 0x7f47446a77b8&amp;gt;,
-  &amp;#39;pdp_ax&amp;#39;: &amp;lt;matplotlib.axes._subplots.AxesSubplot at 0x7f4746a282b0&amp;gt;})
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_124_1.png"&gt;&lt;/p&gt;
-&lt;p&gt;This plot is &lt;strong&gt;extremely&lt;/strong&gt; different than the univariate plot. Something must be up with those old houses. Need to check. Maybe they're all really really big? That or just the fact that they are old is what fetches them such a high price.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="housing-prices-comp_files/housing-prices-comp_125_1.png"&gt;&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plot_pdp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;TotalBsmtSF&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;model_feat&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
@@ -85093,6 +85067,11 @@ How do we figure out how important &lt;code&gt;OverallQual&lt;/code&gt; is? We h
 &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;RandomForestRegressor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_estimators&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;40&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;min_samples_leaf&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_features&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n_jobs&lt;/span&gt;&lt;span class="o"&gt;=-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;oob_score&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X_train&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y_train&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;print_score&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h2&gt;Tree Interpreter&lt;/h2&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 

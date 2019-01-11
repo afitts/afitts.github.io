@@ -1,67 +1,258 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Alex Fitts - 11</title><link href="http://afitts.github.io/" rel="alternate"></link><link href="http://afitts.github.io/feeds/11.atom.xml" rel="self"></link><id>http://afitts.github.io/</id><updated>2018-11-04T00:00:00-05:00</updated><entry><title>Humpback Whale ID with Neural Networks</title><link href="http://afitts.github.io/2018/11/04/humpback/" rel="alternate"></link><published>2018-11-04T00:00:00-05:00</published><updated>2018-11-04T00:00:00-05:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2018-11-04:/2018/11/04/humpback/</id><summary type="html">&lt;h1&gt;Let's try testing out the 'standard' routine for setting up an image Neural Net following lesson 3 from the fastai DL1 course.&lt;/h1&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Alex Fitts - 11</title><link href="http://afitts.github.io/" rel="alternate"></link><link href="http://afitts.github.io/feeds/11.atom.xml" rel="self"></link><id>http://afitts.github.io/</id><updated>2018-11-18T00:00:00-06:00</updated><entry><title>Histopathologic Cancer Detection with New Fastai Lib</title><link href="http://afitts.github.io/2018/11/18/cancer/" rel="alternate"></link><published>2018-11-18T00:00:00-06:00</published><updated>2018-11-18T00:00:00-06:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2018-11-18:/2018/11/18/cancer/</id><summary type="html">&lt;p&gt;We're going to tackle binary image classification with the newly released fastai-v1 library.&lt;/p&gt;
+&lt;p&gt;First we turn on autoreload incase we update any of our modules while running the notebook. We also include the magic matplotlib inline command to make sure our plots stay in our notebook after we've run it …&lt;/p&gt;</summary><content type="html">&lt;p&gt;We're going to tackle binary image classification with the newly released fastai-v1 library.&lt;/p&gt;
+&lt;p&gt;First we turn on autoreload incase we update any of our modules while running the notebook. We also include the magic matplotlib inline command to make sure our plots stay in our notebook after we've run it.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;reload_ext&lt;/span&gt; &lt;span class="n"&gt;autoreload&lt;/span&gt;
 &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;autoreload&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
 &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.imports&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.torch_imports&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.transforms&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.conv_learner&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.model&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai …&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;h1&gt;Let's try testing out the 'standard' routine for setting up an image Neural Net following lesson 3 from the fastai DL1 course.&lt;/h1&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;reload_ext&lt;/span&gt; &lt;span class="n"&gt;autoreload&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.vision&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;First let's download the data using the &lt;a href="https://github.com/Kaggle/kaggle-api"&gt;Kaggle API&lt;/a&gt; and unzip the test and training data. By placing an exclamation point at the start of each line, we can run bash commands in jupyter notebook.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="err"&gt;!&lt;/span&gt;&lt;span class="n"&gt;kaggle&lt;/span&gt; &lt;span class="n"&gt;competitions&lt;/span&gt; &lt;span class="n"&gt;download&lt;/span&gt; &lt;span class="n"&gt;histopathologic&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cancer&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;detection&lt;/span&gt;
+&lt;span class="err"&gt;!&lt;/span&gt;&lt;span class="n"&gt;unzip&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="err"&gt;!&lt;/span&gt;&lt;span class="n"&gt;unzip&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;q&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zip&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Path&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;./&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;First we need to gather our data. We will do this by pulling from the folders of images we downloaded from kaggle and placing them into the go-to image data object for fastai-v1: an &lt;code&gt;ImageDataBunch&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;from_folder&lt;/code&gt; method defaults to searching from a 'train/' and 'valid/' folder to create the datasets. You can easily override this behavior by passing the path to the train or valid folders. Also, as we do not have a specific validation data set, we will simply set the &lt;code&gt;valid_pct=0.2&lt;/code&gt; to randomly select 20% of the training sample as a validation set.&lt;/p&gt;
+&lt;p&gt;Finally, we need to specify if there are transforms we plan on augmenting the data with. Data augmentation is very useful as it not only allows us to create a larger amount of data to train with, but makes our neural net more generalizable! The &lt;code&gt;get_transforms&lt;/code&gt; function defaults to dihedral flips, up to 10 degree rotations (in either direction), applying up to a 10% zoom along with a few others (check out the source code to learn more, it's where i'm pulling all this info from!)&lt;/p&gt;
+&lt;p&gt;Also as Joni Juvonen pointed out in his &lt;a href="https://www.kaggle.com/qitvision/a-complete-ml-pipeline-fast-ai"&gt;notebook&lt;/a&gt;: &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;We know that the label of the image is influenced only by the center region (32 x 32px) so it would make sense to crop our data to that region only. However, some useful information about the surroundings could be lost if we crop too close.  This hypothesis could be confirmed by training models with varying crop sizes. My initial results with 32 x 32px size showed worse performance than with 48 x 48px but I haven't done a search for optimal size.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;So for now we'll crop to 48 pixels and come back to this point later&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tfms&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_transforms&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ImageDataBunch&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_folder&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;48&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;valid_pct&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                  &lt;span class="n"&gt;ds_tfms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;tfms&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;128&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show_batch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rows&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;figsize&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;8&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_9_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;Now let's move on to actually creating a model! We'll start from a pretrained model to see if we can gain anything from the preset activations of an already successful model.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;create_cnn&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;models&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;resnet50&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;metrics&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;accuracy&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;lr_find&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recorder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;LR Finder is complete, type {learner_name}.recorder.plot() to see the graph.
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_12_1.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;lr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;1e-2&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;lr&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Total time: 05:30 &lt;p&gt;&lt;table style='width:300px; margin-bottom:10px'&gt;
+  &lt;tr&gt;
+    &lt;th&gt;epoch&lt;/th&gt;
+    &lt;th&gt;train_loss&lt;/th&gt;
+    &lt;th&gt;valid_loss&lt;/th&gt;
+    &lt;th&gt;accuracy&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;1&lt;/th&gt;
+    &lt;th&gt;0.496852&lt;/th&gt;
+    &lt;th&gt;0.496922&lt;/th&gt;
+    &lt;th&gt;0.809157&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit_one_cycle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Total time: 05:26 &lt;p&gt;&lt;table style='width:300px; margin-bottom:10px'&gt;
+  &lt;tr&gt;
+    &lt;th&gt;epoch&lt;/th&gt;
+    &lt;th&gt;train_loss&lt;/th&gt;
+    &lt;th&gt;valid_loss&lt;/th&gt;
+    &lt;th&gt;accuracy&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;1&lt;/th&gt;
+    &lt;th&gt;0.469478&lt;/th&gt;
+    &lt;th&gt;0.473252&lt;/th&gt;
+    &lt;th&gt;0.813518&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/p&gt;
+&lt;p&gt;We can save our model's activations by using the save feature. That way, we can save any training we've done and come back to it at a later date.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;freeze&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;res50_2epochsfrozen&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Loading up a model's activations is just as easy. Just remember that we need to define the architecture of the model (contained within the &lt;code&gt;learn&lt;/code&gt; variable) before loading up the activations.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;load&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;res50_2epochsfrozen&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;unfreeze&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now as has been suggested by Leslie Smith's 1cycle policy&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit_one_cycle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_lr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;slice&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recorder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot_lr&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;show_moms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Total time: 07:07 &lt;p&gt;&lt;table style='width:300px; margin-bottom:10px'&gt;
+  &lt;tr&gt;
+    &lt;th&gt;epoch&lt;/th&gt;
+    &lt;th&gt;train_loss&lt;/th&gt;
+    &lt;th&gt;valid_loss&lt;/th&gt;
+    &lt;th&gt;accuracy&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;1&lt;/th&gt;
+    &lt;th&gt;0.433324&lt;/th&gt;
+    &lt;th&gt;0.415838&lt;/th&gt;
+    &lt;th&gt;0.838403&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_20_1.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;recorder&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;plot_losses&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="CancerKernel_fastaiv1_files/CancerKernel_fastaiv1_21_0.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit_one_cycle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_lr&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;slice&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="s-Atom"&gt;style&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="cm"&gt;/* Turns off some styling */&lt;/span&gt;
+        &lt;span class="s-Atom"&gt;progress&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="cm"&gt;/* gets rid of default border in Firefox and Opera. */&lt;/span&gt;
+            &lt;span class="nn"&gt;border&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="cm"&gt;/* Needs to be in here for Safari polyfill so background images work as expected. */&lt;/span&gt;
+            &lt;span class="s-Atom"&gt;background&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nn"&gt;size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;interrupted&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nn"&gt;interrupted&lt;/span&gt;&lt;span class="p"&gt;::-&lt;/span&gt;&lt;span class="s-Atom"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nn"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;#&lt;/span&gt;&lt;span class="nv"&gt;F44336&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="s-Atom"&gt;&amp;lt;/style&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt; &lt;span class="s-Atom"&gt;value=&amp;#39;1&amp;#39;&lt;/span&gt; &lt;span class="s-Atom"&gt;class=&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class="s-Atom"&gt;max=&amp;#39;5&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s-Atom"&gt;style=&amp;#39;width:300px; height:20px; vertical-align: middle;&amp;#39;&amp;gt;&amp;lt;/progress&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="mf"&gt;20.00&lt;/span&gt;&lt;span class="c1"&gt;% [1/5 07:08&amp;lt;28:32]&lt;/span&gt;
+&lt;span class="s-Atom"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="o"&gt;div&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;table style='width:300px; margin-bottom:10px'&gt;
+  &lt;tr&gt;
+    &lt;th&gt;epoch&lt;/th&gt;
+    &lt;th&gt;train_loss&lt;/th&gt;
+    &lt;th&gt;valid_loss&lt;/th&gt;
+    &lt;th&gt;accuracy&lt;/th&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;th&gt;1&lt;/th&gt;
+    &lt;th&gt;0.446564&lt;/th&gt;
+    &lt;th&gt;0.612841&lt;/th&gt;
+    &lt;th&gt;0.724286&lt;/th&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+    &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="s-Atom"&gt;style&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class="cm"&gt;/* Turns off some styling */&lt;/span&gt;
+        &lt;span class="s-Atom"&gt;progress&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="cm"&gt;/* gets rid of default border in Firefox and Opera. */&lt;/span&gt;
+            &lt;span class="nn"&gt;border&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;none&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+            &lt;span class="cm"&gt;/* Needs to be in here for Safari polyfill so background images work as expected. */&lt;/span&gt;
+            &lt;span class="s-Atom"&gt;background&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nn"&gt;size&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;auto&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;interrupted&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nn"&gt;interrupted&lt;/span&gt;&lt;span class="p"&gt;::-&lt;/span&gt;&lt;span class="s-Atom"&gt;webkit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="s-Atom"&gt;bar&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+            &lt;span class="nn"&gt;background&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s-Atom"&gt;#&lt;/span&gt;&lt;span class="nv"&gt;F44336&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="s-Atom"&gt;&amp;lt;/style&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="s-Atom"&gt;progress&lt;/span&gt; &lt;span class="s-Atom"&gt;value=&amp;#39;44&amp;#39;&lt;/span&gt; &lt;span class="s-Atom"&gt;class=&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class="s-Atom"&gt;max=&amp;#39;1734&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s-Atom"&gt;style=&amp;#39;width:300px; height:20px; vertical-align: middle;&amp;#39;&amp;gt;&amp;lt;/progress&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class="mf"&gt;2.54&lt;/span&gt;&lt;span class="c1"&gt;% [44/1734 00:10&amp;lt;06:48 0.4454]&lt;/span&gt;
+&lt;span class="s-Atom"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="o"&gt;div&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;log_preds&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;targs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_preds&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;log_preds&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;
+&lt;span class="n"&gt;probs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exp&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;log_preds&lt;/span&gt;&lt;span class="p"&gt;[:,&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;
+&lt;/pre&gt;&lt;/div&gt;</content></entry><entry><title>Getting to know humpback whales with EDA</title><link href="http://afitts.github.io/2018/11/11/humpback-eda/" rel="alternate"></link><published>2018-11-11T00:00:00-06:00</published><updated>2018-11-11T00:00:00-06:00</updated><author><name>Alex Fitts</name></author><id>tag:afitts.github.io,2018-11-11:/2018/11/11/humpback-eda/</id><summary type="html">&lt;p&gt;Today I wanted to try my hand at a kaggle &lt;a href="https://www.kaggle.com/c/humpback-whale-identification"&gt;competition&lt;/a&gt; that seemed like another great place to practice using image neural networks. The competition asks us to identify humpback whales from their flukes (tail fins). Before getting into the model training, however, it's always important to &lt;strong&gt;look at your …&lt;/strong&gt;&lt;/p&gt;</summary><content type="html">&lt;p&gt;Today I wanted to try my hand at a kaggle &lt;a href="https://www.kaggle.com/c/humpback-whale-identification"&gt;competition&lt;/a&gt; that seemed like another great place to practice using image neural networks. The competition asks us to identify humpback whales from their flukes (tail fins). Before getting into the model training, however, it's always important to &lt;strong&gt;look at your data&lt;/strong&gt;. So let's do some basic exploratory data analysis (EDA) to better inform ourselves on just what our model will be looking at and attempting to train on.&lt;/p&gt;
+&lt;h1&gt;Basic data exploration:&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;distribution of images per whale&lt;/li&gt;
+&lt;li&gt;viewing some images (same whale, different whale, 'new_whale')&lt;/li&gt;
+&lt;li&gt;distribution of image resolution between train &amp;amp; test&lt;/li&gt;
+&lt;li&gt;duplicate image analysis by perceptual hash&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# used ideas from:&lt;/span&gt;
+&lt;span class="c"&gt;# https://www.kaggle.com/mmrosenb/whales-an-exploration &lt;/span&gt;
+&lt;span class="c"&gt;# https://www.kaggle.com/stehai/duplicate-images&lt;/span&gt;
+&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;reload_ext&lt;/span&gt; &lt;span class="n"&gt;autoreload&lt;/span&gt;
 &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;autoreload&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
 &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;matplotlib&lt;/span&gt; &lt;span class="n"&gt;inline&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.imports&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.torch_imports&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.transforms&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.conv_learner&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.model&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.dataset&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.sgdr&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
-&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;fastai.plots&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt; &lt;span class="c"&gt;# linear algebra&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pandas&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;pd&lt;/span&gt; &lt;span class="c"&gt;# data processing, CSV file I/O (e.g. pd.read_csv)&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;cv2&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;os&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;seaborn&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;sns&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rcParams&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;figure.figsize&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;14&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;collections&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;PIL&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;
+
+&lt;span class="n"&gt;DIR&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;../input&amp;quot;&lt;/span&gt;
+
+&lt;span class="n"&gt;train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;train.csv&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;sample_submission.csv&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;paperspace&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;anaconda3&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;envs&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;fastai&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;python3&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;site&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;packages&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;sklearn&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ensemble&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;weight_boosting&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;py&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ne"&gt;DeprecationWarning&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;numpy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;core&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;umath_tests&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="n"&gt;an&lt;/span&gt; &lt;span class="n"&gt;internal&lt;/span&gt; &lt;span class="n"&gt;NumPy&lt;/span&gt; &lt;span class="n"&gt;module&lt;/span&gt; &lt;span class="ow"&gt;and&lt;/span&gt; &lt;span class="n"&gt;should&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;imported&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;It&lt;/span&gt; &lt;span class="n"&gt;will&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;removed&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="n"&gt;future&lt;/span&gt; &lt;span class="n"&gt;NumPy&lt;/span&gt; &lt;span class="n"&gt;release&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
-  &lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;numpy.core.umath_tests&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;inner1d&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;torch&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cuda&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_device&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;PATH&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;data/humpback-whale/&amp;quot;&lt;/span&gt;
-&lt;span class="n"&gt;sz&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;224&lt;/span&gt;
-&lt;span class="n"&gt;arch&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;resnext101_64&lt;/span&gt;
-&lt;span class="n"&gt;bs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;58&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;NOTE: Here we're taking a random 20% of the data for the validation set. This is different from when we looked at structured data. Is this sample a 'good' validation set, i.e. is it a good representation of the test set? Also, is this too much/too little?&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;label_csv&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;{PATH}train.csv&amp;#39;&lt;/span&gt;
-&lt;span class="n"&gt;n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;label_csv&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="c"&gt;# header is not counted (-1)&lt;/span&gt;
-&lt;span class="n"&gt;val_idxs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_cv_idxs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# random 20% data for validation set&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;((25361, 2), (7960, 2))
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;n&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;25361
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;label_df&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;read_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;label_csv&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;label_df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -117,7 +308,810 @@
 &lt;/table&gt;
 &lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;label_df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pivot_table&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;aggfunc&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sort_values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Image&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ascending&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;h2&gt;Distribution of images per whale is highly skewed.&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;2000+ whales have just one (!!!) image&lt;/li&gt;
+&lt;li&gt;Single whale with most images have 73 of them&lt;/li&gt;
+&lt;li&gt;Images dsitribution:&lt;/li&gt;
+&lt;li&gt;almost 30% comes from whales with 4 or less images&lt;/li&gt;
+&lt;li&gt;almost 40% comes from 'new_whale' group (!!!)&lt;/li&gt;
+&lt;li&gt;the rest 30% comes from whales with 5-73 images&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Let's look at how I figured out the above points. First let's look at the most populous whales in the dataset:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()[:&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;new_whale    9664
+w_23a388d      73
+w_9b5109b      65
+w_9c506f6      62
+Name: Id, dtype: int64
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;So this &lt;code&gt;new_whale&lt;/code&gt; distinction appears to take up quite a bit of the dataset! Let's now see how many image per whale we can expect.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;counted&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;count&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Image&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;image_count&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;span class="n"&gt;counted&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;counted&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;image_count&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;image_count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;80&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;sns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;countplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;counted&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;image_count&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_12_0.png"&gt;&lt;/p&gt;
+&lt;p&gt;So it appears that a lot of the whales only have a few example images in the training set. Lets look at the cumulative totals to get an idea of the distribution.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;image_count_for_whale&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;as_index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;count&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Image&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;image_count&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;span class="n"&gt;whale_count_for_image_count&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;image_count_for_whale&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;image_count&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;as_index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;count&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rename&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Id&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;whale_count&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;})&lt;/span&gt;
+&lt;span class="n"&gt;whale_count_for_image_count&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;image_total_count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;whale_count_for_image_count&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;image_count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;whale_count_for_image_count&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;whale_count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;whale_count_for_image_count&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;image_total_count_cum&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;whale_count_for_image_count&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;image_total_count&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cumsum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;sns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;barplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;image_count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;image_total_count_cum&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;whale_count_for_image_count&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&amp;lt;matplotlib.axes._subplots.AxesSubplot at 0x7f1f03317128&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_14_1.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;whale_count_for_image_count&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;image_count&lt;/th&gt;
+      &lt;th&gt;whale_count&lt;/th&gt;
+      &lt;th&gt;image_total_count&lt;/th&gt;
+      &lt;th&gt;image_total_count_cum&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;2073&lt;/td&gt;
+      &lt;td&gt;2073&lt;/td&gt;
+      &lt;td&gt;0.081740&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;1285&lt;/td&gt;
+      &lt;td&gt;2570&lt;/td&gt;
+      &lt;td&gt;0.183076&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;568&lt;/td&gt;
+      &lt;td&gt;1704&lt;/td&gt;
+      &lt;td&gt;0.250266&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;273&lt;/td&gt;
+      &lt;td&gt;1092&lt;/td&gt;
+      &lt;td&gt;0.293324&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;172&lt;/td&gt;
+      &lt;td&gt;860&lt;/td&gt;
+      &lt;td&gt;0.327235&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;5&lt;/th&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;136&lt;/td&gt;
+      &lt;td&gt;816&lt;/td&gt;
+      &lt;td&gt;0.359410&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;6&lt;/th&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;86&lt;/td&gt;
+      &lt;td&gt;602&lt;/td&gt;
+      &lt;td&gt;0.383147&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;7&lt;/th&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;76&lt;/td&gt;
+      &lt;td&gt;608&lt;/td&gt;
+      &lt;td&gt;0.407121&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;8&lt;/th&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;62&lt;/td&gt;
+      &lt;td&gt;558&lt;/td&gt;
+      &lt;td&gt;0.429123&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;9&lt;/th&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;46&lt;/td&gt;
+      &lt;td&gt;460&lt;/td&gt;
+      &lt;td&gt;0.447262&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;whale_count_for_image_count&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;:]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;image_count&lt;/th&gt;
+      &lt;th&gt;whale_count&lt;/th&gt;
+      &lt;th&gt;image_total_count&lt;/th&gt;
+      &lt;th&gt;image_total_count_cum&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;46&lt;/th&gt;
+      &lt;td&gt;65&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;65&lt;/td&gt;
+      &lt;td&gt;0.616064&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;47&lt;/th&gt;
+      &lt;td&gt;73&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;73&lt;/td&gt;
+      &lt;td&gt;0.618942&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;48&lt;/th&gt;
+      &lt;td&gt;9664&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;9664&lt;/td&gt;
+      &lt;td&gt;1.000000&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;p&gt;A few thoughts:
+1. 'Typical' CNNs (e.g. resnet) are going to have difficulty learning from only 1-4 examples of each whale. This implies that we might want to try an alternative architecture for this task. One-shot learning seems to be related to this, I'll look into this further.
+2. The &lt;code&gt;new_whale&lt;/code&gt; category takes up over 40% of our training data. Will be interesting to see whether our model will have anyting to gain from these unknown whales or whether it would benefit us to just cut them from the dataset.&lt;/p&gt;
+&lt;h1&gt;Let's see some images&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;There are a wide range of images in the dataset. Large variety in color, colormaps (RGB vs black/white), image size and orientation of the image. Would greatly benefit from some standardization.&lt;/li&gt;
+&lt;li&gt;Looking at different images of one specific whale makes it seem like identification would be possible as they appear quite unique&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4&gt;Some images of 'new_whale'&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;fig&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img_name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;new_whale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Image&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;][:&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imread&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;train&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;img_name&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cvtColor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;COLOR_BGR2RGB&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_20_0.png"&gt;&lt;/p&gt;
+&lt;h4&gt;Now some pictures of whales that have just 1 image: quite a large variance in colors&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;single_whales&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;12&lt;/span&gt;&lt;span class="p"&gt;:]&lt;/span&gt;
+&lt;span class="n"&gt;fig&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;widx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;whale&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;single_whales&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img_name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;whale&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Image&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;][:&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
+        &lt;span class="n"&gt;axes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;widx&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+        &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imread&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;train&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;img_name&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cvtColor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;COLOR_BGR2RGB&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_22_0.png"&gt;&lt;/p&gt;
+&lt;h4&gt;Below: each row shows pictures of one whale. I think it's quite easy to at least see similiar appearence there&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;topN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;
+&lt;span class="n"&gt;top_whales&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="n"&gt;topN&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;fig&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;topN&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;widx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;whale&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;top_whales&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img_name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;whale&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Image&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;][:&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
+        &lt;span class="n"&gt;axes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;widx&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;
+        &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;topN&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;axes&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imread&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;train&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;img_name&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+        &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cvtColor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;COLOR_BGR2RGB&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_24_0.png"&gt;&lt;/p&gt;
+&lt;h1&gt;Resolutions&lt;/h1&gt;
+&lt;p&gt;over 7000 unique resolutions but 39 most popular cover ~45% images (both in train and in test)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;imageSizes_train&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;collections&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Counter&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;{DIR}/train/{filename}&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;
+                        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;listdir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{DIR}/train&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+&lt;span class="n"&gt;imageSizes_test&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;collections&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Counter&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;{DIR}/test/{filename}&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;
+                        &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;filename&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;listdir&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;{DIR}/test&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;isdf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imageSizes&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;imageSizeFrame&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;DataFrame&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imageSizes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;most_common&lt;/span&gt;&lt;span class="p"&gt;()),&lt;/span&gt;&lt;span class="n"&gt;columns&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;imageDim&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;count&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="n"&gt;imageSizeFrame&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;fraction&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;imageSizeFrame&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imageSizes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+    &lt;span class="n"&gt;imageSizeFrame&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;count_cum&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;imageSizeFrame&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cumsum&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;imageSizeFrame&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;count_cum_fraction&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;imageSizeFrame&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;count_cum&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imageSizes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;())&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;imageSizeFrame&lt;/span&gt;
+
+&lt;span class="n"&gt;train_isdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;isdf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imageSizes_train&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;train_isdf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;set&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;train&amp;#39;&lt;/span&gt;
+&lt;span class="n"&gt;test_isdf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;isdf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;imageSizes_test&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;test_isdf&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;set&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;test&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;isizes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train_isdf&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test_isdf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;how&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;outer&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;imageDim&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;isizes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;total_count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;isizes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;count_x&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;isizes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;count_y&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;dims_order&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;isizes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sort_values&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;total_count&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ascending&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)[[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;imageDim&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dims_order&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;7053
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;isizes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;pd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;concat&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;train_isdf&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_isdf&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;isizes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;(8150, 6)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;isizes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;imageDim&lt;/th&gt;
+      &lt;th&gt;count&lt;/th&gt;
+      &lt;th&gt;fraction&lt;/th&gt;
+      &lt;th&gt;count_cum&lt;/th&gt;
+      &lt;th&gt;count_cum_fraction&lt;/th&gt;
+      &lt;th&gt;set&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;(1050, 700)&lt;/td&gt;
+      &lt;td&gt;3330&lt;/td&gt;
+      &lt;td&gt;0.131304&lt;/td&gt;
+      &lt;td&gt;3330&lt;/td&gt;
+      &lt;td&gt;0.131304&lt;/td&gt;
+      &lt;td&gt;train&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;(1050, 600)&lt;/td&gt;
+      &lt;td&gt;2549&lt;/td&gt;
+      &lt;td&gt;0.100509&lt;/td&gt;
+      &lt;td&gt;5879&lt;/td&gt;
+      &lt;td&gt;0.231813&lt;/td&gt;
+      &lt;td&gt;train&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;(1050, 450)&lt;/td&gt;
+      &lt;td&gt;1556&lt;/td&gt;
+      &lt;td&gt;0.061354&lt;/td&gt;
+      &lt;td&gt;7435&lt;/td&gt;
+      &lt;td&gt;0.293167&lt;/td&gt;
+      &lt;td&gt;train&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;(1050, 525)&lt;/td&gt;
+      &lt;td&gt;1303&lt;/td&gt;
+      &lt;td&gt;0.051378&lt;/td&gt;
+      &lt;td&gt;8738&lt;/td&gt;
+      &lt;td&gt;0.344545&lt;/td&gt;
+      &lt;td&gt;train&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;(700, 500)&lt;/td&gt;
+      &lt;td&gt;667&lt;/td&gt;
+      &lt;td&gt;0.026300&lt;/td&gt;
+      &lt;td&gt;9405&lt;/td&gt;
+      &lt;td&gt;0.370845&lt;/td&gt;
+      &lt;td&gt;train&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;popularSizes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;isizes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;isizes&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;fraction&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mf"&gt;0.002&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;popularSizes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;(39, 6)
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;popularSizes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;groupby&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;set&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;max&lt;/span&gt;&lt;span class="p"&gt;()[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;count_cum_fraction&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;set
+test     0.456030
+train    0.445803
+Name: count_cum_fraction, dtype: float64
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;sns&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;barplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;imageDim&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;fraction&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;popularSizes&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;hue&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;set&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;xticks&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rotation&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;45&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_34_0.png"&gt;&lt;/p&gt;
+&lt;h1&gt;Duplicates&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;Found duplicates using imagehash. Great introduction &lt;a href="https://realpython.com/fingerprinting-images-for-near-duplicate-detection/"&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;1 duplicate in train set&lt;/li&gt;
+&lt;li&gt;3 duplicates between train and test&lt;/li&gt;
+&lt;li&gt;totally different than in playground dataset: &lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.kaggle.com/stehai/duplicate-images"&gt;playground duplicates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.kaggle.com/martinpiotte/whale-recognition-model-with-score-0-78563"&gt;solution that used duplicate information&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;imagehash&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;getImageMetaData&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file_path&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;file_path&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;img_hash&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;imagehash&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;phash&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mode&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img_hash&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_img_duplicates_info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dataset&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+
+    &lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;getImageMetaData&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;dataset&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+    &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Hash&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Shape&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Mode&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Length&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Shape&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Ratio&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Shape&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;New_Whale&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Id&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;new_whale&amp;quot;&lt;/span&gt;
+
+
+    &lt;span class="n"&gt;img_counts&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_dict&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Id_Count&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Id&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;apply&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;lambda&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;img_counts&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;df&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;train_dups&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_img_duplicates_info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;train&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;train&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;train_dups&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;Image&lt;/th&gt;
+      &lt;th&gt;Id&lt;/th&gt;
+      &lt;th&gt;Hash&lt;/th&gt;
+      &lt;th&gt;Shape&lt;/th&gt;
+      &lt;th&gt;Mode&lt;/th&gt;
+      &lt;th&gt;Length&lt;/th&gt;
+      &lt;th&gt;Ratio&lt;/th&gt;
+      &lt;th&gt;New_Whale&lt;/th&gt;
+      &lt;th&gt;Id_Count&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;0000e88ab.jpg&lt;/td&gt;
+      &lt;td&gt;w_f48451c&lt;/td&gt;
+      &lt;td&gt;d26698c3271c757c&lt;/td&gt;
+      &lt;td&gt;(1050, 700)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;735000&lt;/td&gt;
+      &lt;td&gt;1.500000&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;14&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;0001f9222.jpg&lt;/td&gt;
+      &lt;td&gt;w_c3d896a&lt;/td&gt;
+      &lt;td&gt;ba8cc231ad489b77&lt;/td&gt;
+      &lt;td&gt;(758, 325)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;246350&lt;/td&gt;
+      &lt;td&gt;2.332308&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;4&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;00029d126.jpg&lt;/td&gt;
+      &lt;td&gt;w_20df2c5&lt;/td&gt;
+      &lt;td&gt;bbcad234a52d0f0b&lt;/td&gt;
+      &lt;td&gt;(1050, 497)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;521850&lt;/td&gt;
+      &lt;td&gt;2.112676&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;4&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;3&lt;/th&gt;
+      &lt;td&gt;00050a15a.jpg&lt;/td&gt;
+      &lt;td&gt;new_whale&lt;/td&gt;
+      &lt;td&gt;c09ae7dc09f33a29&lt;/td&gt;
+      &lt;td&gt;(1050, 525)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;551250&lt;/td&gt;
+      &lt;td&gt;2.000000&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;9664&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;4&lt;/th&gt;
+      &lt;td&gt;0005c1ef8.jpg&lt;/td&gt;
+      &lt;td&gt;new_whale&lt;/td&gt;
+      &lt;td&gt;d02f65ba9f74a08a&lt;/td&gt;
+      &lt;td&gt;(1050, 525)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;551250&lt;/td&gt;
+      &lt;td&gt;2.000000&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;9664&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train_dups&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Hash&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;t&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="s"&gt;&amp;quot;Duplicate hashes: {}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&amp;#39;Duplicate hashes: 1&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;t&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;94216bb289ccd63f    2
+Name: Hash, dtype: int64
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&amp;#39;94216bb289ccd63f&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;train_dups&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;train_dups&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Hash&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;Image&lt;/th&gt;
+      &lt;th&gt;Id&lt;/th&gt;
+      &lt;th&gt;Hash&lt;/th&gt;
+      &lt;th&gt;Shape&lt;/th&gt;
+      &lt;th&gt;Mode&lt;/th&gt;
+      &lt;th&gt;Length&lt;/th&gt;
+      &lt;th&gt;Ratio&lt;/th&gt;
+      &lt;th&gt;New_Whale&lt;/th&gt;
+      &lt;th&gt;Id_Count&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;9542&lt;/th&gt;
+      &lt;td&gt;60a3f2422.jpg&lt;/td&gt;
+      &lt;td&gt;w_7a8ce16&lt;/td&gt;
+      &lt;td&gt;94216bb289ccd63f&lt;/td&gt;
+      &lt;td&gt;(1050, 525)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;551250&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;6&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;12618&lt;/th&gt;
+      &lt;td&gt;7f7a63b8a.jpg&lt;/td&gt;
+      &lt;td&gt;w_7a8ce16&lt;/td&gt;
+      &lt;td&gt;94216bb289ccd63f&lt;/td&gt;
+      &lt;td&gt;(1050, 525)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;551250&lt;/td&gt;
+      &lt;td&gt;2.0&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;6&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;h4&gt;The only duplicate found in train dataset comes from the same whale.&lt;/h4&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;fig&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;img_name&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;train_dups&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;train_dups&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Hash&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]][&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Image&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;][:&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]):&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imread&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;train&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;img_name&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cvtColor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;COLOR_BGR2RGB&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_45_0.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;test_dups&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_img_duplicates_info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;test&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;test_d&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test_dups&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Hash&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;value_counts&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="n"&gt;test_d&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test_d&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;loc&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;test_d&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="s"&gt;&amp;quot;Duplicate hashes in test: {}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;test_d&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&amp;#39;Duplicate hashes in test: 0&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;common_hashes&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;test_dups&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;merge&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;train_dups&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;how&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;inner&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;on&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Hash&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;suffixes&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;_test&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;_train&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;span class="n"&gt;common_hashes&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
+      &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;Image_test&lt;/th&gt;
+      &lt;th&gt;Id_test&lt;/th&gt;
+      &lt;th&gt;Hash&lt;/th&gt;
+      &lt;th&gt;Shape_test&lt;/th&gt;
+      &lt;th&gt;Mode_test&lt;/th&gt;
+      &lt;th&gt;Length_test&lt;/th&gt;
+      &lt;th&gt;Ratio_test&lt;/th&gt;
+      &lt;th&gt;New_Whale_test&lt;/th&gt;
+      &lt;th&gt;Id_Count_test&lt;/th&gt;
+      &lt;th&gt;Image_train&lt;/th&gt;
+      &lt;th&gt;Id_train&lt;/th&gt;
+      &lt;th&gt;Shape_train&lt;/th&gt;
+      &lt;th&gt;Mode_train&lt;/th&gt;
+      &lt;th&gt;Length_train&lt;/th&gt;
+      &lt;th&gt;Ratio_train&lt;/th&gt;
+      &lt;th&gt;New_Whale_train&lt;/th&gt;
+      &lt;th&gt;Id_Count_train&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;d37179fd1.jpg&lt;/td&gt;
+      &lt;td&gt;new_whale w_23a388d w_9b5109b w_9c506f6 w_0369a5c&lt;/td&gt;
+      &lt;td&gt;eecad0b52d4ac2f0&lt;/td&gt;
+      &lt;td&gt;(1050, 700)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;735000&lt;/td&gt;
+      &lt;td&gt;1.500000&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;7960&lt;/td&gt;
+      &lt;td&gt;01f66ca26.jpg&lt;/td&gt;
+      &lt;td&gt;new_whale&lt;/td&gt;
+      &lt;td&gt;(1000, 667)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;667000&lt;/td&gt;
+      &lt;td&gt;1.499250&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;9664&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;f50529c53.jpg&lt;/td&gt;
+      &lt;td&gt;new_whale w_23a388d w_9b5109b w_9c506f6 w_0369a5c&lt;/td&gt;
+      &lt;td&gt;afdac0b52a5a82b5&lt;/td&gt;
+      &lt;td&gt;(1050, 690)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;724500&lt;/td&gt;
+      &lt;td&gt;1.521739&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;7960&lt;/td&gt;
+      &lt;td&gt;579886448.jpg&lt;/td&gt;
+      &lt;td&gt;new_whale&lt;/td&gt;
+      &lt;td&gt;(1050, 690)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;724500&lt;/td&gt;
+      &lt;td&gt;1.521739&lt;/td&gt;
+      &lt;td&gt;True&lt;/td&gt;
+      &lt;td&gt;9664&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;fb3879dc7.jpg&lt;/td&gt;
+      &lt;td&gt;new_whale w_23a388d w_9b5109b w_9c506f6 w_0369a5c&lt;/td&gt;
+      &lt;td&gt;ad4ac2b43d0fcaf0&lt;/td&gt;
+      &lt;td&gt;(1050, 700)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;735000&lt;/td&gt;
+      &lt;td&gt;1.500000&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;7960&lt;/td&gt;
+      &lt;td&gt;b95d73a55.jpg&lt;/td&gt;
+      &lt;td&gt;w_691f2f6&lt;/td&gt;
+      &lt;td&gt;(1000, 667)&lt;/td&gt;
+      &lt;td&gt;RGB&lt;/td&gt;
+      &lt;td&gt;667000&lt;/td&gt;
+      &lt;td&gt;1.499250&lt;/td&gt;
+      &lt;td&gt;False&lt;/td&gt;
+      &lt;td&gt;8&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="s"&gt;&amp;quot;Duplicate hashes between train and test: {}&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;format&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;common_hashes&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&amp;#39;Duplicate hashes between train and test: 3&amp;#39;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;below each row shows images with the same pHash, left column from train, right from test&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;fig&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figure&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;figsize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;images&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;common_hashes&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Image_train&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Image_test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;common_hashes&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imread&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;train&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;images&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cvtColor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;COLOR_BGR2RGB&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;fig&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;add_subplot&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;common_hashes&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;idx&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imread&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;os&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;join&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;DIR&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;test&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;images&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]))&lt;/span&gt;
+    &lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;cvtColor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cv2&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;COLOR_BGR2RGB&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;imshow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+
+&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;show&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_51_0.png"&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# train duplicates - to remove:&lt;/span&gt;
+&lt;span class="n"&gt;train_to_remove&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;train_dups&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;train_dups&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Hash&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;drop_duplicates&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Hash&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)[[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Image&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+&lt;span class="n"&gt;train_to_remove&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;train_remove.csv&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;train_to_remove&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -141,690 +1135,64 @@
       &lt;th&gt;&lt;/th&gt;
       &lt;th&gt;Image&lt;/th&gt;
     &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
     &lt;tr&gt;
-      &lt;th&gt;Id&lt;/th&gt;
+      &lt;th&gt;9542&lt;/th&gt;
+      &lt;td&gt;60a3f2422.jpg&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# easy answers in test:&lt;/span&gt;
+&lt;span class="n"&gt;easy_peasy&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;common_hashes&lt;/span&gt;&lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Image_test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;Id_train&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt;
+&lt;span class="n"&gt;easy_peasy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;to_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;test_easy.csv&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;index&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;False&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;easy_peasy&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;head&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;div&gt;
+&lt;style scoped&gt;
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+&lt;/style&gt;
+&lt;table border="1" class="dataframe"&gt;
+  &lt;thead&gt;
+    &lt;tr style="text-align: right;"&gt;
       &lt;th&gt;&lt;/th&gt;
+      &lt;th&gt;Image_test&lt;/th&gt;
+      &lt;th&gt;Id_train&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;
-      &lt;th&gt;new_whale&lt;/th&gt;
-      &lt;td&gt;9664&lt;/td&gt;
+      &lt;th&gt;0&lt;/th&gt;
+      &lt;td&gt;d37179fd1.jpg&lt;/td&gt;
+      &lt;td&gt;new_whale&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;th&gt;w_23a388d&lt;/th&gt;
-      &lt;td&gt;73&lt;/td&gt;
+      &lt;th&gt;1&lt;/th&gt;
+      &lt;td&gt;f50529c53.jpg&lt;/td&gt;
+      &lt;td&gt;new_whale&lt;/td&gt;
     &lt;/tr&gt;
     &lt;tr&gt;
-      &lt;th&gt;w_9b5109b&lt;/th&gt;
-      &lt;td&gt;65&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_9c506f6&lt;/th&gt;
-      &lt;td&gt;62&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_0369a5c&lt;/th&gt;
-      &lt;td&gt;61&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_700ebb4&lt;/th&gt;
-      &lt;td&gt;57&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_3de579a&lt;/th&gt;
-      &lt;td&gt;54&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_564a34b&lt;/th&gt;
-      &lt;td&gt;51&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_fd3e556&lt;/th&gt;
-      &lt;td&gt;50&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_88e4537&lt;/th&gt;
-      &lt;td&gt;49&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_2b069ba&lt;/th&gt;
-      &lt;td&gt;48&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_d405854&lt;/th&gt;
-      &lt;td&gt;47&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_789c969&lt;/th&gt;
-      &lt;td&gt;45&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_f0fe284&lt;/th&gt;
-      &lt;td&gt;45&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_5e8e218&lt;/th&gt;
-      &lt;td&gt;40&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_778e474&lt;/th&gt;
-      &lt;td&gt;40&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_343f088&lt;/th&gt;
-      &lt;td&gt;40&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_5a2634c&lt;/th&gt;
-      &lt;td&gt;37&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_a9304b9&lt;/th&gt;
-      &lt;td&gt;37&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_60ce6fc&lt;/th&gt;
-      &lt;td&gt;37&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_6822dbc&lt;/th&gt;
-      &lt;td&gt;36&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_af367c3&lt;/th&gt;
-      &lt;td&gt;35&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_1ca9ab1&lt;/th&gt;
-      &lt;td&gt;34&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_f765256&lt;/th&gt;
-      &lt;td&gt;34&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_17b0d3a&lt;/th&gt;
-      &lt;td&gt;33&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_d72771c&lt;/th&gt;
-      &lt;td&gt;32&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_8c25681&lt;/th&gt;
-      &lt;td&gt;31&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_08630fd&lt;/th&gt;
-      &lt;td&gt;31&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_6cda039&lt;/th&gt;
-      &lt;td&gt;31&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_51fc1fc&lt;/th&gt;
-      &lt;td&gt;30&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;...&lt;/th&gt;
-      &lt;td&gt;...&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ad01432&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_491bdcb&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ad2bb89&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_48cc590&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_4982a49&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ad6df15&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ad7b758&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ad880b8&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_48b6083&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_48b1730&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_adcaf2a&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_497efb9&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_49ae16f&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_abd9d0b&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_4a1b777&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_abeab1e&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_abee142&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_4ac8e76&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_4ab6b16&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_4a8467f&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ac26398&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ac608c7&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_49cd60d&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ac6aee2&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ac73445&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_49ee8e0&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_49e0d44&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_49d1bcd&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_49ce813&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;th&gt;w_ffe8693&lt;/th&gt;
-      &lt;td&gt;1&lt;/td&gt;
+      &lt;th&gt;2&lt;/th&gt;
+      &lt;td&gt;fb3879dc7.jpg&lt;/td&gt;
+      &lt;td&gt;w_691f2f6&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;5005 rows × 1 columns&lt;/p&gt;
 &lt;/div&gt;
 
-&lt;p&gt;Apparently there is a 'new whale' distinction. In order to have a proper validation set, we'll want a similar fraction of new whales as is in the test set. Also it appears as though a significant portion of these whales have &lt;strong&gt;very&lt;/strong&gt; few examples. Looking at the distribution of images &lt;a href="https://www.kaggle.com/kretes/eda-distributions-images-and-no-duplicates"&gt;kernal on kaggle&lt;/a&gt; we see that almost 30% have 4 images or less while 30% have between 5-73 images.&lt;/p&gt;
-&lt;p&gt;Let's now enhance our data set with some data augmentation. &lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;tfms&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;tfms_from_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arch&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sz&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;aug_tfms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;transforms_side_on&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_zoom&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ImageClassifierData&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;train&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;{PATH}train.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="c"&gt;# we need to specify where the test set is if you want to submit to Kaggle competitions&lt;/span&gt;
-                                   &lt;span class="n"&gt;val_idxs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;val_idxs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;suffix&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tfms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;tfms&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;fn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PATH&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trn_ds&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fnames&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;];&lt;/span&gt; &lt;span class="n"&gt;fn&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&amp;#39;data/humpback-whale/train/0001f9222.jpg&amp;#39;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;img&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;PIL&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fn&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="n"&gt;img&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;img alt="png" src="humpback_whale_id_files/humpback_whale_id_13_0.png"&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;img&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;(1050, 700)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;This is a large img. Let's check the dataset to see the typical img size.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;size_d&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;PIL&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Image&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;size&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;k&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trn_ds&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fnames&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;row_sz&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;col_sz&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;size_d&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()))&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;row_sz&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row_sz&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; &lt;span class="n"&gt;col_sz&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;array&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;col_sz&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row_sz&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;(array([ 1276., 18677.,   181.,    49.,    59.,    18.,     9.,     4.,     2.,    14.]),
- array([  77. ,  665.2, 1253.4, 1841.6, 2429.8, 3018. , 3606.2, 4194.4, 4782.6, 5370.8, 5959. ]),
- &amp;lt;a list of 10 Patch objects&amp;gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;img alt="png" src="humpback_whale_id_files/humpback_whale_id_19_1.png"&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row_sz&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;row_sz&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;2000&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;(array([   51.,   279.,   889.,  2197.,  2330., 14203.,    47.,    36.,    25.,    86.]),
- array([  77. ,  268.4,  459.8,  651.2,  842.6, 1034. , 1225.4, 1416.8, 1608.2, 1799.6, 1991. ]),
- &amp;lt;a list of 10 Patch objects&amp;gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;img alt="png" src="humpback_whale_id_files/humpback_whale_id_20_1.png"&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;col_sz&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;(array([ 288., 3006., 5454., 6607., 4771.,  138.,   18.,    1.,    2.,    4.]),
- array([  30. ,  184.5,  339. ,  493.5,  648. ,  802.5,  957. , 1111.5, 1266. , 1420.5, 1575. ]),
- &amp;lt;a list of 10 Patch objects&amp;gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;img alt="png" src="humpback_whale_id_files/humpback_whale_id_21_1.png"&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;plt&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hist&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;col_sz&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;col_sz&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;1000&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;(array([  66.,  595., 2125., 2870., 4137., 5163., 4416.,  760.,  129.,   12.]),
- array([ 30. , 126.9, 223.8, 320.7, 417.6, 514.5, 611.4, 708.3, 805.2, 902.1, 999. ]),
- &amp;lt;a list of 10 Patch objects&amp;gt;)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;&lt;img alt="png" src="humpback_whale_id_files/humpback_whale_id_22_1.png"&gt;&lt;/p&gt;
-&lt;p&gt;Looks like 75% of the data has a length between 1000 and 1200 pixels. Meanwhile there's a distribution of heights from 200 to 800 pixels.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trn_ds&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;test_ds&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;(20289, 7960)
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;classes&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;classes&lt;/span&gt;&lt;span class="p"&gt;[:&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;(5005, [&amp;#39;new_whale&amp;#39;, &amp;#39;w_0003639&amp;#39;, &amp;#39;w_0003c59&amp;#39;, &amp;#39;w_0027efa&amp;#39;, &amp;#39;w_00289b1&amp;#39;])
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;## Inital Model&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sz&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt; &lt;span class="c"&gt;# sz: image size, bs: batch size&lt;/span&gt;
-    &lt;span class="n"&gt;tfms&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;tfms_from_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arch&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sz&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;aug_tfms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;transforms_side_on&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;max_zoom&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;1.1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ImageClassifierData&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;from_csv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;PATH&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;train&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;{PATH}train.csv&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;test_name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;test&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-                                       &lt;span class="n"&gt;val_idxs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;val_idxs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;suffix&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;tfms&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;tfms&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-    &lt;span class="c"&gt;# http://forums.fast.ai/t/how-to-train-on-the-full-dataset-using-imageclassifierdata-from-csv/7761/13&lt;/span&gt;
-    &lt;span class="c"&gt;# http://forums.fast.ai/t/how-to-train-on-the-full-dataset-using-imageclassifierdata-from-csv/7761/37&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;sz&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;resize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;340&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s"&gt;&amp;#39;tmp&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c"&gt;# Reading the jpgs and resizing is slow for big images, so resizing them all to 340 first saves time&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;Precompute&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sz&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;HBox(children=(IntProgress(value=0, max=6), HTML(value=&amp;#39;&amp;#39;)))
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ConvLearner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pretrained&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arch&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;precompute&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;100%|██████████| 350/350 [08:13&amp;lt;00:00,  1.31s/it]
-100%|██████████| 88/88 [02:03&amp;lt;00:00,  1.18s/it]
-100%|██████████| 138/138 [03:13&amp;lt;00:00,  1.08s/it]
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;HBox(children=(IntProgress(value=0, description=&amp;#39;Epoch&amp;#39;, max=5, style=ProgressStyle(description_width=&amp;#39;initial…
-
-
-epoch      trn_loss   val_loss   accuracy                   
-    0      5.966936   5.62474    0.382492  
-    1      5.387898   5.427078   0.386632                   
-    2      5.112792   5.266909   0.39097                    
-    3      4.83662    5.152948   0.394125                   
-    4      4.501909   5.058384   0.397871
-
-
-
-
-
-
-[array([5.05838]), 0.39787066199049964]
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;Augment&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sklearn&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;metrics&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;data&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;get_data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sz&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;HBox(children=(IntProgress(value=0, max=6), HTML(value=&amp;#39;&amp;#39;)))
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;ConvLearner&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;pretrained&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;arch&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;precompute&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ps&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;HBox(children=(IntProgress(value=0, description=&amp;#39;Epoch&amp;#39;, max=2, style=ProgressStyle(description_width=&amp;#39;initial…
-
-
-epoch      trn_loss   val_loss   accuracy                   
-    0      5.927065   5.657636   0.382098  
-    1      5.434787   5.466563   0.38545
-
-
-
-
-
-
-[array([5.46656]), 0.3854495253037861]
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;precompute&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;False&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cycle_len&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;HBox(children=(IntProgress(value=0, description=&amp;#39;Epoch&amp;#39;, max=5, style=ProgressStyle(description_width=&amp;#39;initial…
-
-
-epoch      trn_loss   val_loss   accuracy                   
-    0      5.329419   5.374768   0.389196  
-    1      5.330996   5.319299   0.388604                   
-    2      5.116787   5.266834   0.390379                   
-    3      5.099875   5.216399   0.39235                    
-    4      5.039721   5.178133   0.392153
-
-
-
-
-
-
-[array([5.17813]), 0.39215299620495797]
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;save&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;224_pre&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;p&gt;Given that simply guessing new_whale for every photo gives an accuaracy of 32.5&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;load&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;#39;224_pre&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;h3&gt;Increase size&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="c"&gt;# Starting training on small images for a few epochs, then switching to bigger images, and continuing training is an amazingly effective way to avoid overfitting.&lt;/span&gt;
-
-&lt;span class="c"&gt;# http://forums.fast.ai/t/planet-classification-challenge/7824/96&lt;/span&gt;
-&lt;span class="c"&gt;# set_data doesn’t change the model at all. It just gives it new data to train with.&lt;/span&gt;
-&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;get_data&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;299&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; 
-&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;freeze&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;HBox(children=(IntProgress(value=0, max=6), HTML(value=&amp;#39;&amp;#39;)))
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;summary&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;learn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mf"&gt;1e-2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;cycle_len&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="nx"&gt;HBox&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;children&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;IntProgress&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;value&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;description&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Epoch&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;max&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;style&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;ProgressStyle&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;description_width&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="err"&gt;&amp;#39;&lt;/span&gt;&lt;span class="nx"&gt;initial&lt;/span&gt;&lt;span class="err"&gt;…&lt;/span&gt;
-
-
-  &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;%|&lt;/span&gt;&lt;span class="err"&gt;▏&lt;/span&gt;         &lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;350&lt;/span&gt; &lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;00&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;19&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;37&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;  &lt;span class="mf"&gt;2.73&lt;/span&gt;&lt;span class="nx"&gt;s&lt;/span&gt;&lt;span class="p"&gt;/&lt;/span&gt;&lt;span class="nx"&gt;it&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;loss&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;5.08&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;
-
-
-&lt;span class="o"&gt;---------------------------------------------------------------------------&lt;/span&gt;
-
-&lt;span class="nx"&gt;KeyboardInterrupt&lt;/span&gt;                         &lt;span class="nx"&gt;Traceback&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;most&lt;/span&gt; &lt;span class="nx"&gt;recent&lt;/span&gt; &lt;span class="nx"&gt;call&lt;/span&gt; &lt;span class="nx"&gt;last&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;ipython&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;43&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="nx"&gt;a6bf8b06eed&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;
-&lt;span class="o"&gt;----&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nx"&gt;learn&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;fit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="nx"&gt;e&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;cycle_len&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/kaggle/fastai/learner.py in fit(self, lrs, n_cycle, wds, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;300&lt;/span&gt;         &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sched&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;None&lt;/span&gt;
-    &lt;span class="mi"&gt;301&lt;/span&gt;         &lt;span class="nx"&gt;layer_opt&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get_layer_opt&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;lrs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;wds&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;302&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;fit_gen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;data&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;layer_opt&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;n_cycle&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;303&lt;/span&gt; 
-    &lt;span class="mi"&gt;304&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;warm_up&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;lr&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;wds&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;None&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/kaggle/fastai/learner.py in fit_gen(self, model, data, layer_opt, n_cycle, cycle_len, cycle_mult, cycle_save_name, best_save_name, use_clr, use_clr_beta, metrics, callbacks, use_wd_sched, norm_wds, wds_sched_mult, use_swa, swa_start, swa_eval_freq, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;247&lt;/span&gt;             &lt;span class="nx"&gt;metrics&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;metrics&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;callbacks&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;callbacks&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;reg_fn&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;reg_fn&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;clip&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;clip&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;fp16&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;fp16&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="mi"&gt;248&lt;/span&gt;             &lt;span class="nx"&gt;swa_model&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;swa_model&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;use_swa&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nx"&gt;None&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;swa_start&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;swa_start&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;249&lt;/span&gt;             &lt;span class="nx"&gt;swa_eval_freq&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nx"&gt;swa_eval_freq&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;250&lt;/span&gt; 
-    &lt;span class="mi"&gt;251&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;get_layer_groups&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;models&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get_layer_groups&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/kaggle/fastai/model.py in fit(model, data, n_epochs, opt, crit, metrics, callbacks, stepper, swa_model, swa_start, swa_eval_freq, visualize, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;139&lt;/span&gt;             &lt;span class="nx"&gt;batch_num&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
-    &lt;span class="mi"&gt;140&lt;/span&gt;             &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;cb&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;callbacks&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;cb&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;on_batch_begin&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;141&lt;/span&gt;             &lt;span class="nx"&gt;loss&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;model_stepper&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;step&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;V&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;x&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;&lt;span class="nx"&gt;V&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;y&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="nx"&gt;epoch&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;142&lt;/span&gt;             &lt;span class="nx"&gt;avg_loss&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;avg_loss&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nx"&gt;avg_mom&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;loss&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nx"&gt;avg_mom&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;143&lt;/span&gt;             &lt;span class="nx"&gt;debias_loss&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;avg_loss&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="nx"&gt;avg_mom&lt;/span&gt;&lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;batch_num&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/kaggle/fastai/model.py in step(self, xs, y, epoch)&lt;/span&gt;
-     &lt;span class="mi"&gt;48&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;step&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;xs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;epoch&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-     &lt;span class="mi"&gt;49&lt;/span&gt;         &lt;span class="nx"&gt;xtra&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="cp"&gt;[]&lt;/span&gt;
-&lt;span class="o"&gt;---&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;50&lt;/span&gt;         &lt;span class="nx"&gt;output&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;xs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="mi"&gt;51&lt;/span&gt;         &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;isinstance&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;output&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;tuple&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;output&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;xtra&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;output&lt;/span&gt;
-     &lt;span class="mi"&gt;52&lt;/span&gt;         &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;fp16&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;m&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;zero_grad&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;355&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_slow_forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;356&lt;/span&gt;         &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;357&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;358&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_forward_hooks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="mi"&gt;359&lt;/span&gt;             &lt;span class="nx"&gt;hook_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)&lt;/span&gt;
-     &lt;span class="mi"&gt;65&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-     &lt;span class="mi"&gt;66&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_modules&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;---&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;67&lt;/span&gt;             &lt;span class="nx"&gt;input&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="mi"&gt;68&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;
-     &lt;span class="mi"&gt;69&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;355&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_slow_forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;356&lt;/span&gt;         &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;357&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;358&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_forward_hooks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="mi"&gt;359&lt;/span&gt;             &lt;span class="nx"&gt;hook_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)&lt;/span&gt;
-     &lt;span class="mi"&gt;65&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-     &lt;span class="mi"&gt;66&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_modules&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;---&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;67&lt;/span&gt;             &lt;span class="nx"&gt;input&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="mi"&gt;68&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;
-     &lt;span class="mi"&gt;69&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;355&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_slow_forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;356&lt;/span&gt;         &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;357&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;358&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_forward_hooks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="mi"&gt;359&lt;/span&gt;             &lt;span class="nx"&gt;hook_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)&lt;/span&gt;
-     &lt;span class="mi"&gt;65&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-     &lt;span class="mi"&gt;66&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_modules&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;---&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;67&lt;/span&gt;             &lt;span class="nx"&gt;input&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="mi"&gt;68&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;
-     &lt;span class="mi"&gt;69&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;355&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_slow_forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;356&lt;/span&gt;         &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;357&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;358&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_forward_hooks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="mi"&gt;359&lt;/span&gt;             &lt;span class="nx"&gt;hook_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/kaggle/fastai/models/resnext_101_64x4d.py in forward(self, input)&lt;/span&gt;
-     &lt;span class="mi"&gt;22&lt;/span&gt; &lt;span class="kr"&gt;class&lt;/span&gt; &lt;span class="nx"&gt;LambdaMap&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;LambdaBase&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-     &lt;span class="mi"&gt;23&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;---&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;24&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;list&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;lambda_func&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forward_prepare&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
-     &lt;span class="mi"&gt;25&lt;/span&gt; 
-     &lt;span class="mi"&gt;26&lt;/span&gt; &lt;span class="kr"&gt;class&lt;/span&gt; &lt;span class="nx"&gt;LambdaReduce&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;LambdaBase&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/kaggle/fastai/models/resnext_101_64x4d.py in forward_prepare(self, input)&lt;/span&gt;
-     &lt;span class="mi"&gt;13&lt;/span&gt;         &lt;span class="nx"&gt;output&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="cp"&gt;[]&lt;/span&gt;
-     &lt;span class="mi"&gt;14&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_modules&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;---&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;15&lt;/span&gt;             &lt;span class="nx"&gt;output&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-     &lt;span class="mi"&gt;16&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;output&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nx"&gt;output&lt;/span&gt; &lt;span class="k"&gt;else&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;
-     &lt;span class="mi"&gt;17&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;355&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_slow_forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;356&lt;/span&gt;         &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;357&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;358&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_forward_hooks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="mi"&gt;359&lt;/span&gt;             &lt;span class="nx"&gt;hook_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)&lt;/span&gt;
-     &lt;span class="mi"&gt;65&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-     &lt;span class="mi"&gt;66&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_modules&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;---&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;67&lt;/span&gt;             &lt;span class="nx"&gt;input&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="mi"&gt;68&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;
-     &lt;span class="mi"&gt;69&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;355&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_slow_forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;356&lt;/span&gt;         &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;357&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;358&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_forward_hooks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="mi"&gt;359&lt;/span&gt;             &lt;span class="nx"&gt;hook_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/container.py in forward(self, input)&lt;/span&gt;
-     &lt;span class="mi"&gt;65&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-     &lt;span class="mi"&gt;66&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_modules&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;---&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;67&lt;/span&gt;             &lt;span class="nx"&gt;input&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="mi"&gt;68&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;
-     &lt;span class="mi"&gt;69&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/module.py in __call__(self, *input, **kwargs)&lt;/span&gt;
-    &lt;span class="mi"&gt;355&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_slow_forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;356&lt;/span&gt;         &lt;span class="k"&gt;else&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;357&lt;/span&gt;             &lt;span class="nx"&gt;result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt;&lt;span class="nx"&gt;kwargs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;358&lt;/span&gt;         &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_forward_hooks&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;values&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="mi"&gt;359&lt;/span&gt;             &lt;span class="nx"&gt;hook_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;hook&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;result&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/modules/conv.py in forward(self, input)&lt;/span&gt;
-    &lt;span class="mi"&gt;280&lt;/span&gt;     &lt;span class="nx"&gt;def&lt;/span&gt; &lt;span class="nx"&gt;forward&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-    &lt;span class="mi"&gt;281&lt;/span&gt;         &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;F&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;conv2d&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;weight&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;bias&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;stride&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-&lt;span class="o"&gt;--&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;282&lt;/span&gt;                         &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;padding&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;dilation&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;self&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;groups&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="mi"&gt;283&lt;/span&gt; 
-    &lt;span class="mi"&gt;284&lt;/span&gt;
-
-
-&lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="err"&gt;/anaconda3/envs/fastai/lib/python3.6/site-packages/torch/nn/functional.py in conv2d(input, weight, bias, stride, padding, dilation, groups)&lt;/span&gt;
-     &lt;span class="mi"&gt;88&lt;/span&gt;                 &lt;span class="nx"&gt;_pair&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="nx"&gt;groups&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;torch&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backends&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;cudnn&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;benchmark&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-     &lt;span class="mi"&gt;89&lt;/span&gt;                 &lt;span class="nx"&gt;torch&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backends&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;cudnn&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;deterministic&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;torch&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;backends&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;cudnn&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;enabled&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="o"&gt;---&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;90&lt;/span&gt;     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;weight&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;bias&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-     &lt;span class="mi"&gt;91&lt;/span&gt; 
-     &lt;span class="mi"&gt;92&lt;/span&gt;
-
-
-&lt;span class="nx"&gt;KeyboardInterrupt&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
-
-&lt;div class="highlight"&gt;&lt;pre&gt;
-&lt;/pre&gt;&lt;/div&gt;</content></entry></feed>
+&lt;h1&gt;Conclusion&lt;/h1&gt;
+&lt;p&gt;Just by poking around the dataset I've gained quite a bit of insight on how we're going to tackle this problem. My next step is going to be cleaning and standardizing the dataset, to make it easier to train on. Then, I'll need to find an architecture that is the best suited for learning off of very few examples. I'm not sure if such an architecture exists but I'll report back with what I find!&lt;/p&gt;</content></entry></feed>

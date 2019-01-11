@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+  <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif;  width:500px;}
+    /*
+      Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      We recommend moving this block and the preceding CSS link to the HEAD of your HTML file.
+     */
+  </style>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="google-site-verification" content="AgIAQN_qsniIQWOq659Bnhzx-LZts2FdgP1kLgtQg-k" />
+  <meta name="google-site-verification" content="-wneVy0z_MWocNaXikWZzyTe__HZbZDCRfLYEJ1sAg8" />
+
+  <title>Getting to know humpback whales with EDA</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Alex Fitts">
+  <meta name="copyright" content="&copy; Copyright Greg Reda, 2013 to Present">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts 
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans|Merriweather|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?cfc9322a">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Feeds
+  ================================================== -->
+  <link rel="alternate" type="application/atom+xml" href="http://afitts.github.io/feeds/all.atom.xml" title="Alex Fitts Full Atom Feed">
+
+	<!-- Facebook Open Graph
+  ================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Getting to know humpback whales with EDA">
+  <meta property="og:url" content="http://afitts.github.io/2018/11/11/humpback-eda/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Alex Fitts">
+  <meta property="og:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+
+  <!-- Twitter Cards
+  ================================================== -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Alex_Fitts">
+  <meta name="twitter:creator" content="@Alex_Fitts">
+  <meta name="twitter:domain" content="gregreda.com">
+  <meta name="twitter:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+  <meta name="twitter:title" content="Getting to know humpback whales with EDA">
+  <meta name="twitter:description" content="">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/theme/images/favicon.ico">
+	<link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns"> <!-- Yes, I know this is a douchey class name -->
+      <ul>
+        <li>
+          <a href="/" title="Home"><img id="logo" src="/theme/images/avatar.jpg"></a>
+        </li>
+        <li>
+          <h1><a href="/" title="Home">Alex Fitts</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/Alex_Fitts" title="Twitter">
+            <i class="fa fa-fw fa-twitter"></i>
+          </a>
+          </li>
+        <li>
+          <a class="icon" href="https://github.com/afitts" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://www.linkedin.com/in/alex-fitts-64163b128/" title="LinkedIn">
+            <i class="fa fa-fw fa-linkedin"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/pub/">Publications</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/blog/">Blog</a></li>
+	<li><a href="/pdfs/FittsResume.pdf">Resume</a></li>
+        <!--        <li><a href="/coffee/">Coffee?</a></li> -->
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->		<section id="content" class="twelve columns">
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/2018/11/11/humpback-eda/" title="Permalink to Getting to know humpback whales with EDA">Getting to know humpback whales with EDA</a></h1>
+  <h5 class="article-date">November 11, 2018
+  </h5>
+  <hr class="small"></hr>
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+    <p>Today I wanted to try my hand at a kaggle <a href="https://www.kaggle.com/c/humpback-whale-identification">competition</a> that seemed like another great place to practice using image neural networks. The competition asks us to identify humpback whales from their flukes (tail fins). Before getting into the model training, however, it's always important to <strong>look at your data</strong>. So let's do some basic exploratory data analysis (EDA) to better inform ourselves on just what our model will be looking at and attempting to train on.</p>
+<h1>Basic data exploration:</h1>
+<ol>
+<li>distribution of images per whale</li>
+<li>viewing some images (same whale, different whale, 'new_whale')</li>
+<li>distribution of image resolution between train &amp; test</li>
+<li>duplicate image analysis by perceptual hash</li>
+</ol>
+<div class="highlight"><pre><span class="c"># used ideas from:</span>
+<span class="c"># https://www.kaggle.com/mmrosenb/whales-an-exploration </span>
+<span class="c"># https://www.kaggle.com/stehai/duplicate-images</span>
+<span class="o">%</span><span class="n">reload_ext</span> <span class="n">autoreload</span>
+<span class="o">%</span><span class="n">autoreload</span> <span class="mi">2</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span> <span class="c"># linear algebra</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span> <span class="c"># data processing, CSV file I/O (e.g. pd.read_csv)</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="kn">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">14</span><span class="p">,</span> <span class="mi">9</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">collections</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+
+<span class="n">DIR</span> <span class="o">=</span> <span class="s">&quot;../input&quot;</span>
+
+<span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIR</span><span class="p">,</span> <span class="s">&quot;train.csv&quot;</span><span class="p">))</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIR</span><span class="p">,</span> <span class="s">&quot;sample_submission.csv&quot;</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>
+</pre></div>
+
+
+<div class="highlight"><pre>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">test</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+
+<div class="highlight"><pre>((25361, 2), (7960, 2))
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Image</th>
+      <th>Id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0000e88ab.jpg</td>
+      <td>w_f48451c</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0001f9222.jpg</td>
+      <td>w_c3d896a</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>00029d126.jpg</td>
+      <td>w_20df2c5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>00050a15a.jpg</td>
+      <td>new_whale</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0005c1ef8.jpg</td>
+      <td>new_whale</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Distribution of images per whale is highly skewed.</h2>
+<ol>
+<li>2000+ whales have just one (!!!) image</li>
+<li>Single whale with most images have 73 of them</li>
+<li>Images dsitribution:</li>
+<li>almost 30% comes from whales with 4 or less images</li>
+<li>almost 40% comes from 'new_whale' group (!!!)</li>
+<li>the rest 30% comes from whales with 5-73 images</li>
+</ol>
+<p>Let's look at how I figured out the above points. First let's look at the most populous whales in the dataset:</p>
+<div class="highlight"><pre><span class="n">train</span><span class="p">[</span><span class="s">&#39;Id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()[:</span><span class="mi">4</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre>new_whale    9664
+w_23a388d      73
+w_9b5109b      65
+w_9c506f6      62
+Name: Id, dtype: int64
+</pre></div>
+
+
+<p>So this <code>new_whale</code> distinction appears to take up quite a bit of the dataset! Let's now see how many image per whale we can expect.</p>
+<div class="highlight"><pre><span class="n">counted</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">&quot;Id&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;Image&quot;</span><span class="p">:</span><span class="s">&quot;image_count&quot;</span><span class="p">})</span>
+<span class="n">counted</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">counted</span><span class="p">[</span><span class="s">&quot;image_count&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">80</span><span class="p">,</span><span class="s">&#39;image_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">80</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">counted</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s">&quot;image_count&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_12_0.png"></p>
+<p>So it appears that a lot of the whales only have a few example images in the training set. Lets look at the cumulative totals to get an idea of the distribution.</p>
+<div class="highlight"><pre><span class="n">image_count_for_whale</span> <span class="o">=</span> <span class="n">train</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">&quot;Id&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;Image&quot;</span><span class="p">:</span><span class="s">&quot;image_count&quot;</span><span class="p">})</span>
+<span class="n">whale_count_for_image_count</span> <span class="o">=</span> <span class="n">image_count_for_whale</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">&quot;image_count&quot;</span><span class="p">,</span> <span class="n">as_index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">&quot;Id&quot;</span><span class="p">:</span><span class="s">&quot;whale_count&quot;</span><span class="p">})</span>
+<span class="n">whale_count_for_image_count</span><span class="p">[</span><span class="s">&#39;image_total_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">whale_count_for_image_count</span><span class="p">[</span><span class="s">&#39;image_count&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">whale_count_for_image_count</span><span class="p">[</span><span class="s">&#39;whale_count&#39;</span><span class="p">]</span>
+<span class="n">whale_count_for_image_count</span><span class="p">[</span><span class="s">&#39;image_total_count_cum&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">whale_count_for_image_count</span><span class="p">[</span><span class="s">&quot;image_total_count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">&#39;image_count&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s">&#39;image_total_count_cum&#39;</span><span class="p">,</span><span class="n">data</span><span class="o">=</span><span class="n">whale_count_for_image_count</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7f1f03317128&gt;
+</pre></div>
+
+
+<p><img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_14_1.png"></p>
+<div class="highlight"><pre><span class="n">whale_count_for_image_count</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>image_count</th>
+      <th>whale_count</th>
+      <th>image_total_count</th>
+      <th>image_total_count_cum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>2073</td>
+      <td>2073</td>
+      <td>0.081740</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1285</td>
+      <td>2570</td>
+      <td>0.183076</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>568</td>
+      <td>1704</td>
+      <td>0.250266</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>273</td>
+      <td>1092</td>
+      <td>0.293324</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>172</td>
+      <td>860</td>
+      <td>0.327235</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>6</td>
+      <td>136</td>
+      <td>816</td>
+      <td>0.359410</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>7</td>
+      <td>86</td>
+      <td>602</td>
+      <td>0.383147</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>8</td>
+      <td>76</td>
+      <td>608</td>
+      <td>0.407121</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>9</td>
+      <td>62</td>
+      <td>558</td>
+      <td>0.429123</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>10</td>
+      <td>46</td>
+      <td>460</td>
+      <td>0.447262</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span class="n">whale_count_for_image_count</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>image_count</th>
+      <th>whale_count</th>
+      <th>image_total_count</th>
+      <th>image_total_count_cum</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>46</th>
+      <td>65</td>
+      <td>1</td>
+      <td>65</td>
+      <td>0.616064</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>73</td>
+      <td>1</td>
+      <td>73</td>
+      <td>0.618942</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>9664</td>
+      <td>1</td>
+      <td>9664</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<p>A few thoughts:
+1. 'Typical' CNNs (e.g. resnet) are going to have difficulty learning from only 1-4 examples of each whale. This implies that we might want to try an alternative architecture for this task. One-shot learning seems to be related to this, I'll look into this further.
+2. The <code>new_whale</code> category takes up over 40% of our training data. Will be interesting to see whether our model will have anyting to gain from these unknown whales or whether it would benefit us to just cut them from the dataset.</p>
+<h1>Let's see some images</h1>
+<ol>
+<li>There are a wide range of images in the dataset. Large variety in color, colormaps (RGB vs black/white), image size and orientation of the image. Would greatly benefit from some standardization.</li>
+<li>Looking at different images of one specific whale makes it seem like identification would be possible as they appear quite unique</li>
+</ol>
+<h4>Some images of 'new_whale'</h4>
+<div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">img_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">train</span><span class="p">[</span><span class="s">&#39;Id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;new_whale&#39;</span><span class="p">][</span><span class="s">&#39;Image&#39;</span><span class="p">][:</span><span class="mi">12</span><span class="p">]):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIR</span><span class="p">,</span><span class="s">&quot;train&quot;</span><span class="p">,</span><span class="n">img_name</span><span class="p">))</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+    <span class="n">y</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_20_0.png"></p>
+<h4>Now some pictures of whales that have just 1 image: quite a large variance in colors</h4>
+<div class="highlight"><pre><span class="n">single_whales</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s">&#39;Id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">12</span><span class="p">:]</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">widx</span><span class="p">,</span> <span class="n">whale</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">single_whales</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">img_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">train</span><span class="p">[</span><span class="s">&#39;Id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">whale</span><span class="p">][</span><span class="s">&#39;Image&#39;</span><span class="p">][:</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="n">widx</span> <span class="o">+</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIR</span><span class="p">,</span><span class="s">&quot;train&quot;</span><span class="p">,</span><span class="n">img_name</span><span class="p">))</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_22_0.png"></p>
+<h4>Below: each row shows pictures of one whale. I think it's quite easy to at least see similiar appearence there</h4>
+<div class="highlight"><pre><span class="n">topN</span><span class="o">=</span><span class="mi">5</span>
+<span class="n">top_whales</span> <span class="o">=</span> <span class="n">train</span><span class="p">[</span><span class="s">&#39;Id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">1</span><span class="o">+</span><span class="n">topN</span><span class="p">]</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">5</span><span class="o">*</span><span class="n">topN</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">widx</span><span class="p">,</span> <span class="n">whale</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">top_whales</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">img_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">train</span><span class="p">[</span><span class="s">&#39;Id&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">whale</span><span class="p">][</span><span class="s">&#39;Image&#39;</span><span class="p">][:</span><span class="mi">4</span><span class="p">]):</span>
+        <span class="n">axes</span> <span class="o">=</span> <span class="n">widx</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="n">idx</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">topN</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">axes</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIR</span><span class="p">,</span><span class="s">&quot;train&quot;</span><span class="p">,</span><span class="n">img_name</span><span class="p">))</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+        <span class="n">y</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_24_0.png"></p>
+<h1>Resolutions</h1>
+<p>over 7000 unique resolutions but 39 most popular cover ~45% images (both in train and in test)</p>
+<div class="highlight"><pre><span class="n">imageSizes_train</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">([</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">f</span><span class="s">&#39;{DIR}/train/{filename}&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
+                        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;{DIR}/train&quot;</span><span class="p">)])</span>
+<span class="n">imageSizes_test</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">([</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">f</span><span class="s">&#39;{DIR}/test/{filename}&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
+                        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;{DIR}/test&quot;</span><span class="p">)])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">isdf</span><span class="p">(</span><span class="n">imageSizes</span><span class="p">):</span>
+    <span class="n">imageSizeFrame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">imageSizes</span><span class="o">.</span><span class="n">most_common</span><span class="p">()),</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;imageDim&quot;</span><span class="p">,</span><span class="s">&quot;count&quot;</span><span class="p">])</span>
+    <span class="n">imageSizeFrame</span><span class="p">[</span><span class="s">&#39;fraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">imageSizeFrame</span><span class="p">[</span><span class="s">&#39;count&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">imageSizes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="n">imageSizeFrame</span><span class="p">[</span><span class="s">&#39;count_cum&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">imageSizeFrame</span><span class="p">[</span><span class="s">&#39;count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">()</span>
+    <span class="n">imageSizeFrame</span><span class="p">[</span><span class="s">&#39;count_cum_fraction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">imageSizeFrame</span><span class="p">[</span><span class="s">&#39;count_cum&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">imageSizes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">imageSizeFrame</span>
+
+<span class="n">train_isdf</span> <span class="o">=</span> <span class="n">isdf</span><span class="p">(</span><span class="n">imageSizes_train</span><span class="p">)</span>
+<span class="n">train_isdf</span><span class="p">[</span><span class="s">&#39;set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;train&#39;</span>
+<span class="n">test_isdf</span> <span class="o">=</span> <span class="n">isdf</span><span class="p">(</span><span class="n">imageSizes_test</span><span class="p">)</span>
+<span class="n">test_isdf</span><span class="p">[</span><span class="s">&#39;set&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&#39;test&#39;</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">isizes</span> <span class="o">=</span> <span class="n">train_isdf</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">test_isdf</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s">&quot;outer&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s">&quot;imageDim&quot;</span><span class="p">)</span>
+<span class="n">isizes</span><span class="p">[</span><span class="s">&#39;total_count&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">isizes</span><span class="p">[</span><span class="s">&#39;count_x&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">isizes</span><span class="p">[</span><span class="s">&#39;count_y&#39;</span><span class="p">]</span>
+<span class="n">dims_order</span> <span class="o">=</span> <span class="n">isizes</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">&#39;total_count&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="bp">False</span><span class="p">)[[</span><span class="s">&#39;imageDim&#39;</span><span class="p">]]</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">dims_order</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre>7053
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">isizes</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">train_isdf</span><span class="p">,</span> <span class="n">test_isdf</span><span class="p">])</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">isizes</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+
+<div class="highlight"><pre>(8150, 6)
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">isizes</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>imageDim</th>
+      <th>count</th>
+      <th>fraction</th>
+      <th>count_cum</th>
+      <th>count_cum_fraction</th>
+      <th>set</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(1050, 700)</td>
+      <td>3330</td>
+      <td>0.131304</td>
+      <td>3330</td>
+      <td>0.131304</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(1050, 600)</td>
+      <td>2549</td>
+      <td>0.100509</td>
+      <td>5879</td>
+      <td>0.231813</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>(1050, 450)</td>
+      <td>1556</td>
+      <td>0.061354</td>
+      <td>7435</td>
+      <td>0.293167</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>(1050, 525)</td>
+      <td>1303</td>
+      <td>0.051378</td>
+      <td>8738</td>
+      <td>0.344545</td>
+      <td>train</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>(700, 500)</td>
+      <td>667</td>
+      <td>0.026300</td>
+      <td>9405</td>
+      <td>0.370845</td>
+      <td>train</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span class="n">popularSizes</span> <span class="o">=</span> <span class="n">isizes</span><span class="p">[</span><span class="n">isizes</span><span class="p">[</span><span class="s">&#39;fraction&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mf">0.002</span><span class="p">]</span>
+<span class="n">popularSizes</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+
+
+<div class="highlight"><pre>(39, 6)
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">popularSizes</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">&#39;set&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()[</span><span class="s">&#39;count_cum_fraction&#39;</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre>set
+test     0.456030
+train    0.445803
+Name: count_cum_fraction, dtype: float64
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">&#39;imageDim&#39;</span><span class="p">,</span><span class="n">y</span><span class="o">=</span><span class="s">&#39;fraction&#39;</span><span class="p">,</span><span class="n">data</span> <span class="o">=</span> <span class="n">popularSizes</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s">&quot;set&quot;</span><span class="p">)</span>
+<span class="n">_</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">)</span>
+</pre></div>
+
+
+<p><img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_34_0.png"></p>
+<h1>Duplicates</h1>
+<ol>
+<li>Found duplicates using imagehash. Great introduction <a href="https://realpython.com/fingerprinting-images-for-near-duplicate-detection/">here</a></li>
+<li>1 duplicate in train set</li>
+<li>3 duplicates between train and test</li>
+<li>totally different than in playground dataset: </li>
+<li><a href="https://www.kaggle.com/stehai/duplicate-images">playground duplicates</a></li>
+<li><a href="https://www.kaggle.com/martinpiotte/whale-recognition-model-with-score-0-78563">solution that used duplicate information</a></li>
+</ol>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">imagehash</span>
+
+<span class="k">def</span> <span class="nf">getImageMetaData</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">img</span><span class="p">:</span>
+        <span class="n">img_hash</span> <span class="o">=</span> <span class="n">imagehash</span><span class="o">.</span><span class="n">phash</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">img</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">mode</span><span class="p">,</span> <span class="n">img_hash</span>
+
+<span class="k">def</span> <span class="nf">get_img_duplicates_info</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">getImageMetaData</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIR</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">x</span><span class="p">)))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">&quot;Hash&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">&quot;Shape&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">&quot;Mode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">&quot;Length&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">&quot;Shape&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">&quot;Ratio&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s">&quot;Shape&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">&quot;New_Whale&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Id</span> <span class="o">==</span> <span class="s">&quot;new_whale&quot;</span>
+
+
+    <span class="n">img_counts</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Id</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s">&quot;Id_Count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Id</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">img_counts</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">train_dups</span> <span class="o">=</span> <span class="n">get_img_duplicates_info</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="s">&quot;train&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">train_dups</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Image</th>
+      <th>Id</th>
+      <th>Hash</th>
+      <th>Shape</th>
+      <th>Mode</th>
+      <th>Length</th>
+      <th>Ratio</th>
+      <th>New_Whale</th>
+      <th>Id_Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0000e88ab.jpg</td>
+      <td>w_f48451c</td>
+      <td>d26698c3271c757c</td>
+      <td>(1050, 700)</td>
+      <td>RGB</td>
+      <td>735000</td>
+      <td>1.500000</td>
+      <td>False</td>
+      <td>14</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0001f9222.jpg</td>
+      <td>w_c3d896a</td>
+      <td>ba8cc231ad489b77</td>
+      <td>(758, 325)</td>
+      <td>RGB</td>
+      <td>246350</td>
+      <td>2.332308</td>
+      <td>False</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>00029d126.jpg</td>
+      <td>w_20df2c5</td>
+      <td>bbcad234a52d0f0b</td>
+      <td>(1050, 497)</td>
+      <td>RGB</td>
+      <td>521850</td>
+      <td>2.112676</td>
+      <td>False</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>00050a15a.jpg</td>
+      <td>new_whale</td>
+      <td>c09ae7dc09f33a29</td>
+      <td>(1050, 525)</td>
+      <td>RGB</td>
+      <td>551250</td>
+      <td>2.000000</td>
+      <td>True</td>
+      <td>9664</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0005c1ef8.jpg</td>
+      <td>new_whale</td>
+      <td>d02f65ba9f74a08a</td>
+      <td>(1050, 525)</td>
+      <td>RGB</td>
+      <td>551250</td>
+      <td>2.000000</td>
+      <td>True</td>
+      <td>9664</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span class="n">t</span> <span class="o">=</span> <span class="n">train_dups</span><span class="o">.</span><span class="n">Hash</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">t</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="s">&quot;Duplicate hashes: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>&#39;Duplicate hashes: 1&#39;
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">t</span>
+</pre></div>
+
+
+<div class="highlight"><pre>94216bb289ccd63f    2
+Name: Hash, dtype: int64
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">t</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+
+
+<div class="highlight"><pre>&#39;94216bb289ccd63f&#39;
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">train_dups</span><span class="p">[</span><span class="n">train_dups</span><span class="p">[</span><span class="s">&#39;Hash&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Image</th>
+      <th>Id</th>
+      <th>Hash</th>
+      <th>Shape</th>
+      <th>Mode</th>
+      <th>Length</th>
+      <th>Ratio</th>
+      <th>New_Whale</th>
+      <th>Id_Count</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>9542</th>
+      <td>60a3f2422.jpg</td>
+      <td>w_7a8ce16</td>
+      <td>94216bb289ccd63f</td>
+      <td>(1050, 525)</td>
+      <td>RGB</td>
+      <td>551250</td>
+      <td>2.0</td>
+      <td>False</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>12618</th>
+      <td>7f7a63b8a.jpg</td>
+      <td>w_7a8ce16</td>
+      <td>94216bb289ccd63f</td>
+      <td>(1050, 525)</td>
+      <td>RGB</td>
+      <td>551250</td>
+      <td>2.0</td>
+      <td>False</td>
+      <td>6</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h4>The only duplicate found in train dataset comes from the same whale.</h4>
+<div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">img_name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">train_dups</span><span class="p">[</span><span class="n">train_dups</span><span class="p">[</span><span class="s">&#39;Hash&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]][</span><span class="s">&#39;Image&#39;</span><span class="p">][:</span><span class="mi">2</span><span class="p">]):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">idx</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIR</span><span class="p">,</span><span class="s">&quot;train&quot;</span><span class="p">,</span><span class="n">img_name</span><span class="p">))</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+    <span class="n">y</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_45_0.png"></p>
+<div class="highlight"><pre><span class="n">test_dups</span> <span class="o">=</span> <span class="n">get_img_duplicates_info</span><span class="p">(</span><span class="n">test</span><span class="p">,</span> <span class="s">&quot;test&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">test_d</span> <span class="o">=</span> <span class="n">test_dups</span><span class="o">.</span><span class="n">Hash</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">test_d</span> <span class="o">=</span> <span class="n">test_d</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">test_d</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">]</span>
+<span class="s">&quot;Duplicate hashes in test: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_d</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>&#39;Duplicate hashes in test: 0&#39;
+</pre></div>
+
+
+<div class="highlight"><pre><span class="n">common_hashes</span> <span class="o">=</span> <span class="n">test_dups</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">train_dups</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s">&quot;inner&quot;</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s">&quot;Hash&quot;</span><span class="p">,</span> <span class="n">suffixes</span><span class="o">=</span><span class="p">(</span><span class="s">&quot;_test&quot;</span><span class="p">,</span><span class="s">&quot;_train&quot;</span><span class="p">))</span>
+<span class="n">common_hashes</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Image_test</th>
+      <th>Id_test</th>
+      <th>Hash</th>
+      <th>Shape_test</th>
+      <th>Mode_test</th>
+      <th>Length_test</th>
+      <th>Ratio_test</th>
+      <th>New_Whale_test</th>
+      <th>Id_Count_test</th>
+      <th>Image_train</th>
+      <th>Id_train</th>
+      <th>Shape_train</th>
+      <th>Mode_train</th>
+      <th>Length_train</th>
+      <th>Ratio_train</th>
+      <th>New_Whale_train</th>
+      <th>Id_Count_train</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>d37179fd1.jpg</td>
+      <td>new_whale w_23a388d w_9b5109b w_9c506f6 w_0369a5c</td>
+      <td>eecad0b52d4ac2f0</td>
+      <td>(1050, 700)</td>
+      <td>RGB</td>
+      <td>735000</td>
+      <td>1.500000</td>
+      <td>False</td>
+      <td>7960</td>
+      <td>01f66ca26.jpg</td>
+      <td>new_whale</td>
+      <td>(1000, 667)</td>
+      <td>RGB</td>
+      <td>667000</td>
+      <td>1.499250</td>
+      <td>True</td>
+      <td>9664</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>f50529c53.jpg</td>
+      <td>new_whale w_23a388d w_9b5109b w_9c506f6 w_0369a5c</td>
+      <td>afdac0b52a5a82b5</td>
+      <td>(1050, 690)</td>
+      <td>RGB</td>
+      <td>724500</td>
+      <td>1.521739</td>
+      <td>False</td>
+      <td>7960</td>
+      <td>579886448.jpg</td>
+      <td>new_whale</td>
+      <td>(1050, 690)</td>
+      <td>RGB</td>
+      <td>724500</td>
+      <td>1.521739</td>
+      <td>True</td>
+      <td>9664</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>fb3879dc7.jpg</td>
+      <td>new_whale w_23a388d w_9b5109b w_9c506f6 w_0369a5c</td>
+      <td>ad4ac2b43d0fcaf0</td>
+      <td>(1050, 700)</td>
+      <td>RGB</td>
+      <td>735000</td>
+      <td>1.500000</td>
+      <td>False</td>
+      <td>7960</td>
+      <td>b95d73a55.jpg</td>
+      <td>w_691f2f6</td>
+      <td>(1000, 667)</td>
+      <td>RGB</td>
+      <td>667000</td>
+      <td>1.499250</td>
+      <td>False</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span class="s">&quot;Duplicate hashes between train and test: {}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">common_hashes</span><span class="p">))</span>
+</pre></div>
+
+
+<div class="highlight"><pre>&#39;Duplicate hashes between train and test: 3&#39;
+</pre></div>
+
+
+<h3>below each row shows images with the same pHash, left column from train, right from test</h3>
+<div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">images</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">common_hashes</span><span class="p">[[</span><span class="s">&#39;Image_train&#39;</span><span class="p">,</span><span class="s">&#39;Image_test&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">common_hashes</span><span class="p">),</span><span class="mi">2</span><span class="p">,</span> <span class="n">idx</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIR</span><span class="p">,</span><span class="s">&quot;train&quot;</span><span class="p">,</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+    <span class="n">y</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+    <span class="n">y</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">common_hashes</span><span class="p">),</span><span class="mi">2</span><span class="p">,</span> <span class="n">idx</span><span class="o">*</span><span class="mi">2</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">DIR</span><span class="p">,</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="n">images</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+    <span class="n">y</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="png" src="humpback-whale-eda_files/humpback-whale-eda_51_0.png"></p>
+<div class="highlight"><pre><span class="c"># train duplicates - to remove:</span>
+<span class="n">train_to_remove</span> <span class="o">=</span> <span class="n">train_dups</span><span class="p">[</span><span class="n">train_dups</span><span class="p">[</span><span class="s">&#39;Hash&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="s">&#39;Hash&#39;</span><span class="p">)[[</span><span class="s">&#39;Image&#39;</span><span class="p">]]</span>
+<span class="n">train_to_remove</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">&quot;train_remove.csv&quot;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">train_to_remove</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Image</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>9542</th>
+      <td>60a3f2422.jpg</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="highlight"><pre><span class="c"># easy answers in test:</span>
+<span class="n">easy_peasy</span> <span class="o">=</span> <span class="n">common_hashes</span><span class="p">[[</span><span class="s">&#39;Image_test&#39;</span><span class="p">,</span><span class="s">&#39;Id_train&#39;</span><span class="p">]]</span>
+<span class="n">easy_peasy</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s">&quot;test_easy.csv&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">easy_peasy</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Image_test</th>
+      <th>Id_train</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>d37179fd1.jpg</td>
+      <td>new_whale</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>f50529c53.jpg</td>
+      <td>new_whale</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>fb3879dc7.jpg</td>
+      <td>w_691f2f6</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h1>Conclusion</h1>
+<p>Just by poking around the dataset I've gained quite a bit of insight on how we're going to tackle this problem. My next step is going to be cleaning and standardizing the dataset, to make it easier to train on. Then, I'll need to find an architecture that is the best suited for learning off of very few examples. I'm not sure if such an architecture exists but I'll report back with what I find!</p>
+  </div>
+
+  <hr class="small"></hr>
+  <div class="article-sharing">
+      <ul>
+      <!-- Twitter Sharing
+      ================================================================== -->
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="Alex_Fitts">Tweet</a></li>
+
+      <!-- Facebook Sharing
+      ================================================================== -->
+      <li><div class="fb-share-button"
+          data-href="http://afitts.github.io/2018/11/11/humpback-eda/"
+          data-layout="button_count">
+      </div></li>
+      </ul>
+    </div>
+
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Back to Home</a>
+    </div>
+    <hr class="small"></hr>
+  </div>
+  <script>
+    // hide ipython notebook cell numbers
+  $('div.prompt').hide();
+  </script>
+		</section>
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Generated with <a href="http://getpelican.com">Pelican</a>. Layout done with <a href="http://getskeleton.com">Skeleton</a>. Icons are <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Hosted on <a href="http://aws.amazon.com/s3/">S3</a>.</p>
+  <p>&copy; Copyright Alex Fitts, 2016 to present</p>
+</footer>	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34295039-1']);
+  _gaq.push(['_setDomainName', 'gregreda.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+</body> <!-- End body -->
+
+<!-- JavaScript
+=================================================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- twitter.js
+==================================================================== -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
+
+<!-- Facebook SDK for JS
+==================================================================== -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+</html>
