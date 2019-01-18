@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+  <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif;  width:500px;}
+    /*
+      Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      We recommend moving this block and the preceding CSS link to the HEAD of your HTML file.
+     */
+  </style>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="google-site-verification" content="AgIAQN_qsniIQWOq659Bnhzx-LZts2FdgP1kLgtQg-k" />
+  <meta name="google-site-verification" content="-wneVy0z_MWocNaXikWZzyTe__HZbZDCRfLYEJ1sAg8" />
+
+  <title>DB5 Stanford SQL Course Exercises (Part 1)</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Alex Fitts">
+  <meta name="copyright" content="&copy; Copyright Greg Reda, 2013 to Present">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts 
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans|Merriweather|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?cfc9322a">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Feeds
+  ================================================== -->
+  <link rel="alternate" type="application/atom+xml" href="http://afitts.github.io/feeds/all.atom.xml" title="Alex Fitts Full Atom Feed">
+
+	<!-- Facebook Open Graph
+  ================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DB5 Stanford SQL Course Exercises (Part 1)">
+  <meta property="og:url" content="http://afitts.github.io/2018/02/05/stanford-sql1/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Alex Fitts">
+  <meta property="og:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+
+  <!-- Twitter Cards
+  ================================================== -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Alex_Fitts">
+  <meta name="twitter:creator" content="@Alex_Fitts">
+  <meta name="twitter:domain" content="gregreda.com">
+  <meta name="twitter:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+  <meta name="twitter:title" content="DB5 Stanford SQL Course Exercises (Part 1)">
+  <meta name="twitter:description" content="">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/theme/images/favicon.ico">
+	<link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns"> <!-- Yes, I know this is a douchey class name -->
+      <ul>
+        <li>
+          <a href="/" title="Home"><img id="logo" src="/theme/images/avatar.jpg"></a>
+        </li>
+        <li>
+          <h1><a href="/" title="Home">Alex Fitts</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/Alex_Fitts" title="Twitter">
+            <i class="fa fa-fw fa-twitter"></i>
+          </a>
+          </li>
+        <li>
+          <a class="icon" href="https://github.com/afitts" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://www.linkedin.com/in/alex-fitts-64163b128/" title="LinkedIn">
+            <i class="fa fa-fw fa-linkedin"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/pub/">Publications</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/blog/">Blog</a></li>
+	<li><a href="/pdfs/FittsResume.pdf">Resume</a></li>
+        <!--        <li><a href="/coffee/">Coffee?</a></li> -->
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->		<section id="content" class="twelve columns">
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/2018/02/05/stanford-sql1/" title="Permalink to DB5 Stanford SQL Course Exercises (Part 1)">DB5 Stanford SQL Course Exercises (Part 1)</a></h1>
+  <h5 class="article-date">February 05, 2018
+  </h5>
+  <hr class="small"></hr>
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+    <p>The entirety of these exercises will be in SQLite.</p>
+<h2>SQL Movie-Rating Query Exercises</h2>
+<p>Q1<br>
+Find the titles of all movies directed by Steven Spielberg.</p>
+<p>A1<br>
+select title<br>
+from Movie<br>
+where director = 'Steven Spielberg';  </p>
+<p>Q2<br>
+Find all years that have a movie that received a rating of 4 or 5, and sort them in increasing order. </p>
+<p>A2<br>
+select year<br>
+from Movie<br>
+where mID in (select distinct mID from Rating where stars  &gt;= 4)<br>
+order by year;  </p>
+<p>Q3<br>
+Find the titles of all movies that have no ratings. </p>
+<p>A3<br>
+select title<br>
+from Movie<br>
+where mID not in (select mID from Rating);  </p>
+<p>Q4<br>
+Some reviewers didn't provide a date with their rating. Find the names of all reviewers who have ratings with a NULL value for the date. </p>
+<p>A4<br>
+select name<br>
+from Reviewer<br>
+where rID in (select rID from Rating where ratingDate is null);  </p>
+<p>Q5<br>
+Write a query to return the ratings data in a more readable format: reviewer name, movie title, stars, and ratingDate. Also, sort the data, first by reviewer name, then by movie title, and lastly by number of stars. </p>
+<p>A5<br>
+select name, title, stars, ratingDate<br>
+from Movie join Rating using(mID) join Reviewer using(rID)<br>
+order by name, title, stars;  </p>
+<p>Q6<br>
+For all cases where the same reviewer rated the same movie twice and gave it a higher rating the second time, return the reviewer's name and the title of the movie. </p>
+<p>A6<br>
+select r.name, m.title<br>
+from Reviewer as r, Movie as m,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(select r1.rID, r1.mID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Rating r1 , Rating r2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where r1.rID = r2.rID and r1.mID = r2.mID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and r1.stars &gt; r2.stars<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and r1.ratingDate &gt; r2.ratingDate) as a<br>
+where r.rID = a.rID and m.mID = a.mID</p>
+<p>Q7<br>
+For each movie that has at least one rating, find the highest number of stars that movie received. Return the movie title and number of stars. Sort by movie title. </p>
+<p>A7<br>
+select distinct r1.title,r1.stars<br>
+from (Rating join Movie using(mID)) as r1 <br>
+where not exists (select stars from Rating r2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where r1.stars&lt;r2.stars and r1.mID = r2.mID)<br>
+order by r1.title</p>
+<p>Q8<br>
+For each movie, return the title and the 'rating spread', that is, the difference between highest and lowest ratings given to that movie. Sort by rating spread from highest to lowest, then by movie title. </p>
+<p>A8<br>
+select title, rating_spread<br>
+from Movie m join (select mID, max(stars)-min(stars) as rating_spread<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Rating r group by mID) using (mID)<br>
+order by rating_spread desc, title</p>
+<p>Q9<br>
+Find the difference between the average rating of movies released before 1980 and the average rating of movies released after 1980. (Make sure to calculate the average rating for each movie, then the average of those averages for movies before 1980 and movies after. Don't just calculate the overall average rating before and after 1980.) </p>
+<p>A9<br>
+select avg(early.avgStar)-avg(late.avgStar)<br>
+from (select avg(stars) as avgStar<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Movie join Rating using(mID)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group by mID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;having year &lt; 1980) as early,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(select avg(stars) as avgStar<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Movie join Rating using(mID)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group by mID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;having year &gt; 1980) as late  </p>
+<h2>SQL Movie-Rating Query Exercises Extras (in SQLite)</h2>
+<p>Q1<br>
+Find the names of all reviewers who rated Gone with the Wind. </p>
+<p>A1<br>
+select name<br>
+from (select distinct rID from Rating join Movie using(mID) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where title = 'Gone with the Wind')<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;join Reviewer using(rID) </p>
+<p>Q2<br>
+For any rating where the reviewer is the same as the director of the movie, return the reviewer name, movie title, and number of stars. </p>
+<p>A2
+select name, title, stars<br>
+from Rating join Reviewer using(rID) join Movie using (mID)<br>
+where name = director  </p>
+<p>Q3<br>
+Return all reviewer names and movie names together in a single list, alphabetized. (Sorting by the first name of the reviewer and first word in the title is fine; no need for special processing on last names or removing "The".) </p>
+<p>A3<br>
+select name from Reviewer<br>
+union <br>
+select title from Movie  </p>
+<p>Q4<br>
+Find the titles of all movies not reviewed by Chris Jackson. </p>
+<p>A4<br>
+select title<br>
+from Movie<br>
+where mID not in (select mID from Reviewer join Rating using(rID) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where name = 'Chris Jackson')</p>
+<p>Q5<br>
+For all pairs of reviewers such that both reviewers gave a rating to the same movie, return the names of both reviewers. Eliminate duplicates, don't pair reviewers with themselves, and include each pair only once. For each pair, return the names in the pair in alphabetical order. </p>
+<p>A5<br>
+select distinct r1.name,r2.name<br>
+from (Rating join Reviewer using(rID)) as r1, (Rating join Reviewer using(rID)) as r2<br>
+where r1.name &lt; r2.name and r1.mID = r2.mID  </p>
+<p>Q6<br>
+For each rating that is the lowest (fewest stars) currently in the database, return the reviewer name, movie title, and number of stars. </p>
+<p>A6<br>
+select name, title, stars<br>
+from (Reviewer join Rating using(rID) join Movie using(mID)) as r1<br>
+where not exists (select stars from Rating r2 where r1.stars &gt; r2.stars)  </p>
+<p>Q7<br>
+List movie titles and average ratings, from highest-rated to lowest-rated. If two or more movies have the same average rating, list them in alphabetical order. </p>
+<p>A7<br>
+select title, avg(stars) as avgStars<br>
+from Rating join Movie using(mID)<br>
+group by mID<br>
+order by avgStars desc, title  </p>
+<p>Q8<br>
+Find the names of all reviewers who have contributed three or more ratings. (As an extra challenge, try writing the query without HAVING or without COUNT.) </p>
+<p>A8<br>
+select name<br>
+from Reviewer<br>
+where rID in (select rID from Rating group by rID having count(stars)&gt;2);  </p>
+<p>Q9<br>
+Some directors directed more than one movie. For all such directors, return the titles of all movies directed by them, along with the director name. Sort by director name, then movie title. </p>
+<p>A9<br>
+select title,director<br>
+from Movie<br>
+where director in (select director from Movie group by director<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;having count(director)&gt;1)<br>
+order by director,title</p>
+<p>(As an extra challenge, try writing the query both with and without COUNT.) </p>
+<p>select distinct m1.title,m1.director<br>
+from Movie m1, Movie m2<br>
+where m1.director = m2.director and m1.title &lt;&gt; m2.title<br>
+order by m1.director,m1.title</p>
+<p>Q10<br>
+Find the movie(s) with the highest average rating. Return the movie title(s) and average rating. (Hint: This query is more difficult to write in SQLite than other systems; you might think of it as finding the highest average rating and then choosing the movie(s) with that average rating.) </p>
+<p>A10<br>
+select M.title, M.avgStars<br>
+from (select title, avg(stars) as avgStars from Movie join Rating using(mID) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group by mID) as M<br>
+where M.avgStars = (select max(avgStars) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from (select avg(stars) as avgStars from Rating <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group by mID))</p>
+<p>Q11<br>
+Find the movie(s) with the lowest average rating. Return the movie title(s) and average rating. (Hint: This query may be more difficult to write in SQLite than other systems; you might think of it as finding the lowest average rating and then choosing the movie(s) with that average rating.) </p>
+<p>A11<br>
+select M.title, M.avgStars<br>
+from (select title, avg(stars) as avgStars from Movie join Rating using(mID) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group by mID) as M<br>
+where M.avgStars = (select min(avgStars) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from (select avg(stars) as avgStars from Rating <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;group by mID))  </p>
+<p>Q12<br>
+For each director, return the director's name together with the title(s) of the movie(s) they directed that received the highest rating among all of their movies, and the value of that rating. Ignore movies whose director is NULL.</p>
+<p>A12<br>
+select distinct m1.director, m1.title, m1.stars<br>
+from (Movie join Rating using(mID)) as m1<br>
+where m1.director is not null and <br>
+not exists (select stars from (Movie join Rating using(mID)) as m2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where m1.stars&lt;m2.stars and m1.director = m2.director)</p>
+<h2>SQL Movie-Rating Modification Exercises (in SQLite)</h2>
+<p>Q1<br>
+Add the reviewer Roger Ebert to your database, with an rID of 209. </p>
+<p>A1<br>
+insert into Reviewer values (209,'Roger Ebert');</p>
+<p>Q2<br>
+Insert 5-star ratings by James Cameron for all movies in the database. Leave the review date as NULL. </p>
+<p>A2<br>
+insert into Rating<br>
+select rID, mID, 5, null<br>
+from (select rID from Reviewer <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where name = 'James Cameron') as JC, Movie</p>
+<p>Q3<br>
+For all movies that have an average rating of 4 stars or higher, add 25 to the release year. (Update the existing tuples; don't insert new tuples.) </p>
+<p>A3<br>
+update Movie<br>
+set year = year+25<br>
+where mID in (select mID<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from (select mID, avg(stars) as avgStars<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Rating group by mID)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where avgStars&gt;=4)</p>
+<p>Q4<br>
+Remove all ratings where the movie's year is before 1970 or after 2000, and the rating is fewer than 4 stars.</p>
+<p>A4<br>
+delete from Rating<br>
+where mID in (select mID from Movie where year&lt;1970 or year&gt;2000)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and stars&lt;4</p>
+  </div>
+
+  <hr class="small"></hr>
+  <div class="article-sharing">
+      <ul>
+      <!-- Twitter Sharing
+      ================================================================== -->
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="Alex_Fitts">Tweet</a></li>
+
+      <!-- Facebook Sharing
+      ================================================================== -->
+      <li><div class="fb-share-button"
+          data-href="http://afitts.github.io/2018/02/05/stanford-sql1/"
+          data-layout="button_count">
+      </div></li>
+      </ul>
+    </div>
+
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Back to Home</a>
+    </div>
+    <hr class="small"></hr>
+  </div>
+  <script>
+    // hide ipython notebook cell numbers
+  $('div.prompt').hide();
+  </script>
+		</section>
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Generated with <a href="http://getpelican.com">Pelican</a>. Layout done with <a href="http://getskeleton.com">Skeleton</a>. Icons are <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Hosted on <a href="http://aws.amazon.com/s3/">S3</a>.</p>
+  <p>&copy; Copyright Alex Fitts, 2016 to present</p>
+</footer>	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34295039-1']);
+  _gaq.push(['_setDomainName', 'gregreda.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+</body> <!-- End body -->
+
+<!-- JavaScript
+=================================================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- twitter.js
+==================================================================== -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
+
+<!-- Facebook SDK for JS
+==================================================================== -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+</html>

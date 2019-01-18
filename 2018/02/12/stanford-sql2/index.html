@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+<!-- Extra Header for IPython Notebooks
+================================================== -->
+  <link href="//cdn-images.mailchimp.com/embedcode/slim-081711.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+    #mc_embed_signup{background:#fff; clear:left; font:14px Helvetica,Arial,sans-serif;  width:500px;}
+    /*
+      Add your own MailChimp form style overrides in your site stylesheet or in this style block.
+      We recommend moving this block and the preceding CSS link to the HEAD of your HTML file.
+     */
+  </style>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="google-site-verification" content="AgIAQN_qsniIQWOq659Bnhzx-LZts2FdgP1kLgtQg-k" />
+  <meta name="google-site-verification" content="-wneVy0z_MWocNaXikWZzyTe__HZbZDCRfLYEJ1sAg8" />
+
+  <title>DB5 Stanford SQL Course Exercises (Part 2)</title>
+
+  <meta name="description" content="">
+  <meta name="author" content="Alex Fitts">
+  <meta name="copyright" content="&copy; Copyright Greg Reda, 2013 to Present">
+
+  <!-- Mobile Specific Metas
+  ================================================== -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- Fonts 
+  ================================================== -->
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans|Merriweather|Source+Code+Pro' rel='stylesheet' type='text/css'>
+
+  <!-- CSS
+  ================================================== -->
+  <link rel="stylesheet" href="/theme/css/style.min.css?cfc9322a">
+  <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <!-- Feeds
+  ================================================== -->
+  <link rel="alternate" type="application/atom+xml" href="http://afitts.github.io/feeds/all.atom.xml" title="Alex Fitts Full Atom Feed">
+
+	<!-- Facebook Open Graph
+  ================================================== -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DB5 Stanford SQL Course Exercises (Part 2)">
+  <meta property="og:url" content="http://afitts.github.io/2018/02/12/stanford-sql2/">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Alex Fitts">
+  <meta property="og:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+
+  <!-- Twitter Cards
+  ================================================== -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:site" content="@Alex_Fitts">
+  <meta name="twitter:creator" content="@Alex_Fitts">
+  <meta name="twitter:domain" content="gregreda.com">
+  <meta name="twitter:image" content="http://afitts.github.io/theme/images/avatar.jpg">
+  <meta name="twitter:title" content="DB5 Stanford SQL Course Exercises (Part 2)">
+  <meta name="twitter:description" content="">
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="/theme/images/favicon.ico">
+	<link rel="apple-touch-icon" href="/theme/images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="/theme/images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="/theme/images/apple-touch-icon-114x114.png">
+
+</head>
+<body>
+	<!-- Primary Page Layout
+	================================================== -->
+	<div class="container">
+<!-- Navigation
+================================================== -->
+<nav class="navbar">
+  <div class="navbar-brand six columns"> <!-- Yes, I know this is a douchey class name -->
+      <ul>
+        <li>
+          <a href="/" title="Home"><img id="logo" src="/theme/images/avatar.jpg"></a>
+        </li>
+        <li>
+          <h1><a href="/" title="Home">Alex Fitts</a></h1>
+        </li>
+      </ul>
+      <ul id="social-icons">
+        <li>
+          <a class="icon" href="https://twitter.com/Alex_Fitts" title="Twitter">
+            <i class="fa fa-fw fa-twitter"></i>
+          </a>
+          </li>
+        <li>
+          <a class="icon" href="https://github.com/afitts" title="GitHub">
+            <i class="fa fa-fw fa-github"></i>
+          </a>
+        </li>
+        <li>
+          <a class="icon" href="https://www.linkedin.com/in/alex-fitts-64163b128/" title="LinkedIn">
+            <i class="fa fa-fw fa-linkedin"></i>
+          </a>
+        </li>
+      </ul> <!-- End social-icons ul -->
+    </div> <!-- End navbar-brand -->
+
+  <div class="navbar-links">
+      <ul>
+        <li><a href="/pub/">Publications</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/blog/">Blog</a></li>
+	<li><a href="/pdfs/FittsResume.pdf">Resume</a></li>
+        <!--        <li><a href="/coffee/">Coffee?</a></li> -->
+      </ul> <!-- End navbar-links ul -->
+    </div> <!-- End navbar-links -->
+</nav> <!-- End navbar -->		<section id="content" class="twelve columns">
+
+  <!-- Article Headers
+  ================================================================== -->
+  <h1 class="article-title"><a href="/2018/02/12/stanford-sql2/" title="Permalink to DB5 Stanford SQL Course Exercises (Part 2)">DB5 Stanford SQL Course Exercises (Part 2)</a></h1>
+  <h5 class="article-date">February 12, 2018
+  </h5>
+  <hr class="small"></hr>
+
+  <!-- Article Content
+  ================================================================== -->
+  <div class="article-content">
+    <p>The entirety of these exercises will be in SQLite.</p>
+<h2>SQL Social-Network Query Exercises (in SQLite)</h2>
+<p>Q1<br>
+Find the names of all students who are friends with someone named Gabriel. </p>
+<p>A1<br>
+select name<br>
+from Highschooler<br>
+where ID in (select ID1 from Friend<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where ID2 in (select ID from Highschooler where name = 'Gabriel'))</p>
+<p>Q2<br>
+For every student who likes someone 2 or more grades younger than themselves, return that student's name and grade, and the name and grade of the student they like. </p>
+<p>A2<br>
+select h1.name, h1.grade, h2.name, h2.grade<br>
+from Highschooler as h1, Highschooler as h2, Likes<br>
+where h1.ID = Likes.ID1 and h2.ID = Likes.ID2 and h1.grade = h2.grade+2  </p>
+<p>Q3<br>
+For every pair of students who both like each other, return the name and grade of both students. Include each pair only once, with the two names in alphabetical order. </p>
+<p>A3<br>
+select h1.name, h1.grade, h2.name, h2.grade<br>
+from Highschooler as h1, Highschooler as h2, Highschooler as h3, Highschooler as h4, Likes as l1, Likes as l2<br>
+where h1.ID = l1.ID1 and h2.ID = l1.ID2 and h3.ID = h2.ID and h4.ID = h1.ID <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and h2.ID = l2.ID1 and h1.ID = l2.ID2 and h1.name &lt; h2.name</p>
+<p>Better solution:<br>
+select h1.name, h1.grade, h2.name, h2.grade<br>
+from Highschooler as h1, Highschooler as h2, Likes as l1, Likes as l2<br>
+where h1.ID = l1.ID1 and h2.ID = l1.ID2 and h2.ID = l2.ID1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and h1.ID = l2.ID2 and h1.name &lt; h2.name</p>
+<p>Q4<br>
+Find all students who do not appear in the Likes table (as a student who likes or is liked) and return their names and grades. Sort by grade, then by name within each grade. </p>
+<p>A4<br>
+select name, grade<br>
+from Highschooler<br>
+where ID not in (select ID1 from Likes) and ID not in (select ID2 from Likes)<br>
+order by grade,name</p>
+<p>Q5<br>
+For every situation where student A likes student B, but we have no information about whom B likes (that is, B does not appear as an ID1 in the Likes table), return A and B's names and grades. </p>
+<p>A5<br>
+select h1.name, h1.grade, h2.name, h2.grade<br>
+from Highschooler as h1, Highschooler as h2, Likes as l1<br>
+where h1.ID = l1.ID1 and h2.ID = l1.ID2 and h2.ID not in (select ID1 from Likes)</p>
+<p>Q6<br>
+Find names and grades of students who only have friends in the same grade. Return the result sorted by grade, then by name within each grade. </p>
+<p>A6<br>
+select name,grade<br>
+from Highschooler<br>
+where ID not in (select h1.ID from Highschooler as h1,Highschooler as h2,Friend as f1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where h1.ID = f1.ID1 and h2.ID = f1.ID2 and h1.grade &lt;&gt; h2.grade)<br>
+order by grade, name</p>
+<p>Q7<br>
+For each student A who likes a student B where the two are not friends, find if they have a friend C in common (who can introduce them!). For all such trios, return the name and grade of A, B, and C. </p>
+<p>A7<br>
+select distinct h1.name, h1.grade, h2.name, h2.grade, h3.name, h3.grade<br>
+from Highschooler as h1, Highschooler as h2, Highschooler as h3, Likes as l1, Friend as f1<br>
+where h1.ID = l1.ID1 and h2.ID = l1.ID2 and<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;h2.ID not in (select ID2 from Friend where h1.ID = ID1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and h3.ID in (select ID2 from Friend where h1.ID = ID1)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and h3.ID in (select ID2 from Friend where h2.ID = ID1)</p>
+<p>Q8<br>
+Find the difference between the number of students in the school and the number of different first names.</p>
+<p>A8<br>
+select count(ID)-count(distinct name)<br>
+from Highschooler</p>
+<p>Q9<br>
+Find the name and grade of all students who are liked by more than one other student.</p>
+<p>A9<br>
+select name, grade<br>
+from Highschooler<br>
+where ID in (select ID2 from Likes group by ID2 having count(distinct ID1)&gt;1)</p>
+<h2>SQL Social-Network Query Exercises Extras (in SQLite)</h2>
+<p>Q1<br>
+For every situation where student A likes student B, but student B likes a different student C, return the names and grades of A, B, and C.</p>
+<p>A1<br>
+select distinct h1.name, h1.grade, h2.name, h2.grade, h3.name, h3.grade<br>
+from Highschooler as h1, Highschooler as h2, Highschooler as h3, Likes as l1, Likes as l2<br>
+where h1.ID = l1.ID1 and h2.ID = l1.ID2 and h2.ID = l2.ID1 and h3.ID = l2.ID2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and h1.ID &lt;&gt; l2.ID2</p>
+<p>Q2<br>
+Find those students for whom all of their friends are in different grades from themselves. Return the students' names and grades. </p>
+<p>A2<br>
+select name,grade<br>
+from Highschooler<br>
+where ID not in (select h1.ID from Highschooler as h1,Highschooler as h2,Friend as f1 <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where h1.ID = f1.ID1 and h2.ID = f1.ID2 and h1.grade = h2.grade)</p>
+<p>Q3<br>
+What is the average number of friends per student? (Your result should be just one number.)</p>
+<p>A3<br>
+select avg(f)<br>
+from (select count(ID2) as f from Friend group by ID1)</p>
+<p>Q4<br>
+Find the number of students who are either friends with Cassandra or are friends of friends of Cassandra. Do not count Cassandra, even though technically she is a friend of a friend. </p>
+<p>A4<br>
+select count(distinct f1.ID1)<br>
+from Friend as f1, Friend as f2, (select ID from Highschooler where name = 'Cassandra') as C<br>
+where f1.ID2 = C.ID or (f1.ID1 &lt;&gt; C.ID and f1.ID2 = f2.ID1 and f2.ID2 = C.ID)</p>
+<p>Q5<br>
+Find the name and grade of the student(s) with the greatest number of friends. </p>
+<p>A5<br>
+select name, grade<br>
+from Highschooler join (select ID1, count(ID2)as numF from Friend group by ID1) as f1 <br>
+on ID = f1.ID1<br>
+where f1.numF = (select max(f2.numF)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from (select count(ID2) as numF from Friend group by ID1) as f2)</p>
+<p>or (from solution set. Interesting and nice using of select, from, on, group by and having but contingent on name + grade being a unique key) </p>
+<p>select name, grade<br>
+from Highschooler join Friend<br>
+on ID = ID1<br>
+group by name, grade<br>
+having count(ID2) =  (select max(f.numF) <br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from (select count(ID2) as numF from Friend group by ID1) as f)</p>
+<h2>SQL Social-Network Modification Exercises (in SQLite)</h2>
+<p>Q1<br>
+It's time for the seniors to graduate. Remove all 12th graders from Highschooler. </p>
+<p>A1<br>
+delete from Highschooler<br>
+where grade = 12</p>
+<p>Q2<br>
+If two students A and B are friends, and A likes B but not vice-versa, remove the Likes tuple.</p>
+<p>A2<br>
+delete from Likes<br>
+where ID1 in (select l1.ID1<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;from Likes as l1, Friend as f<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;where l1.ID1 = f.ID1 and l1.ID2 = f.ID2<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and l1.ID2 not in (select ID1 from Likes as l2 where l2.ID2 = l1.ID1))</p>
+<p>Q3<br>
+For all cases where A is friends with B, and B is friends with C, add a new friendship for the pair A and C. Do not add duplicate friendships, friendships that already exist, or friendships with oneself. (This one is a bit challenging; congratulations if you get it right.) </p>
+<p>A3</p>
+  </div>
+
+  <hr class="small"></hr>
+  <div class="article-sharing">
+      <ul>
+      <!-- Twitter Sharing
+      ================================================================== -->
+      <li><a href="https://twitter.com/share" class="twitter-share-button" data-via="Alex_Fitts">Tweet</a></li>
+
+      <!-- Facebook Sharing
+      ================================================================== -->
+      <li><div class="fb-share-button"
+          data-href="http://afitts.github.io/2018/02/12/stanford-sql2/"
+          data-layout="button_count">
+      </div></li>
+      </ul>
+    </div>
+
+
+    <!-- Back to home
+    ================================================================== -->
+    <div class="back-to-home">
+      <a href="/">← Back to Home</a>
+    </div>
+    <hr class="small"></hr>
+  </div>
+  <script>
+    // hide ipython notebook cell numbers
+  $('div.prompt').hide();
+  </script>
+		</section>
+<!-- Navigation
+================================================== -->
+<footer class="twelve columns">
+	<!-- <hr class="small"> -->
+  <p>Generated with <a href="http://getpelican.com">Pelican</a>. Layout done with <a href="http://getskeleton.com">Skeleton</a>. Icons are <a href="http://fortawesome.github.com/Font-Awesome/">Font Awesome</a>. Hosted on <a href="http://aws.amazon.com/s3/">S3</a>.</p>
+  <p>&copy; Copyright Alex Fitts, 2016 to present</p>
+</footer>	</div><!-- container -->
+
+<!-- Google Analytics
+================================================== -->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34295039-1']);
+  _gaq.push(['_setDomainName', 'gregreda.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+  <script type="text/javascript">
+    $("a").on('click', function(e) {
+      var url = $(this).attr("href");
+      console.log(url);
+      if (e.currentTarget.host != window.location.host) {
+        _gaq.push(['_trackEvent', 'Outbound Links', e.currentTarget.host, url, 0]);
+        if (e.metaKey || e.ctrlKey) {
+          var newtab = true;
+        }
+        if (!newtab) {
+          e.preventDefault();
+          setTimeout('document.location = "' + url + '"', 100);
+        }
+      }
+    });
+  </script>
+</body> <!-- End body -->
+
+<!-- JavaScript
+=================================================== -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" async src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+<!-- twitter.js
+==================================================================== -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>  
+
+<!-- Facebook SDK for JS
+==================================================================== -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+</html>
